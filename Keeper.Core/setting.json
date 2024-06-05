@@ -1,0 +1,19 @@
+{
+  "ProjectSettings": {
+    "ClientNameSpace": "Keeper.Client",
+    "CoreNameSpace": "Keeper.Core",
+    "TestNamespace": "Keeper.Test",
+    "ControllerNamespace": "Keeper.Api",
+
+    "ClientFolder": "\\Dto",
+    "DbFolder": "\\Db",
+    "EngineFolder": "\\Engine",
+    "DtoFolder": "\\Dto",
+    "DllPath": "\\Keeper.Core\\bin\\Debug\\net7.0\\Keeper.Core.dll",
+    "SeparatorCount": 4,
+    "ClientSepar": "\t\t\t",
+    "DbSepar": "\t\t\t\t",
+    "SolutoinPath": "",
+    "ClientName": "KeeperApiClient"
+  }
+}
