@@ -31,6 +31,9 @@ namespace Keeper.Core
 
 				[NVarChar("Login", 50)] 
 				public string Login { get; set; } = null!;
+
+				[Bind("Status")]
+				public Client.User.Status Status { get; set; }
 				
 				[Bind("PasswordHash")]
 				public byte[]? PasswordHash  { get; set;}  
@@ -73,6 +76,7 @@ where
 						nameof(Phone),
 						nameof(Email),
 						nameof(Login),
+						nameof(Status),
 						nameof(PasswordHash),
 						nameof(Active)
 					},
@@ -88,6 +92,7 @@ where
 				    yield return nameof(Phone);
 				    yield return nameof(Email);
 				    yield return nameof(Login);
+				    yield return nameof(Status);
 				    yield return nameof(PasswordHash);
 				}
 

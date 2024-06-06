@@ -60,6 +60,9 @@ namespace Keeper.Core
                     [NVarChar("Login", 50)] 
                     public string Login { get; set; } = null!;
 
+                    [Bind("Status")]
+                    public Client.User.Status Status { get; set; }
+
                     [Bind("Total")]
                     public int Total { get; set; }
 
@@ -77,6 +80,7 @@ select
      ,u.[Phone]
      ,u.[Email]
      ,u.[Login]
+     ,u.[Status]
      ,COUNT(*) OVER() as Total
 FROM [new-keeper].[Users] as u
 WHERE

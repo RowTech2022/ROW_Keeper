@@ -43,6 +43,9 @@ namespace Keeper.Core
                     [NVarChar("Login", 50)]
                     public string Login { get; set; } = null!;
 
+                    [Bind("Status")]
+                    public Client.User.Status Status { get; set; }
+
                     [Bind("PasswordHash")]
                     public byte[]? PasswordHash { get; set; }
 
@@ -68,6 +71,7 @@ select
      ,u.[Phone]
      ,u.[Email]
      ,u.[Login]
+     ,u.[Status]
      ,u.[PasswordHash]
      ,u.[CreatedAt]
      ,u.[UpdatedAt]

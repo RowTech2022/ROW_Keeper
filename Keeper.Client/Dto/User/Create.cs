@@ -42,13 +42,6 @@ namespace Keeper.Client
 
                 return client.ExecuteWithHttp<User>(req);
             }
-
-            public User ExecTestPublic(KeeperApiClient client)
-            {
-                var req = client.PostRequest("api/User/createPublic").Body(this);
-
-                return client.ExecuteWithHttp<User>(req);
-            }
         }
     }
 }

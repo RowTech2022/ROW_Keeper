@@ -58,7 +58,7 @@ namespace Keeper.Api.Controllers
          [Authorize(Access.AnyUser)]
          public User Get(int id)
          {
-             var userInfo = m_requestInfo.GetUserInfo(HttpContext);
+             // var userInfo = m_requestInfo.GetUserInfo(HttpContext);
              return m_engine.Get(id);
         }
 

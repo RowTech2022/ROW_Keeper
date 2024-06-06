@@ -61,14 +61,7 @@ namespace Keeper.Core
 
 		public TokenInfo Login(Login request)
 		{
-			var bodyElement = new RequestStruct(true).LoadFromDto(request);
-
-			if (bodyElement.IsUserAuth())
-				return m_userStrategy.GetToken(bodyElement);
-			else if (bodyElement.IsRefreshToken())
-				return m_regreshStrategy.GetToken(bodyElement);
-
-			throw new ValidationApiException("Не найден тип авторизации");
+			return m_userStrategy.GetToken(request);
 		}
 
 		public TokenInfo Refresh(Refresh request)

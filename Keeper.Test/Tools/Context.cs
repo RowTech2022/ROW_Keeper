@@ -27,7 +27,7 @@ namespace Keeper.Test
 
                         new Random().Next(0, 9) +
                         new Random().Next(0, 9),
-                Login = "testLogin",
+                Login = "testLogin" + new Random().Next(1, 99999),
                 UserType = UserType.Manager
             };
 

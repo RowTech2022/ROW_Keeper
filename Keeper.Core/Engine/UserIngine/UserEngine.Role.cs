@@ -15,7 +15,11 @@ namespace Keeper.Core
 
         public void SetRole(User.UserRoleAccess.Set request)
         {
-            var db = new Db.User.UserRoleAccess.Create().CopyFrom(request, m_dto);
+            var db = new Db.User.UserRoleAccess.Create
+            {
+                UserId = request.UserId,
+                RoleId = request.RoleId
+            }.CopyFrom(request, m_dto);
             db.Exec(m_sql);
         }
 

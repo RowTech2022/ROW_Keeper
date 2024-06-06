@@ -22,6 +22,9 @@ namespace Keeper.Core
 				[NVarChar("OrgPhone", 20)]
 				public string OrgPhone { get; set;} = null!;
 
+				[NVarChar("OrgEmail", 20)]
+				public string OrgEmail { get; set;} = null!;
+
 				[NVarChar("OrgAddress", 500)] 
 				public string OrgAddress { get; set; } = null!;
 
@@ -41,6 +44,7 @@ INSERT INTO [new-keeper].[Organizations]
         ,[OwnerId]
         ,[OrgName]
         ,[OrgPhone]
+        ,[OrgEmail]
         ,[OrgAddress]
         ,[CreatedAt]
         ,[UpdatedAt]
@@ -50,6 +54,7 @@ select
         @OwnerId,
         @OrgName,
         @OrgPhone,
+        @OrgEmail,
         @OrgAddress,       
         @now,
         @now        

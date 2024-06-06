@@ -41,8 +41,8 @@ select
      u.[UserId]
     ,u.[RoleId]
     ,r.[RoleName]
-from [new-keeper].UserRoleAccess u
-inner join  [keeper].UserRole r 
+from [new-keeper].UserRoleAccess as u
+inner join  [new-keeper].UserRole as r 
 on u.RoleId = r.RoleId
 where 	
 

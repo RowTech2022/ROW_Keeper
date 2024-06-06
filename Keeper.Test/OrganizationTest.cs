@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Bibliotekaen.Sql;
 using FluentAssertions;
 using Keeper.Client;
@@ -22,7 +23,7 @@ public class OrganizationTest
         {
             if (m_organizationIds.Any())
             {
-                var query = $"delete from [new-keeper].[Organization] where [Id] in ({m_organizationIds})";
+                var query = $"delete from [new-keeper].[Organizations] where [Id] in ({string.Join(", ", m_organizationIds)})";
                 m_sql.Query(query);
             }
         }
@@ -49,6 +50,17 @@ public class OrganizationTest
 
         var userRequest = Context.DefaultUser();
         var user = userRequest.ExecTest(server.Client);
+        var password = server.Settings.SendSmsMock.GetLastPassword(user.Login);
+
+        var token = new Login
+        {
+            UserLogin = user.Login,
+            Password = password
+        }.ExecTest(server.Client);
+        
+        server.ClientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+        
+        server.Login(user.Login, password);
 
         var request = new Organization.Create
         {

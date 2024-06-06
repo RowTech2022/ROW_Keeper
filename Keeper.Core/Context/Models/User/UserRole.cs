@@ -11,5 +11,5 @@ public class UserRole
     [StringLength(100)] 
     public string RoleName { get; set; } = null!;
 
-    public DateTimeOffset CreateAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 }

@@ -16,6 +16,9 @@ public class OrganizationBranch : BaseModel
     [StringLength(20)] 
     public string BranchPhone { get; set; } = null!;
 
+    [StringLength(100)] 
+    public string? BranchEmail { get; set; }
+
     [StringLength(500)]
     public string BranchAddress { get; set; } = null!;
 }

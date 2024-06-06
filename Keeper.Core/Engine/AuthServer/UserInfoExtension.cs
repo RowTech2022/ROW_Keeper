@@ -4,6 +4,6 @@ namespace Keeper.Core
 {
     public class UserInfoExtension : UserInfo
     {
-        public byte[]? PasswordHash { get; set; }
+        public byte[] PasswordHash { get; set; } = null!;
     }
 }

@@ -42,7 +42,7 @@ select
     ,o.[CreatedAt]
     ,o.[UpdatedAt]
     ,o.[Timestamp]
-from [new-keeper].[Organization] as o
+from [new-keeper].[Organizations] as o
 where
     
     --{Ids - start}

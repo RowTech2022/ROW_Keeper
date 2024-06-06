@@ -93,7 +93,7 @@ namespace Keeper.Core
             foreach (byte b in bytes)
             {
                 // Randomly select a character class for each byte
-                switch (_rand.Next(4))
+                switch (_rand.Next(3))
                 {
                     // In each case use mod to project byte b to the correct range
                     case 0:
@@ -179,7 +179,7 @@ namespace Keeper.Core
                 Id = userId,
                 PasswordHash = m_hashCalculator.GetPasswordHash(userId, password)
             };
-            update.UpdationList = new[] { nameof(update.PasswordHash) };
+            update.UpdationList = [nameof(update.PasswordHash)];
             update.Exec(m_sql);
         }
 

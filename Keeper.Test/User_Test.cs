@@ -71,7 +71,7 @@ namespace Keeper.Test
                 Phone = RandomPhone(),
                 Email = "Email - Admin",
                 UserType = UserType.Admin,
-                Login = "TestLogin"
+                Login = "userName" + new Random().Next(1, 999999) 
             };
 
             var now = DateTime.Now;
@@ -90,6 +90,17 @@ namespace Keeper.Test
 
             var password = server.Settings.SendSmsMock.GetLastPassword(result.Login);
             password.Should().NotBeNullOrWhiteSpace();
+
+            var token = new Login
+            {
+                UserLogin = result.Login,
+                Password = password
+            }.ExecTest(server.Client);
+
+            token.Should().NotBeNull();
+            token.AccessToken.Should().NotBeNullOrWhiteSpace();
+            token.RefreshToken.Should().NotBeNullOrWhiteSpace();
+            token.ExpireTime.Should().NotBeNull();
         }
 
 
