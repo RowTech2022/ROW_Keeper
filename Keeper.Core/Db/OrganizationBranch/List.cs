@@ -7,9 +7,17 @@ public partial class Db
 {
     public partial class OrganizationBranch
     {
-        public class List(int[] ids)
+        public class List
         {
-            public int[] Ids { get; set; } = ids;
+            public int[]? Ids { get; set; }
+
+            public List()
+            { }
+            
+            public List(params int[] ids)
+            {
+                Ids = ids;
+            }
 
             public class Result : BaseProp
             {
@@ -25,6 +33,9 @@ public partial class Db
                 [NVarChar("BranchPhone", 20)]
                 public string BranchPhone { get; set; } = null!;
                 
+                [NVarChar("BranchEmail", 20)]
+                public string? BranchEmail { get; set; } = null!;
+                
                 [NVarChar("BranchAddress", 500)]
                 public string BranchAddress { get; set; } = null!;
             }
@@ -37,6 +48,7 @@ select
     ,o.[OwnerId]
     ,o.[BranchName]
     ,o.[BranchPhone]
+    ,o.[BranchEmail]
     ,o.[BranchAddress]
     ,o.[Active]
     ,o.[CreatedAt]

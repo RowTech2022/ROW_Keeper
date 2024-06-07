@@ -23,7 +23,7 @@ namespace Keeper.Core
 				public string OrgPhone { get; set;} = null!;
 
 				[NVarChar("OrgEmail", 20)]
-				public string OrgEmail { get; set;} = null!;
+				public string? OrgEmail { get; set;}
 
 				[NVarChar("OrgAddress", 500)] 
 				public string OrgAddress { get; set; } = null!;

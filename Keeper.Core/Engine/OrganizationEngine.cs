@@ -22,6 +22,28 @@ public class OrganizationEngine(ISqlFactory sql, DtoComplex dto)
         return Get(resultId);
     }
 
+    public Organization Update(Organization.Update update)
+    {
+        Get(update.Id);
+
+        var request = new Db.Organization.Update().CopyFrom(update, dto);
+        request.SetDefaultUpdationList();
+        request.Exec(sql);
+
+        return Get(update.Id);
+    }
+
+    public Organization.Search.Result Search(Organization.Search filter)
+    {
+        var organizations = new Db.Organization.Search().CopyFrom(filter, dto).Exec(sql);
+
+        return new Organization.Search.Result
+        {
+            Items = organizations.Select(x => new Organization.Search.Result.Item().CopyFrom(x, dto)).ToList(),
+            Total = organizations.Select(x => x.Total).FirstOrDefault()
+        };
+    }
+
     public Organization Get(int id)
     {
         var organization = new Db.Organization.List(id).Exec(sql).FirstOrDefault();
@@ -29,5 +51,18 @@ public class OrganizationEngine(ISqlFactory sql, DtoComplex dto)
             throw new RecordNotFoundApiException($"Organization with id {id} not found.");
 
         return new Organization().CopyFrom(organization, dto);
+    }
+
+    public void Delete(Delete delete)
+    {
+        Get(delete.Id);
+
+        var request = new Db.Organization.Update
+        {
+            Id = delete.Id,
+            Active = false
+        };
+        request.UpdationList = [nameof(request.Active)];
+        request.Exec(sql);
     }
 }

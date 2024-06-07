@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Keeper.Core.Context.Models;
 
 [Index(nameof(BranchId))]
+[Index(nameof(UPC), IsUnique = true)]
 public class Product : BaseModel
 {
     public int Id { get; set; }
@@ -11,6 +12,9 @@ public class Product : BaseModel
     public int BranchId { get; set; }
 
     public int SupplierId { get; set; }
+
+    [StringLength(100)]
+    public string UPC { get; set; } = null!;
     
     [StringLength(500)]
     public string Name { get; set; } = null!;

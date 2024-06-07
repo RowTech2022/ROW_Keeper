@@ -25,6 +25,9 @@ public partial class Db
                 [NVarChar("OrgPhone", 20)]
                 public string OrgPhone { get; set; } = null!;
                 
+                [NVarChar("OrgEmail", 20)]
+                public string? OrgEmail { get; set; }
+                
                 [NVarChar("OrgAddress", 500)]
                 public string OrgAddress { get; set; } = null!;
             }
@@ -37,6 +40,7 @@ select
     ,o.[OwnerId]
     ,o.[OrgName]
     ,o.[OrgPhone]
+    ,o.[OrgEmail]
     ,o.[OrgAddress]
     ,o.[Active]
     ,o.[CreatedAt]

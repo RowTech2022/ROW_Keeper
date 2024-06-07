@@ -1,6 +1,6 @@
 ﻿namespace Keeper.Client
 {
-	public enum EDOUserRoles
+	public enum KeeperUserRoles
 	{
 		Admin = 1,
 		Kurator = 2,

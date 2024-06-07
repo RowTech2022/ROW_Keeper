@@ -17,4 +17,29 @@ public class OrganizationController(OrganizationEngine organizationEngine, Reque
         var userInfo = new UserInfo();// requestInfo.GetUserInfo(HttpContext);
         return organizationEngine.Create(create, userInfo);
     }
+
+    [HttpPost("update")]
+    [Authorize(Access.Admin)]
+    public Organization Update(Organization.Update update)
+    {
+        return organizationEngine.Update(update);
+    }
+
+    [HttpPost("search")]
+    public Organization.Search.Result Search(Organization.Search filter)
+    {
+        return organizationEngine.Search(filter);
+    }
+
+    [HttpGet("get/{id}")]
+    public Organization Get(int id)
+    {
+        return organizationEngine.Get(id);
+    }
+
+    [HttpPost("delete")]
+    public void Delete(Delete delete)
+    {
+        organizationEngine.Delete(delete);
+    }
 }

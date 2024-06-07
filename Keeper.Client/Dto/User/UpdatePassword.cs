@@ -1,4 +1,5 @@
-﻿using Row.Common1.Client1;
+﻿using Keeper.Client.Validation;
+using Row.Common1.Client1;
 
 namespace Keeper.Client
 {
@@ -6,7 +7,10 @@ namespace Keeper.Client
     {
         public class UpdatePassword
         {
+            [TrimWhitespace]
             public string OldPassWord { get; set; } = null!;
+            
+            [TrimWhitespace]
             public string NewPassWord { get; set; } = null!;
 
             public byte[]? TimeStamp { get; set; }

@@ -1,4 +1,4 @@
-﻿using Bibliotekaen.Sql;
+using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
 
 namespace Keeper.Core
@@ -90,9 +90,9 @@ where
 
                     [Bind("Phone")] 
                     public string Phone { get; set; } = null!;
-                    
-                    [Bind("PasswordHash", Size = 64)]
-                    public byte[]? PasswordHash { get; set; }
+
+                    [Bind("PasswordHash", Size = 64)] 
+                    public byte[] PasswordHash { get; set; } = null!;
                 }
             }
         }

@@ -13,12 +13,10 @@ namespace Keeper.Api.Controllers
     {
          UserEngine m_engine;
          RequestInfo m_requestInfo;
-         LanguageService m_languageService;
 
          public UserController(UserEngine engine, RequestInfo requestInfo, LanguageService languageService)
          {
              m_engine = engine.InitLanguageServise(languageService);
-             m_languageService = languageService;
              m_requestInfo = requestInfo;
          }
 
@@ -80,6 +78,14 @@ namespace Keeper.Api.Controllers
         {
             var userInfo = m_requestInfo.GetUserInfo(HttpContext);
             return m_engine.GetUserInfo(userInfo);
+        }
+
+        [HttpPost("changePassword")]
+        public void ChangePassWord(User.UpdatePassword update)
+        {
+            var userInfo = m_requestInfo.GetUserInfo(HttpContext);
+            
+            m_engine.UpdatePassword(update, userInfo);
         }
     }
 }

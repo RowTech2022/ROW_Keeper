@@ -1,4 +1,3 @@
-using System.Data;
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
 
@@ -6,7 +5,7 @@ namespace Keeper.Core;
 
 public partial class Db
 {
-    public partial class Organization
+    public partial class OrganizationBranch
     {
         [BindStruct]
         public class Update
@@ -17,29 +16,29 @@ public partial class Db
             [Bind("OwnerId")]
             public int OwnerId { get; set; }
 
-            [NVarChar("OrgName", 500)]
-            public string OrgName  { get; set;} = null!;
+            [NVarChar("BranchName", 500)]
+            public string BranchName  { get; set;} = null!;
 
-            [NVarChar("OrgPhone", 20)]
-            public string OrgPhone { get; set;} = null!;
+            [NVarChar("BranchPhone", 20)]
+            public string BranchPhone { get; set;} = null!;
 
-            [NVarChar("OrgEmail", 20)]
-            public string? OrgEmail { get; set;}
+            [NVarChar("BranchEmail", 20)]
+            public string BranchEmail { get; set;} = null!;
 
-            [NVarChar("OrgAddress", 500)] 
-            public string OrgAddress { get; set; } = null!;
+            [NVarChar("BranchAddress", 500)] 
+            public string BranchAddress { get; set; } = null!;
 
             [Bind("Active")]
             public bool Active { get; set; }
 
-            [Bind("Timestamp")] 
+            [Bind("Timestamp")]
             public byte[] Timestamp { get; set; } = null!;
 
-            [Bind("ResultCount", Direction = ParameterDirection.Output)] 
-            private static int ResultCount => 0;
+            [Bind("ResultCount", Direction = System.Data.ParameterDirection.Output)]
+            public int ResultCount { get; set; }
 
             public string[] UpdationList { get; set; } = null!;
-
+            
             #region c_query
 
             private const string c_query = @"
@@ -58,10 +57,10 @@ set @ResultCount = @@rowcount
             private static HashSet<string> c_updationList = 
                 [
                     nameof(OwnerId),
-                    nameof(OrgName),
-                    nameof(OrgPhone),
-                    nameof(OrgEmail),
-                    nameof(OrgAddress),
+                    nameof(BranchName),
+                    nameof(BranchPhone),
+                    nameof(BranchEmail),
+                    nameof(BranchAddress),
                     nameof(Active),
                     nameof(Timestamp)
                 ];
@@ -71,10 +70,10 @@ set @ResultCount = @@rowcount
             private static IEnumerable<string> GetDefaultUpdationList()
             {
                 yield return nameof(OwnerId);
-                yield return nameof(OrgName);
-                yield return nameof(OrgPhone);
-                yield return nameof(OrgEmail);
-                yield return nameof(OrgAddress);
+                yield return nameof(BranchName);
+                yield return nameof(BranchPhone);
+                yield return nameof(BranchEmail);
+                yield return nameof(BranchAddress);
                 yield return nameof(Timestamp);
             }
 
@@ -97,7 +96,7 @@ set @ResultCount = @@rowcount
             {
                 var query = c_query;
 
-                var updatePart = new SqlUpdateQueryFormater(this, "[new-keeper].[Organizations]")
+                var updatePart = new SqlUpdateQueryFormater(this, "[new-keeper].[OrganizationBranches]")
                     .AddUpdateList(UpdationList.Where(c_updationList.Contains).ToArray())
                     .AddNowList("UpdatedAt")
                     .Query();

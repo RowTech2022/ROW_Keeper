@@ -1,3 +1,4 @@
+using System.Net;
 using Bibliotekaen.Dto;
 using Bibliotekaen.Sql;
 using Row.Common1;
@@ -14,7 +15,7 @@ namespace Keeper.Core
         readonly DtoComplex m_dto;
         readonly HashCalculator m_hashCalculator = new HashCalculator("#####");
         FileEngine m_fileEngine;
-        
+
         public AuthEngine AuthEngine { get; set; }
 
         readonly bool m_ignorePassword;
@@ -178,6 +179,30 @@ namespace Keeper.Core
             {
                 Id = userId,
                 PasswordHash = m_hashCalculator.GetPasswordHash(userId, password)
+            };
+            update.UpdationList = [nameof(update.PasswordHash)];
+            update.Exec(m_sql);
+        }
+
+        public void UpdatePassword(User.UpdatePassword password, UserInfo userInfo)
+        {
+            var user = new Db.User.CheckUser(userInfo.UserId).Exec(m_sql);
+
+            if (user == null)
+                throw new RecordNotFoundApiException("User not found.");
+
+            var hashToCheck = m_hashCalculator.GetPasswordHash(user.UserId, password.OldPassWord);
+
+            if (HashHelper.EqualArrays(user.PasswordHash, hashToCheck))
+                throw new ApiException("Incorrect password", HttpStatusCode.BadRequest);
+
+            AuthCheckUser(user.Login, password.OldPassWord);
+
+
+            var update = new Db.User.Update
+            {
+                Id = user.UserId,
+                PasswordHash = m_hashCalculator.GetPasswordHash(user.UserId, password.NewPassWord)
             };
             update.UpdationList = [nameof(update.PasswordHash)];
             update.Exec(m_sql);

@@ -15,8 +15,8 @@ public partial class Db
             [NVarChar("OrgName", 500)]
             public string OrgName { get; set; } = null!;
 
-            public int Count { get; set; }
-            public int Start { get; set; }
+            public int? Count { get; set; }
+            public int? Start { get; set; }
 
             [BindStruct]
             public class Result
@@ -35,6 +35,9 @@ public partial class Db
 
                 [NVarChar("OrgAddress", 500)] 
                 public string OrgAddress { get; set; } = null!;
+
+                [Bind("Total")]
+                public int Total { get; set; }
             }
 
             #region c_query
@@ -47,6 +50,7 @@ select
     ,o.[OrgPhone]
     ,o.[OrgEmail]
     ,o.[OrgAddress]
+    ,count(*) over() as [Total]
 from [new-keeper].[Organizations] as o
 where
     

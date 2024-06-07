@@ -22,6 +22,9 @@ public partial class Db
             [NVarChar("BranchPhone", 20)]
             public string BranchPhone { get; set;} = null!;
 
+            [NVarChar("BranchEmail", 20)]
+            public string? BranchEmail { get; set;} = null!;
+
             [NVarChar("BranchAddress", 500)] 
             public string BranchAddress { get; set; } = null!;
 
@@ -41,6 +44,7 @@ INSERT INTO [keeper].[OrganizationBranches]
         ,[OwnerId]
         ,[BranchName]
         ,[BranchPhone]
+        ,[BranchEmail]
         ,[BranchAddress]
         ,[CreatedAt]
         ,[UpdatedAt]
@@ -50,6 +54,7 @@ select
         @OwnerId,
         @BranchName,
         @BranchPhone,
+        @PhoneEmail,
         @BranchAddress,       
         @now,
         @now        

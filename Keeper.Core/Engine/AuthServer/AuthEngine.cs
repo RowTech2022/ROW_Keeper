@@ -3,7 +3,6 @@ using Keeper.Client;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler;
 using Microsoft.Owin.Security.DataHandler.Serializer;
-using Row.Common1.Client1;
 
 namespace Keeper.Core
 {
