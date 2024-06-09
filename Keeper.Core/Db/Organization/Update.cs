@@ -32,12 +32,9 @@ public partial class Db
             [Bind("Active")]
             public bool Active { get; set; }
 
-            [Bind("Timestamp")] 
-            public byte[] Timestamp { get; set; } = null!;
-
-            [Bind("ResultCount", Direction = ParameterDirection.Output)] 
-            private static int ResultCount => 0;
-
+            [Bind("ResultCount", Direction = ParameterDirection.Output)]
+            public int ResultCount { get; set; }
+            
             public string[] UpdationList { get; set; } = null!;
 
             #region c_query
@@ -63,7 +60,6 @@ set @ResultCount = @@rowcount
                     nameof(OrgEmail),
                     nameof(OrgAddress),
                     nameof(Active),
-                    nameof(Timestamp)
                 ];
 
             #endregion
@@ -75,7 +71,6 @@ set @ResultCount = @@rowcount
                 yield return nameof(OrgPhone);
                 yield return nameof(OrgEmail);
                 yield return nameof(OrgAddress);
-                yield return nameof(Timestamp);
             }
 
             public void SetDefaultUpdationList()

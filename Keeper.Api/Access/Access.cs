@@ -8,12 +8,14 @@ namespace Keeper.Api
         public const string Admin = "SysAdmin";
         public const string SystemAdmin = "SystemAdmin";
         public const string SystemAdminOrAdmin = "SystemAdminOrAdmin";
+        public const string User = "ActivatedUser";
 
         public Access()
         {
             Items.Add(new UserAccess(Admin, UserRoles.Admin));
             Items.Add(new UserAccess(SystemAdmin, UserRoles.SystemAdmin));
             Items.Add(new UserAccess(SystemAdminOrAdmin, UserRoles.SystemAdmin, UserRoles.Admin));
+            Items.Add(new UserAccess(User, UserRoles.ActivatedUser));
         }
     }
 }

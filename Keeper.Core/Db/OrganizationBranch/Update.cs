@@ -31,9 +31,6 @@ public partial class Db
             [Bind("Active")]
             public bool Active { get; set; }
 
-            [Bind("Timestamp")]
-            public byte[] Timestamp { get; set; } = null!;
-
             [Bind("ResultCount", Direction = System.Data.ParameterDirection.Output)]
             public int ResultCount { get; set; }
 
@@ -62,7 +59,6 @@ set @ResultCount = @@rowcount
                     nameof(BranchEmail),
                     nameof(BranchAddress),
                     nameof(Active),
-                    nameof(Timestamp)
                 ];
 
             #endregion
@@ -74,7 +70,6 @@ set @ResultCount = @@rowcount
                 yield return nameof(BranchPhone);
                 yield return nameof(BranchEmail);
                 yield return nameof(BranchAddress);
-                yield return nameof(Timestamp);
             }
 
             public void SetDefaultUpdationList()

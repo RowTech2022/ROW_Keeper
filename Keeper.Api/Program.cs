@@ -38,6 +38,8 @@ builder.Services.AddSingleton(authEngine2);
 
 builder.Services.AddSingleton<OrganizationEngine>();
 
+builder.Services.AddSingleton<OrganizationBranchEngine>();
+
 builder.Services.AddSingleton<LanguageService>();
 
 var app = builder.Build();

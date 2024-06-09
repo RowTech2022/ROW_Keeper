@@ -36,9 +36,7 @@ public partial class Db
             const string c_query = @"
 declare @now datetimeoffset(7) = getutcdate()
 
----
-
-INSERT INTO [keeper].[OrganizationBranches]
+insert into [new-keeper].[OrganizationBranches]
         (
          [ReqUserId]
         ,[OwnerId]
@@ -54,12 +52,10 @@ select
         @OwnerId,
         @BranchName,
         @BranchPhone,
-        @PhoneEmail,
+        @BranchEmail,
         @BranchAddress,       
         @now,
-        @now        
-
----
+        @now
 
  set @ResultId = @@identity
 ";

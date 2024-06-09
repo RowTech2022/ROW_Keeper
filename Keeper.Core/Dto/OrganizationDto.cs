@@ -46,7 +46,7 @@ public static class OrganizationDto
     
     public class Client_Update : Organization.Update, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ITimestamp;
     
-    public class Db_Update : Db.Organization.Update, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ITimestamp;
+    public class Db_Update : Db.Organization.Update, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
     
     public class Client_Get : Organization, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ILife, MainDto.ITimestamp;
     

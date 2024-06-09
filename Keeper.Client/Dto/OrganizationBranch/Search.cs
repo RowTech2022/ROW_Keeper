@@ -10,18 +10,18 @@ namespace Keeper.Client
             public Filter Filters { get; set; } = new Filter();
             public PageInfo PageInfo { get; set; } = new PageInfo();
             
-            public Organization Exec(KeeperApiClient client)
+            public OrganizationBranch Exec(KeeperApiClient client)
             {
                 var request = client.PostRequest("api/organizationBranch/search").Body(this);
 
-                return client.ExecuteWithHttp<Organization>(request);
+                return client.ExecuteWithHttp<OrganizationBranch>(request);
             }
 
-            public Organization ExecTest(KeeperApiClient client)
+            public OrganizationBranch ExecTest(KeeperApiClient client)
             {
                 var request = client.PostRequest("api/organizationBranch/search").Body(this);
 
-                return client.ExecuteWithHttp<Organization>(request);
+                return client.ExecuteWithHttp<OrganizationBranch>(request);
             }
         }
     }

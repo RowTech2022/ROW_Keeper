@@ -11,15 +11,15 @@ namespace Keeper.Api.Controllers;
 public class OrganizationController(OrganizationEngine organizationEngine, RequestInfo requestInfo) : ControllerBase
 {
     [HttpPost("create")]
-    [Authorize(Access.AnyUser)]
+    [Authorize(Access.User)]
     public Organization Create(Organization.Create create)
     {
-        var userInfo = new UserInfo();// requestInfo.GetUserInfo(HttpContext);
+        var userInfo = requestInfo.GetUserInfo(HttpContext);
         return organizationEngine.Create(create, userInfo);
     }
 
     [HttpPost("update")]
-    [Authorize(Access.Admin)]
+    [Authorize(Access.User)]
     public Organization Update(Organization.Update update)
     {
         return organizationEngine.Update(update);

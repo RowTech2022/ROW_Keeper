@@ -107,9 +107,11 @@ namespace Keeper.Test
 
 		public void Login(string username, string password)
 		{
-			var login = new Login();
-			login.UserLogin = username;
-			login.Password = password;
+			var login = new Login
+			{
+				UserLogin = username,
+				Password = password
+			};
 
 			if (!IgnoreCode)
 			{

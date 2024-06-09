@@ -81,6 +81,7 @@ namespace Keeper.Api.Controllers
         }
 
         [HttpPost("changePassword")]
+        [Authorize(Access.User)]
         public void ChangePassWord(User.UpdatePassword update)
         {
             var userInfo = m_requestInfo.GetUserInfo(HttpContext);

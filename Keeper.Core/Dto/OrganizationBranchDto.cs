@@ -44,7 +44,7 @@ public static class OrganizationBranchDto
     
     public class Db_Create : Db.OrganizationBranch.Create, MainDto.IOwnerId, IBranchName, IBranchEmail, IBranchPhone, IBranchAddress;
     
-    public class Client_Get : OrganizationBranch, MainDto.IId, MainDto.IOwnerId, IBranchName, IBranchPhone, IBranchAddress, MainDto.ILife, MainDto.ITimestamp;
+    public class Client_Get : OrganizationBranch, MainDto.IId, MainDto.IOwnerId, IBranchName, IBranchPhone, IBranchEmail, IBranchAddress, MainDto.ILife, MainDto.ITimestamp;
     
     public class Db_List_Result : Db.OrganizationBranch.List.Result, MainDto.IId, MainDto.IOwnerId, IBranchName, IBranchPhone, IBranchEmail, IBranchAddress, MainDto.ILife, MainDto.ITimestamp;
 

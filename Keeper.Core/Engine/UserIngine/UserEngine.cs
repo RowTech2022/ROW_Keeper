@@ -193,7 +193,7 @@ namespace Keeper.Core
 
             var hashToCheck = m_hashCalculator.GetPasswordHash(user.UserId, password.OldPassWord);
 
-            if (HashHelper.EqualArrays(user.PasswordHash, hashToCheck))
+            if (!HashHelper.EqualArrays(user.PasswordHash, hashToCheck))
                 throw new ApiException("Incorrect password", HttpStatusCode.BadRequest);
 
             AuthCheckUser(user.Login, password.OldPassWord);

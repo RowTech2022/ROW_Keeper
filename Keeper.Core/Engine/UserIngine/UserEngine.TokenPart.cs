@@ -19,7 +19,7 @@ namespace Keeper.Core
 
 		public UserIdentityFull GetUserInfoForRefreshToken(int userId, byte[] hashtoCheck)
 		{
-			var getDb = new Db.User.CheckUser() { UserId = userId }.Exec(m_sql);
+			var getDb = new Db.User.CheckUser { UserId = userId }.Exec(m_sql);
 			if (getDb == null)
 				throw new InCorrectUserOrPasswordApiException(m_languageServices.GetKey("UserNotFound"));
 
@@ -33,10 +33,11 @@ namespace Keeper.Core
 
 			var db = GetDbUser(getDb.UserId);
 
-			var result = new UserIdentityFull(db.Id, db.Login, "db.OrgName");
-			result.PasswordHash = getDb.PasswordHash;
-
-			//result.Roles = GetUserRoles(db.Id);
+			var result = new UserIdentityFull(db.Id, db.Login, "db.OrgName")
+			{
+				PasswordHash = getDb.PasswordHash,
+				Roles = GetUserRoles(db.Id)
+			};
 
 			return result;
 		}
@@ -58,7 +59,8 @@ namespace Keeper.Core
 			{
 				PasswordHash = getDb.PasswordHash,
 				UserId = db.Id,
-				OrganisationId = 0,
+				Expired = DateTime.Now.AddHours(1),
+				SessionId = Guid.NewGuid(),
 				Type = getDb.UserType,
 				Roles = GetUserRoles(db.Id).ToHashSet()
 			};
@@ -91,12 +93,13 @@ namespace Keeper.Core
 
 			var db = GetDbUser(getDb.UserId);
 
-			var result = new UserInfoExtension();
-			result.PasswordHash = getDb.PasswordHash;
-			result.UserId = db.Id;
-			result.OrganisationId = 0;
-
-			result.Roles = GetUserRoles(db.Id).ToHashSet();
+			var result = new UserInfoExtension
+			{
+				PasswordHash = getDb.PasswordHash,
+				UserId = db.Id,
+				OrganisationId = 0,
+				Roles = GetUserRoles(db.Id).ToHashSet()
+			};
 
 			return result;
 		}
@@ -104,7 +107,7 @@ namespace Keeper.Core
         public List<UserRoles> GetUserRoles(int userId)
         {
             var roles = new Db.User.UserRoleAccess.List(userId).Exec(m_sql);
-            if (!roles.Any())
+            if (roles.Count == 0)
                 throw new Exception($"{m_languageServices.GetKey("UserWithEmptyRols")} UserId = {userId}");
 
             return roles.Select(x => x.RoleId).ToList();

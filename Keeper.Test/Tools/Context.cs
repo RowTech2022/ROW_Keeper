@@ -5,7 +5,7 @@ namespace Keeper.Test
     public class Context
     {
         public const string TestLogin = "admin";
-        public const string TestPassword = "123";
+        public const string TestPassword = "12345";
 
         public static User.Create DefaultUser()
         {

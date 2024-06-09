@@ -25,18 +25,18 @@ namespace Keeper.Client
             [TrimWhitespace(500)]
             public string BranchAddress { get; set; } = null!;
             
-            public Organization Exec(KeeperApiClient client)
+            public OrganizationBranch Exec(KeeperApiClient client)
             {
                 var request = client.PostRequest("api/organizationBranch/create").Body(this);
 
-                return client.ExecuteWithHttp<Organization>(request);
+                return client.ExecuteWithHttp<OrganizationBranch>(request);
             }
 
-            public Organization ExecTest(KeeperApiClient client)
+            public OrganizationBranch ExecTest(KeeperApiClient client)
             {
                 var request = client.PostRequest("api/organizationBranch/create").Body(this);
 
-                return client.ExecuteWithHttp<Organization>(request);
+                return client.ExecuteWithHttp<OrganizationBranch>(request);
             }
         }
     }
