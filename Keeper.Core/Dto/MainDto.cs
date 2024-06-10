@@ -99,6 +99,21 @@ namespace Keeper.Core
 		{
 			int OwnerId { get; set; }
 		}
+
+		public interface IOrgId
+		{
+			int OrgId { get; set; }
+		}
+		
+		public interface IBranchId
+		{
+			int BranchId { get; set; }
+		}
+		
+		public interface IActive
+		{
+			bool Active { get; set; }
+		}
 		
 		public interface ILangType
 		{

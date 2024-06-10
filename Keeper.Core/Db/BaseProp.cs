@@ -5,6 +5,9 @@ namespace Keeper.Core;
 [BindStruct]
 public class BaseProp
 {
+    [Bind("Active")]
+    public bool Active { get; set; }
+    
     [Bind("CreatedAt")]
     public DateTimeOffset CreatedAt { get; set; }
     
