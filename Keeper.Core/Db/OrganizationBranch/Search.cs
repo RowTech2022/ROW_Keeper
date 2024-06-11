@@ -9,11 +9,21 @@ public partial class Db
     {
         public class Search
         {
+            public int[]? Ids { get; set; }
+            
             [NVarChar("BranchName", 500)]
             public string BranchName { get; set; } = null!;
 
             public int? Count { get; set; }
             public int? Start { get; set; }
+
+            public Search()
+            { }
+
+            public Search(params int[] ids)
+            {
+                Ids = ids;
+            }
             
             public class Result
             {
@@ -48,6 +58,10 @@ select
     ,count(*) over() as [Total]
 from [new-keeper].[OrganizationBranches] as b
 where
+
+    --{Ids - start}
+    b.[Id] in ({Ids}) and
+    --{Ids - end}
     
     --{BranchName - start}
     lower(b.[BranchName]) like lower(N'%' + @BranchName + '%') and
@@ -62,7 +76,9 @@ where
             {
                 var query = GetQuery();
 
-                return sql.Query<Result>(query, this).ToList();
+                var result = sql.Query<Result>(query, this).ToList();
+
+                return result;
             }
 
             private string GetQuery()
@@ -72,6 +88,11 @@ where
                 query = SqlQueriesFormater.Page("topPaging", "offsetPaging")
                     .Top(Count).Offset(Start)
                     .Format(query);
+
+                query = SqlQueriesFormater.RemoveOrReplace("Ids", Ids, x => string.Join(", ", x)).Format(query);
+
+                if (string.IsNullOrWhiteSpace(BranchName))
+                    query = SqlQueriesFormater.RemoveSubString(query, "BranchName");
 
                 return query;
             }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Keeper.Client
 {
-    public partial class Organization
+    public partial class Supplier
     {
         public partial class Search
         {
@@ -14,10 +14,10 @@ namespace Keeper.Client
                 public class Item
                 {
                     public int Id { get; set; }
-                    public string OrgName  { get; set;} = null!;
-                    public string OrgPhone { get; set;} = null!;
-                    public string? OrgEmail { get; set;} = null!;
-                    public string OrgAddress { get; set; } = null!;
+                    public string CompanyName { get; set; } = null!;
+                    public string Phone { get; set; } = null!;
+                    public string? Email { get; set; }
+                    public string? Address { get; set; }
                 }
             }
         }

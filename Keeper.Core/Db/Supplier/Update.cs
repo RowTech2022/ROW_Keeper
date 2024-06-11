@@ -57,8 +57,48 @@ where
             ];
 
             #endregion
-            
-            private IEnumerable<string> GetDefaultUpdateList
+
+            private IEnumerable<string> GetDefaultUpdateList()
+            {
+                yield return nameof(CompanyName);
+                yield return nameof(Phone);
+                yield return nameof(Email);
+                yield return nameof(Address);
+            }
+
+            public void SetDefaultUpdateList()
+            {
+                UpdateList = GetDefaultUpdateList().ToArray();
+            }
+
+            public void Exec(ISqlExecutor sql)
+            {
+                var query = GetQuery();
+                
+                sql.Query(query, this);
+
+                if (ResultCount == 0)
+                    throw new Exception("The supplier cannot be wrote because it changed.");
+            }
+
+            private string GetQuery()
+            {
+                var query = c_query;
+
+                var updatePart = new SqlUpdateQueryFormater(this, "[new-keeper].[Suppliers]")
+                    .AddUpdateList(UpdateList.Where(c_updateList.Contains).ToArray())
+                    .AddNowList("UpdateAt")
+                    .Query();
+
+                if (updatePart == null)
+                    throw new Exception();
+
+                query = SqlQueriesFormater.ReplaceConst(query, "update", updatePart);
+
+                query = SqlQueriesFormater.RemoveAllNullSections(query, this);
+
+                return SqlQueriesFormater.RemoveLabels(query);
+            }
         }
     }
 }

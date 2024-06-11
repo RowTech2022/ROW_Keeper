@@ -22,7 +22,7 @@ namespace Keeper.Client
 
             [Required]
             [TrimWhitespace(100)]
-            public string BranchEmail { get; set;} = null!;
+            public string? BranchEmail { get; set;}
 
             [Required]
             [TrimWhitespace(500)] 

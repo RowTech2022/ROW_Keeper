@@ -33,6 +33,8 @@ public class OrganizationBranchEngine(ISqlFactory sql, DtoComplex dto)
     {
         var request = new Db.OrganizationBranch.Search().CopyFrom(filter, dto).Exec(sql);
 
+        var t = 0;
+
         return new OrganizationBranch.Search.Result
         {
             Items = request.Select(x => new OrganizationBranch.Search.Result.Item().CopyFrom(x, dto)).ToList(),

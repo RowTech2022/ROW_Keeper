@@ -120,7 +120,7 @@ public static class ProductDto
 
     public class Db_List_Result : Db.Product.List.Result, MainDto.IId, MainDto.IBranchId, ISupplierId, ICategoryName,
         ITaxId, IUPC, IName, IAgeLimit, IQuantity, IBuyingPrice, IPrice, IDiscountPrice, ITotalPrice, IMargin, 
-        IHaveDiscount, IExpireDate, MainDto.IActive, MainDto.ILife, MainDto.ITimestamp;
+        IHaveDiscount, IExpireDate, MainDto.ILife, MainDto.ITimestamp;
 
     public class Client_Search_Filter : Product.Search.Filter, INameOrUPC;
 

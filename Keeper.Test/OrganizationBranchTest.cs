@@ -1,6 +1,7 @@
 using Bibliotekaen.Sql;
 using FluentAssertions;
 using Keeper.Client;
+using Row.Common.Dto1;
 
 namespace Keeper.Test;
 
@@ -141,5 +142,82 @@ public class OrganizationBranchTest
         updateResult.CreatedAt.Should().Be(result.CreatedAt);
         updateResult.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
         updateResult.Timestamp.Should().NotBeNullOrEmpty();
+    }
+
+    [TestMethod]
+    public void Search()
+    {
+        using var server = new Starter().TestLogin();
+        
+        InitCleaner(server.Sql);
+
+        var createList = new List<OrganizationBranch.Create>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            var userRequest = Context.DefaultUser();
+            var user = userRequest.ExecTest(server.Client);
+            m_userIds.Add(user.Id);
+
+            var request = new OrganizationBranch.Create
+            {
+                OwnerId = user.Id,
+                BranchName = "Test branch name",
+                BranchPhone = "Test branch phone",
+                BranchEmail = "Test branch email",
+                BranchAddress = "Test branch address"
+            };
+            
+            createList.Add(request);
+
+            var result = request.ExecTest(server.Client);
+
+            result.Id.Should().BeGreaterThan(0);
+            m_organizationBranchIds.Add(result.Id);
+        }
+        
+        var searchRequest = new OrganizationBranch.Search
+        {
+            Ids = m_organizationBranchIds.ToArray()
+        };
+
+        var searchResult = searchRequest.ExecTest(server.Client);
+
+        searchResult.Should().NotBeNull();
+        searchResult.Total.Should().Be(5);
+        foreach (var item in searchResult.Items)
+        {
+            createList.Select(x => x.BranchName).Should().Contain(item.BranchName);
+            createList.Select(x => x.BranchPhone).Should().Contain(item.BranchPhone);
+            createList.Select(x => x.BranchEmail).Should().Contain(item.BranchEmail);
+            createList.Select(x => x.BranchAddress).Should().Contain(item.BranchAddress);
+        }
+        
+        searchRequest = new OrganizationBranch.Search
+        {
+            Ids = m_organizationBranchIds.ToArray(),
+            PageInfo = new PageInfo
+            {
+                PageNumber = 1000
+            }
+        };
+
+        searchResult = searchRequest.ExecTest(server.Client);
+
+        searchResult.Total.Should().Be(0);
+        searchResult.Items.Should().BeEmpty();
+
+        searchRequest = new OrganizationBranch.Search
+        {
+            Filters = new OrganizationBranch.Search.Filter
+            {
+                BranchName = "тест_01234"
+            }
+        };
+
+        searchResult = searchRequest.ExecTest(server.Client);
+
+        searchResult.Total.Should().Be(0);
+        searchResult.Items.Should().BeEmpty();
     }
 }

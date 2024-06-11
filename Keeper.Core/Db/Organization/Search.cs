@@ -13,10 +13,18 @@ public partial class Db
             public int[]? Ids { get; set; }
 
             [NVarChar("OrgName", 500)]
-            public string OrgName { get; set; } = null!;
+            public string? OrgName { get; set; }
 
             public int? Count { get; set; }
             public int? Start { get; set; }
+
+            public Search()
+            { }
+
+            public Search(params int[] ids)
+            {
+                Ids = ids;
+            }
 
             [BindStruct]
             public class Result

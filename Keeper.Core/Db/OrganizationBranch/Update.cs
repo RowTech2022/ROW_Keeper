@@ -23,7 +23,7 @@ public partial class Db
             public string BranchPhone { get; set;} = null!;
 
             [NVarChar("BranchEmail", 20)]
-            public string BranchEmail { get; set;} = null!;
+            public string? BranchEmail { get; set;}
 
             [NVarChar("BranchAddress", 500)] 
             public string BranchAddress { get; set; } = null!;

@@ -52,13 +52,13 @@ public static class OrganizationDto
     
     public class Db_List_Result : Db.Organization.List.Result, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ILife, MainDto.ITimestamp;
 
-    public class Client_Search : Organization.Search, IFilter, MainDto.IPageInfoSource;
+    public class Client_Search : Organization.Search, IFilter, MainDto.IPageInfoSource, MainDto.IIds;
     
     public class Client_Search_Filter : Organization.Search.Filter, IOrgName;
 
-    public class Client_Search_Result : Organization.Search.Result.Item, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
+    public class Client_Search_Result : Organization.Search.Result.Item, MainDto.IId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
 
-    public class Db_Search : Db.Organization.Search, IOrgName, MainDto.IPageInfoDb;
+    public class Db_Search : Db.Organization.Search, IDbFilter, MainDto.IPageInfoDb, MainDto.IIds;
     
     public class Db_Search_Result : Db.Organization.Search.Result, MainDto.IId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
 }

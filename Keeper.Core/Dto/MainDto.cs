@@ -122,7 +122,7 @@ namespace Keeper.Core
 
 		public interface IIds
 		{
-			int[] Ids { get; set; }
+			int[]? Ids { get; set; }
 		}
 
 		public interface IInn

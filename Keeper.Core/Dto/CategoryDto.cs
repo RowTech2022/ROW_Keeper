@@ -38,7 +38,7 @@ public static class CategoryDto
         MainDto.ILife, MainDto.ITimestamp;
 
     public class Db_List_Result : Db.Category.List.Result, MainDto.IId, MainDto.IOrgId, IParentId, IName, IDescription,
-        MainDto.IActive, MainDto.ILife, MainDto.ITimestamp;
+        MainDto.ILife, MainDto.ITimestamp;
 
     public class Client_Search : Category.Search, IFilter, MainDto.IPageInfoSource;
 

@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using Bibliotekaen.Sql;
 using FluentAssertions;
 using Keeper.Client;
+using Row.Common.Dto1;
 
 namespace Keeper.Test;
 
@@ -154,8 +155,76 @@ public class OrganizationTest
     [TestMethod]
     public void Search()
     {
-        using var server = new Starter();
+        using var server = new Starter().TestLogin();
+
+        InitCleaner(server.Sql);
+
+        var createList = new List<Organization.Create>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            var userRequest = Context.DefaultUser();
+            var user = userRequest.ExecTest(server.Client);
+
+            var request = new Organization.Create
+            {
+                OwnerId = user.Id,
+                OrgName = "Test organization",
+                OrgPhone = "992123456789",
+                OrgEmail = "test@mail.com",
+                OrgAddress = "Dushanbe, Rudaky 17"
+            };
+
+            createList.Add(request);
+
+            var result = request.ExecTest(server.Client);
+
+            result.Id.Should().BeGreaterThan(0);
+            m_organizationIds.Add(result.Id);
+        }
+
+        var searchRequest = new Organization.Search
+        {
+            Ids = m_organizationIds.ToArray()
+        };
+
+        var searchResult = searchRequest.ExecTest(server.Client);
+
+        searchResult.Should().NotBeNull();
+        searchResult.Total.Should().Be(5);
+        foreach (var item in searchResult.Items)
+        {
+            createList.Select(x => x.OrgName).Should().Contain(item.OrgName);
+            createList.Select(x => x.OrgPhone).Should().Contain(item.OrgPhone);
+            createList.Select(x => x.OrgEmail).Should().Contain(item.OrgEmail);
+            createList.Select(x => x.OrgAddress).Should().Contain(item.OrgAddress);
+        }
         
-        
+        searchRequest = new Organization.Search
+        {
+            Ids = m_organizationIds.ToArray(),
+            PageInfo = new PageInfo
+            {
+                PageNumber = 1000
+            }
+        };
+
+        searchResult = searchRequest.ExecTest(server.Client);
+
+        searchResult.Total.Should().Be(0);
+        searchResult.Items.Should().BeEmpty();
+
+        searchRequest = new Organization.Search
+        {
+            Filters = new Organization.Search.Filter
+            {
+                OrgName = "тест_01234"
+            }
+        };
+
+        searchResult = searchRequest.ExecTest(server.Client);
+
+        searchResult.Total.Should().Be(0);
+        searchResult.Items.Should().BeEmpty();
     }
 }
