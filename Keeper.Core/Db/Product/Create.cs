@@ -2,7 +2,7 @@ using System.Data;
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
 
-namespace Keeper.Core.Product;
+namespace Keeper.Core;
 
 public partial class Db
 {
@@ -11,6 +11,9 @@ public partial class Db
         [BindStruct]
         public class Create
         {
+            [Bind("ReqUserId")]
+            public int ReqUserId { get; set; }
+            
             [Bind("BranchId")]
             public int BranchId { get; set; }
 
@@ -65,7 +68,8 @@ public partial class Db
 declare @now datetimeoffset(7) = getutcdate()
 
 insert into [new-keeper].[Products] (
-     [BranchId]
+     [ReqUserId]
+    ,[BranchId]
     ,[SupplierId]
     ,[CategoryId]
     ,[TaxId]

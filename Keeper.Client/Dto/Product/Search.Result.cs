@@ -10,6 +10,7 @@ namespace Keeper.Client.Product
             public class Result
             {
                 public List<Item> Items { get; set; } = new List<Item>();
+                public int Total { get; set; }
             
                 public class Item
                 {

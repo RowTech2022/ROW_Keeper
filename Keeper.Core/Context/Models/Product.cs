@@ -9,6 +9,8 @@ public class Product : BaseModel
 {
     public int Id { get; set; }
 
+    public int ReqUserId { get; set; }
+
     public int BranchId { get; set; }
 
     public int SupplierId { get; set; }

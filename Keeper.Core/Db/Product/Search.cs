@@ -1,7 +1,7 @@
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
 
-namespace Keeper.Core.Product;
+namespace Keeper.Core;
 
 public partial class Db
 {
@@ -9,8 +9,8 @@ public partial class Db
     {
         public class Search
         {
-            [NVarChar("Filter", 500)]
-            public string? Filter { get; set; }
+            [NVarChar("NameOrUPC", 500)]
+            public string? NameOrUPC { get; set; }
             
             public int? Start { get; set; }
             public int? Count { get; set; }
@@ -46,6 +46,9 @@ public partial class Db
 
                 [Bind("ExpiredDate")] 
                 public DateTimeOffset? ExpiredDate { get; set; }
+
+                [Bind("Total")]
+                public int Total { get; set; }
             }
 
             #region c_query
@@ -63,6 +66,7 @@ select
     ,p.[DiscountPrice]
     ,p.[HaveDiscount]
     ,p.[ExpireDate]
+    ,count(*) over() as [Total]
 from [new-keeper].[Products] as p
 join [new-keeper].[Categories] as c on p.[CategoryId] = c.[Id]
 where
@@ -72,7 +76,7 @@ where
     --{Ids - end}
     
     --{Filter - start}
-    (p.[UPC] = @Filter or lower(p.[Name]) like lower(N'%' + @Filter + '%')) and
+    (p.[UPC] = @NameOrUPC or lower(p.[Name]) like lower(N'%' + @NameOrUPC + '%')) and
     --{Filter - end}
     
     1 = 1
@@ -97,7 +101,7 @@ order by p.[Id] desc
                     .Top(Count).Offset(Start)
                     .Format(query);
                 
-                if (string.IsNullOrWhiteSpace(Filter))
+                if (string.IsNullOrWhiteSpace(NameOrUPC))
                     query = SqlQueriesFormater.RemoveSubString(query, "Filter");
                 
                 return query;

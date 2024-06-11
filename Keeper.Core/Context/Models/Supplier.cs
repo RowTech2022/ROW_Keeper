@@ -6,6 +6,11 @@ public class Supplier : BaseModel
 {
     public int Id { get; set; }
 
+    public int ReqUserId { get; set; }
+    
+    public int OrgId { get; set; }
+
+    [StringLength(500)]
     public string CompanyName { get; set; } = null!;
 
     [StringLength(20)]

@@ -1,7 +1,7 @@
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
 
-namespace Keeper.Core.Product;
+namespace Keeper.Core;
 
 public partial class Db
 {

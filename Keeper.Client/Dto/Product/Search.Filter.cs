@@ -6,7 +6,7 @@ namespace Keeper.Client.Product
         {
             public class Filter
             {
-                public string? Filters { get; set; }
+                public string? NameOrUPC { get; set; }
             }
         }
     }
