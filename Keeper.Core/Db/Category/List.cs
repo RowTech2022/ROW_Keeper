@@ -22,13 +22,10 @@ public partial class Db
                 public int OrgId { get; set; }
                 
                 [Bind("ParentId")]
-                public int ParentId { get; set; }
+                public int? ParentId { get; set; }
     
                 [NVarChar("Name", 300)]
                 public string Name { get; set; } = null!;
-    
-                [NVarChar("Description", 300)]
-                public string? Description { get; set; }
             }
 
             #region c_query
@@ -39,8 +36,6 @@ select
     ,c.[OrgId]
     ,c.[ParentId]
     ,c.[Name]
-    ,c.[Description]
-    ,c.[Active]
     ,c.[CreatedAt]
     ,c.[UpdatedAt]
     ,c.[Timestamp]
@@ -50,6 +45,8 @@ where
     --{Ids - start}
     c.[Id] in ({Ids}) and
     --{Ids - end}
+    
+    c.[Active] = 1 and
     
     1 = 1
 ";

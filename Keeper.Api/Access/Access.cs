@@ -5,7 +5,7 @@ namespace Keeper.Api
 {
     public class Access : BaseAccess
     {
-        public const string Admin = "SysAdmin";
+        public const string Admin = "Admin";
         public const string SystemAdmin = "SystemAdmin";
         public const string SystemAdminOrAdmin = "SystemAdminOrAdmin";
         public const string User = "ActivatedUser";

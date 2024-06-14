@@ -7,6 +7,7 @@ public partial class Db
 {
     public partial class Category
     {
+        [BindStruct]
         public class Search
         {
             public int[]? Ids { get; set; }
@@ -22,15 +23,9 @@ public partial class Db
             {
                 [Bind("Id")]
                 public int Id { get; set; }
-                
-                [Bind("ParentId")]
-                public int ParentId { get; set; }
     
                 [NVarChar("Name", 300)]
                 public string Name { get; set; } = null!;
-    
-                [NVarChar("Description", 300)]
-                public string? Description { get; set; }
 
                 [Bind("Total")]
                 public int Total { get; set; }
@@ -44,7 +39,6 @@ select
      c.[Id]
     ,c.[ParentId]
     ,c.[Name]
-    ,c.[Description]
     ,count(*) over() as [Total]
 from [new-keeper].[Categories] as c
 where
@@ -57,6 +51,10 @@ where
     lower(c.[Name]) like lower(N'%' + @Name + '%') and
     --{Name - end}
     
+    c.[ParentId] is null and
+    
+    c.[Active] = 1 and
+    
     1 = 1
     order by c.[Id] desc
 {offsetPaging}
@@ -68,7 +66,7 @@ where
             {
                 var query = GetQuery();
 
-                return sql.Query<Result>(query).ToList();
+                return sql.Query<Result>(query, this).ToList();
             }
 
             private string GetQuery()

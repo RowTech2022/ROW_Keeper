@@ -44,17 +44,11 @@ public partial class Db
             [Bind("Price")]
             public decimal Price { get; set; }
 
-            [Bind("DiscountPrice")]
-            public decimal DiscountPrice { get; set; }
-
             [Bind("TotalPrice")]
             public decimal TotalPrice { get; set; }
 
             [Bind("Margin")]
             public int Margin { get; set; }
-
-            [Bind("HaveDiscount")]
-            public bool HaveDiscount { get; set; }
 
             [Bind("ExpiredDate")]
             public DateTimeOffset? ExpiredDate { get; set; }
@@ -82,11 +76,11 @@ insert into [new-keeper].[Products] (
     ,[DiscountPrice]
     ,[TotalPrice]
     ,[Margin]
-    ,[HaveDiscount]
-    ,[ExpireDate]
+    ,[ExpiredDate]
     ,[CreatedAt]
     ,[UpdatedAt] )
 select
+    @ReqUserId,
     @BranchId,
     @SupplierId,
     @CategoryId,
@@ -100,8 +94,7 @@ select
     @DiscountPrice,
     @TotalPrice,
     @Margin,
-    @HaveDiscount,
-    @ExpireDate,
+    @ExpiredDate,
     @now,
     @now
 

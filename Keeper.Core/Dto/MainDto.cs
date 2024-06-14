@@ -12,6 +12,11 @@ namespace Keeper.Core
 			string? Image { get; set; }
 		}
 
+		public interface IEmail
+		{
+			string? Email { get; set; }
+		}
+
 		public interface IAddress
 		{
 			string? Address { get; set; }

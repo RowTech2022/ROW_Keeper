@@ -41,6 +41,8 @@ public partial class Db
 where
     [Id] = @Id and
     1 = 1
+
+set @ResultCount = @@rowcount
 ";
 
             #endregion

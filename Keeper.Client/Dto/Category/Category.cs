@@ -9,14 +9,10 @@ namespace Keeper.Client
                 
         public int OrgId { get; set; }
                 
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
     
         public string Name { get; set; } = null!;
-    
-        public string? Description { get; set; }
         
-        public bool Active { get; set; }
-    
         public DateTimeOffset CreatedAt { get; set; }
     
         public DateTimeOffset UpdatedAt { get; set; }

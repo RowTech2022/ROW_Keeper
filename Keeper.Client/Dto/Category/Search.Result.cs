@@ -6,7 +6,7 @@ namespace Keeper.Client
     {
         public partial class Search
         {
-            public class Result
+            public class CategoryResult
             {
                 public List<Item> Items { get; set; } = new List<Item>();
                 public int Total { get; set; }
@@ -14,9 +14,20 @@ namespace Keeper.Client
                 public class Item
                 {
                     public int Id { get; set; }
-                    public List<Item>? SubCategories { get; set; } 
                     public string Name { get; set; } = null!;
-                    public string? Description { get; set; }
+                }
+            }
+            
+            public class SubCategoryResult
+            {
+                public List<Item> Items { get; set; } = new List<Item>();
+                public int Total { get; set; }
+                
+                public class Item
+                {
+                    public int Id { get; set; }
+                    public string CategoryName { get; set; } = null!;
+                    public string SubCategoryName { get; set; } = null!;
                 }
             }
         }

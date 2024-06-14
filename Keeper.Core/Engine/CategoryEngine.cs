@@ -15,9 +15,9 @@ public class CategoryEngine(ISqlFactory sql, DtoComplex dto)
         if (org == null)
             throw new RecordNotFoundApiException($"Organization with id {userInfo.OrganisationId} not found.");
 
-        if (create.ParentId != 0)
+        if (create.ParentId != null)
         {
-            Check(create.ParentId);
+            Check((int)create.ParentId);
         }
         
         var categoryId = new Db.Category.Create
@@ -40,17 +40,24 @@ public class CategoryEngine(ISqlFactory sql, DtoComplex dto)
         return Get(update.Id);
     }
 
-    public Category.Search.Result Search(Category.Search filter)
+    public Category.Search.CategoryResult SearchCategory(Category.Search filter)
     {
         var request = new Db.Category.Search().CopyFrom(filter, dto).Exec(sql);
 
-        return new Category.Search.Result
+        return new Category.Search.CategoryResult
         {
-            Items = request.Select(x => new Category.Search.Result.Item
-            {
-                SubCategories = request.Where(s => s.Id == x.Id)
-                    .Select(s => new Category.Search.Result.Item().CopyFrom(s, dto)).ToList()
-            }.CopyFrom(x, dto)).ToList(),
+            Items = request.Select(x => new Category.Search.CategoryResult.Item().CopyFrom(x, dto)).ToList(),
+            Total = request.Select(x => x.Total).FirstOrDefault()
+        };
+    }
+
+    public Category.Search.SubCategoryResult SearchSubCategory(Category.Search filter)
+    {
+        var request = new Db.Category.SearchSubCategory().CopyFrom(filter, dto).Exec(sql);
+
+        return new Category.Search.SubCategoryResult
+        {
+            Items = request.Select(x => new Category.Search.SubCategoryResult.Item().CopyFrom(x, dto)).ToList(),
             Total = request.Select(x => x.Total).FirstOrDefault()
         };
     }

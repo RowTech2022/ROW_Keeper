@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Keeper.Core.Context.Models;
 
+[Index(nameof(OwnerId))]
 public class Organization : BaseModel
 {
     public int Id { get; set; }

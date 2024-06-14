@@ -113,11 +113,9 @@ namespace Keeper.Core
 						if (File.Exists(savePath))
 							File.Delete(savePath);
 
-						using (var img = System.Drawing.Image.FromFile(filePath))
-						{
-							System.Drawing.Image i = Helper.ResizeImage(img, new Size(100, 100));
-							i.Save(savePath);
-						}
+						using var img = Image.FromFile(filePath);
+						Image i = Helper.ResizeImage(img, new Size(100, 100));
+						i.Save(savePath);
 					}
 					else
 						File.Copy(filePath, savePath, true);
@@ -139,19 +137,19 @@ namespace Keeper.Core
 		public string SaveFile(string? pathFile, int docId, FileType type)
 		{
 			var res = "";
-			if (!String.IsNullOrWhiteSpace(pathFile))
+			if (String.IsNullOrWhiteSpace(pathFile)) return res;
+			var file = new FileResponse(pathFile);
+			var toSave = new SaveToOrigin
 			{
-				var file = new FileResponse(pathFile);
-				var toSave = new SaveToOrigin();
-				toSave.Partion = docId;
-				toSave.Type = type;
-				toSave.Files.Add(file);
-				var files = SaveFileToProdDir(toSave);
+				Partion = docId,
+				Type = type,
+				Files = [file]
+			};
+			var files = SaveFileToProdDir(toSave);
 
-				var fileName = FileEngine.GetFileNameV4FromUrl(file.Url).fileName;
-				if (files.FilePathInfo.ContainsKey(fileName))
-					res = files.FilePathInfo[fileName];
-			}
+			var fileName = FileEngine.GetFileNameV4FromUrl(file.Url).fileName;
+			if (files.FilePathInfo.ContainsKey(fileName))
+				res = files.FilePathInfo[fileName];
 			return res;
 		}
 
@@ -314,8 +312,5 @@ namespace Keeper.Core
 
 			return JsonConvert.DeserializeObject<T>(value);
 		}
-
-
-
 	}
 }

@@ -13,7 +13,7 @@ public class SupplierController(SupplierEngine supplierEngine, RequestInfo reque
     public Supplier Create(Supplier.Create create)
     {
         var userInfo = requestInfo.GetUserInfo(HttpContext);
-
+        userInfo.OrganisationId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "OrganizationId")!.Value);
         return supplierEngine.Create(create, userInfo);
     }
 

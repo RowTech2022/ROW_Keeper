@@ -5,15 +5,15 @@ namespace Keeper.Core;
 
 public partial class Db
 {
-    public partial class Supplier
+    public partial class Category
     {
         [BindStruct]
-        public class Search
+        public class SearchSubCategory
         {
             public int[]? Ids { get; set; }
-            
-            [NVarChar("CompanyName", 500)]
-            public string? CompanyName { get; set; }
+
+            [NVarChar("Name", 300)]
+            public string? Name { get; set; }
 
             public int? Count { get; set; }
             public int? Start { get; set; }
@@ -23,18 +23,12 @@ public partial class Db
             {
                 [Bind("Id")]
                 public int Id { get; set; }
-
-                [NVarChar("CompanyName", 500)]
-                public string CompanyName { get; set; } = null!;
-
-                [NVarChar("Phone", 20)]
-                public string Phone { get; set; } = null!;
     
-                [NVarChar("Email", 100)]
-                public string? Email { get; set; }
+                [NVarChar("CategoryName", 300)]
+                public string CategoryName { get; set; } = null!;
 
-                [NVarChar("Address", 300)]
-                public string? Address { get; set; }
+                [NVarChar("SubCategoryName", 300)] 
+                public string SubCategoryName { get; set; } = null!;
 
                 [Bind("Total")]
                 public int Total { get; set; }
@@ -46,25 +40,23 @@ public partial class Db
 select
 {topPaging}
      s.[Id]
-    ,s.[CompanyName]
-    ,s.[Phone]
-    ,s.[Email]
-    ,s.[Address]
+    ,c.[Name] as [CategoryName]
+    ,s.[Name] as [SubCategoryName]
     ,count(*) over() as [Total]
-from [new-keeper].[Suppliers] as s
+from [new-keeper].[Categories] as c
+join [new-keeper].[Categories] as s on c.[Id] = s.[ParentId]
 where
-
+    
     --{Ids - start}
-    s.[Id] in ({Ids}) and
+    s.[ParentId] in ({Ids}) and
     --{Ids - end}
     
-    --{CompanyName - start}
-    lower(s.[CompanyName]) like lower(N'%' + @CompanyName + '%') and
-    --{CompanyName - end}
+    --{Name - start}
+    lower(s.[Name]) like lower(N'%' + @Name + '%') and
+    --{Name - end}
     
     1 = 1
-
-order by s.[Id] desc
+    order by c.[Id] desc
 {offsetPaging}
 ";
 
@@ -84,12 +76,12 @@ order by s.[Id] desc
                 query = SqlQueriesFormater.Page("topPaging", "offsetPaging")
                     .Top(Count).Offset(Start)
                     .Format(query);
-
+                
                 query = SqlQueriesFormater.RemoveOrReplace("Ids", Ids, x => string.Join(", ", x)).Format(query);
 
-                if (string.IsNullOrWhiteSpace(CompanyName))
-                    query = SqlQueriesFormater.RemoveSubString(query, "CompanyName");
-                
+                if (string.IsNullOrWhiteSpace(Name))
+                    query = SqlQueriesFormater.RemoveSubString(query, "Name");
+
                 return query;
             }
         }

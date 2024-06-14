@@ -4,6 +4,7 @@ using Keeper.Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Keeper.Core.Migrations
 {
     [DbContext(typeof(ContextKeeper))]
-    partial class ContextKeeperModelSnapshot : ModelSnapshot
+    [Migration("20240612060922_AddedCategoryAndProducts")]
+    partial class AddedCategoryAndProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,6 +42,10 @@ namespace Keeper.Core.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -47,7 +54,7 @@ namespace Keeper.Core.Migrations
                     b.Property<int>("OrgId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ParentId")
+                    b.Property<int>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReqUserId")

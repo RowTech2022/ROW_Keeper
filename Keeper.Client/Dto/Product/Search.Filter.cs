@@ -7,6 +7,7 @@ namespace Keeper.Client.Product
             public class Filter
             {
                 public string? NameOrUPC { get; set; }
+                public int[]? CategoryIds { get; set; }
             }
         }
     }

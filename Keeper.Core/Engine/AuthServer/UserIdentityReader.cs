@@ -75,14 +75,17 @@ namespace Keeper.Core
         /// clientId value is required for the [AuthorizationCodeProvider_OnReceive method] only
         /// Without the value system will return very strange exception. Please pay attention on the comment.
         /// </summary>
-        public static AuthenticationTicket_Owin InitTicket(this AuthenticationTicket_Owin ticket, Guid sessionId, DateTime expireTime, DateTime sessionExpireTime)
+        public static AuthenticationTicket_Owin InitTicket(this AuthenticationTicket_Owin ticket, Guid sessionId, 
+            DateTime expireTime, DateTime sessionExpireTime, UserInfo userInfo)
         {
             ticket.Properties.IsPersistent = false;
             ticket.Properties.ExpiresUtc = expireTime;
             ticket.Properties.IssuedUtc = DateTime.UtcNow;
 
-            ticket.Identity.AddClaims(new List<Claim>() { UserInfo.CreateSessionIdClaim(sessionId) });
-            ticket.Identity.AddClaims(new List<Claim>() { UserInfo.CreateExpiredClaim(sessionExpireTime) });
+            ticket.Identity.AddClaims(new List<Claim> { ApiTokenInfo.CreateSessionIdClaim(sessionId) });
+            ticket.Identity.AddClaims(new List<Claim> { ApiTokenInfo.CreateExpiredClaim(sessionExpireTime) });
+            ticket.Identity.AddClaims([new Claim("OrganizationId", userInfo.OrganisationId.ToString())]);
+            ticket.Identity.AddClaims([new Claim("BranchId", userInfo.OrganisationId.ToString())]);
 
             return ticket;
         }

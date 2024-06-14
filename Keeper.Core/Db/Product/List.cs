@@ -82,7 +82,7 @@ select
     ,p.[TotalPrice]
     ,p.[Margin]
     ,p.[HaveDiscount]
-    ,p.[ExpireDate]
+    ,p.[ExpiredDate]
     ,p.[CreatedAt]
     ,p.[UpdatedAt]
     ,p.[Timestamp]

@@ -17,7 +17,7 @@ namespace Keeper.Core
 			Type = type;
 		}
 
-		public List<FileResponse> Files { get; set; } = new List<FileResponse>();
+		public List<FileResponse> Files { get; set; } = [];
 
 		public FileType Type { get; set; }
 

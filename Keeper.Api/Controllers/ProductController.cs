@@ -14,14 +14,24 @@ public class ProductController(ProductEngine productEngine, RequestInfo requestI
     public Product Create(Product.Create create)
     {
         var userInfo = requestInfo.GetUserInfo(HttpContext);
-
+        userInfo.OrganisationId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "OrganizatoinId")?.Value);
+        
         return productEngine.Create(create, userInfo);
     }
 
     [HttpPost("update")]
     public Product Update(Product.Update update)
     {
-        return productEngine.Update(update);
+        var userInfo = requestInfo.GetUserInfo(HttpContext);
+        userInfo.OrganisationId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "OrganizatoinId")?.Value);
+        
+        return productEngine.Update(update, userInfo);
+    }
+
+    [HttpPost("import")]
+    public async Task<List<Product.Update>> Import(IFormFile file)
+    {
+        return await productEngine.ImportProduct(file);
     }
 
     [HttpPost("search")]

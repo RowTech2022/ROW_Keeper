@@ -46,10 +46,11 @@ namespace Keeper.Core
             {
                 SessionExpireTime = DateTime.Now.AddDays(7),
                 UserId = userInfo.UserId,
-                PasswordHash = userInfo.PasswordHash
+                PasswordHash = userInfo.PasswordHash,
+                
             };
 
-            identity.InitTicket(reader.SessionId, expiredTime, reader.SessionExpireTime);
+            identity.InitTicket(reader.SessionId, expiredTime, reader.SessionExpireTime, userInfo);
             
             var result = new TokenInfo
             {

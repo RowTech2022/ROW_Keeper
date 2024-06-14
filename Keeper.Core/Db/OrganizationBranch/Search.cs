@@ -7,6 +7,7 @@ public partial class Db
 {
     public partial class OrganizationBranch
     {
+        [BindStruct]
         public class Search
         {
             public int[]? Ids { get; set; }
@@ -25,6 +26,7 @@ public partial class Db
                 Ids = ids;
             }
             
+            [BindStruct]
             public class Result
             {
                 [Bind("Id")]
@@ -49,7 +51,8 @@ public partial class Db
             #region c_query
 
             private const string c_query = @"
-select 
+select
+{topPaging}
      b.[Id]
     ,b.[BranchName]
     ,b.[BranchPhone]
@@ -68,6 +71,8 @@ where
     --{BranchName - end}
     
     1 = 1
+order by b.[Id] desc
+{offsetPaging}
 ";
 
             #endregion
@@ -76,9 +81,7 @@ where
             {
                 var query = GetQuery();
 
-                var result = sql.Query<Result>(query, this).ToList();
-
-                return result;
+                return sql.Query<Result>(query, this).ToList();
             }
 
             private string GetQuery()

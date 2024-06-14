@@ -1,6 +1,5 @@
 ﻿using Keeper.Core.Context.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Row.AutoGenerator;
 
 namespace Keeper.Core.Context
@@ -17,6 +16,12 @@ namespace Keeper.Core.Context
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<OrganizationBranch> OrganizationBranches { get; set; }
 
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Supplier> Suppliers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("new-keeper");
@@ -31,6 +36,15 @@ namespace Keeper.Core.Context
                 .Property(x => x.Active).HasDefaultValue(true);
             
             modelBuilder.Entity<OrganizationBranch>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
+            modelBuilder.Entity<Category>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
+            modelBuilder.Entity<Product>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
+            modelBuilder.Entity<Supplier>()
                 .Property(x => x.Active).HasDefaultValue(true);
             
             base.OnModelCreating(modelBuilder);

@@ -9,14 +9,10 @@ namespace Keeper.Client
         {
             public int Id { get; set; }
             
-            public int ParentId { get; set; }
+            public int? ParentId { get; set; }
     
             [StringLength(300)]
             public string Name { get; set; } = null!;
-    
-            [StringLength(3000)]
-            public string? Description { get; set; }
-        
 
             public Category Exec(KeeperApiClient client)
             {

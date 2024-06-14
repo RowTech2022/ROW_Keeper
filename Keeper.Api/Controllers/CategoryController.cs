@@ -15,6 +15,7 @@ public class CategoryController(CategoryEngine categoryEngine, RequestInfo reque
     public Category Create(Category.Create create)
     {
         var userInfo = requestInfo.GetUserInfo(HttpContext);
+        userInfo.OrganisationId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "OrganizationId")?.Value);
         return categoryEngine.Create(create, userInfo);
     }
     
@@ -26,11 +27,18 @@ public class CategoryController(CategoryEngine categoryEngine, RequestInfo reque
         return categoryEngine.Update(update);
     }
 
-    [HttpPost("search")]
+    [HttpPost("searchCategory")]
     [Authorize(Access.User)]
-    public Category.Search.Result Search(Category.Search filter)
+    public Category.Search.CategoryResult SearchCategory(Category.Search filter)
     {
-        return categoryEngine.Search(filter);
+        return categoryEngine.SearchCategory(filter);
+    }
+
+    [HttpPost("searchSubCategory")]
+    [Authorize(Access.User)]
+    public Category.Search.SubCategoryResult SearchSubCategory(Category.Search filter)
+    {
+        return categoryEngine.SearchSubCategory(filter);
     }
 
     [HttpGet("get/{id}")]

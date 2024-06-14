@@ -15,13 +15,10 @@ public partial class Db
             public int Id { get; set; }
             
             [Bind("ParentId")]
-            public int ParentId { get; set; }
+            public int? ParentId { get; set; }
     
             [NVarChar("Name", 300)]
             public string Name { get; set; } = null!;
-    
-            [NVarChar("Description", 3000)]
-            public string? Description { get; set; }
 
             [Bind("Active")]
             public bool Active { get; set; }
@@ -38,6 +35,8 @@ public partial class Db
 where
     [Id] = @Id and
     1 = 1
+
+set @ResultCount = @@rowcount
 ";
 
             #endregion
@@ -48,7 +47,6 @@ where
             [
                 nameof(ParentId),
                 nameof(Name),
-                nameof(Description),
                 nameof(Active)
             ];
 
@@ -58,7 +56,6 @@ where
             {
                 yield return nameof(ParentId);
                 yield return nameof(Name);
-                yield return nameof(Description);
             }
 
             public void SetUpdateList()

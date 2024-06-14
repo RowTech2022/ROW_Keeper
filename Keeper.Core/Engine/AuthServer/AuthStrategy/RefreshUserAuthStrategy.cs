@@ -41,7 +41,7 @@ namespace Keeper.Core
 
             var expiredTime = GetExpireTime(reader);
 
-            ticket.InitTicket(reader.SessionId, expiredTime, reader.SessionExpireTime);
+            ticket.InitTicket(reader.SessionId, expiredTime, reader.SessionExpireTime, userInfo);
 
             result.TokenType = "Bearer";
             result.AccessToken = m_security.Protect(ticket);

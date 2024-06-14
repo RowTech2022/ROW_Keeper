@@ -168,7 +168,7 @@ namespace Keeper.Core
         {
             var user = new Db.User.List(userId).Exec(m_sql).FirstOrDefault();
             if (user == null)
-                throw new Exception(m_languageServices.GetKey("RecordNotFound"));
+                throw new RecordNotFoundApiException(m_languageServices.GetKey("RecordNotFound"));
 
             return user;
         }

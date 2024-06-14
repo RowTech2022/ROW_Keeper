@@ -18,13 +18,10 @@ public partial class Db
             public int OrgId { get; set; }
     
             [Bind("ParentId")]
-            public int ParentId { get; set; }
+            public int? ParentId { get; set; }
     
             [NVarChar("Name", 300)]
             public string Name { get; set; } = null!;
-    
-            [NVarChar("Description", 3000)]
-            public string? Description { get; set; }
 
             [Bind("ResultId", Direction = ParameterDirection.Output)]
             public int ResultId { get; set; }
@@ -39,15 +36,13 @@ insert into [new-keeper].[Categories] (
     ,[OrgId]
     ,[ParentId]
     ,[Name]
-    ,[Descriptoin]
     ,[CreatedAt]
-    ,[UpdateAt] )
+    ,[UpdatedAt] )
 select
     @ReqUserId,
     @OrgId,
     @ParentId,
     @Name,
-    @Descriptoin,
     @now,
     @now
 

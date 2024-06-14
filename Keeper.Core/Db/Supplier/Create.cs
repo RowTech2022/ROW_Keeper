@@ -57,7 +57,7 @@ select
     @now,
     @now
 
-set @ResultId = @identity
+set @ResultId = @@identity
 ";
 
             #endregion

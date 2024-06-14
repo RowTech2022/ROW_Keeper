@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Keeper.Core.Context.Models;
 
 [Index(nameof(BranchId))]
-[Index(nameof(UPC), IsUnique = true)]
+[Index(nameof(UPC), nameof(BranchId), IsUnique = true)]
 public class Product : BaseModel
 {
     public int Id { get; set; }
@@ -33,13 +33,9 @@ public class Product : BaseModel
 
     public decimal Price { get; set; }
 
-    public decimal DiscountPrice { get; set; }
-
     public decimal TotalPrice { get; set; }
     
     public int Margin { get; set; }
 
-    public bool HaveDiscount { get; set; }
-    
     public DateTimeOffset? ExpiredDate { get; set; }
 }

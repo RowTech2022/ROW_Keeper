@@ -8,6 +8,7 @@ public partial class Db
 {
     public partial class Product
     {
+        [BindStruct]
         public class Update
         {
             [Bind("Id")] 
@@ -37,17 +38,11 @@ public partial class Db
             [Bind("Price")]
             public decimal Price { get; set; }
 
-            [Bind("DiscountPrice")]
-            public decimal DiscountPrice { get; set; }
-
             [Bind("TotalPrice")]
             public decimal TotalPrice { get; set; }
 
             [Bind("Margin")]
             public int Margin { get; set; }
-
-            [Bind("HaveDiscount")]
-            public bool HaveDiscount { get; set; }
 
             [Bind("ExpiredDate")]
             public DateTimeOffset? ExpiredDate { get; set; }
@@ -67,6 +62,8 @@ public partial class Db
 where
     [Id] = @Id and
     1 = 1
+
+set @ResultCount = @@rowcount
 ";
 
             #endregion
@@ -83,10 +80,8 @@ where
                 nameof(Quantity),
                 nameof(BuyingPrice),
                 nameof(Price),
-                nameof(DiscountPrice),
                 nameof(TotalPrice),
                 nameof(Margin),
-                nameof(HaveDiscount),
                 nameof(ExpiredDate),
                 nameof(Active),
             ];
@@ -103,10 +98,8 @@ where
                 yield return nameof(Quantity);
                 yield return nameof(BuyingPrice);
                 yield return nameof(Price);
-                yield return nameof(DiscountPrice);
                 yield return nameof(TotalPrice);
                 yield return nameof(Margin);
-                yield return nameof(HaveDiscount);
                 yield return nameof(ExpiredDate);
             }
 
@@ -137,7 +130,7 @@ where
                 if (updatePart == null)
                     throw new Exception();
 
-                query = SqlQueriesFormater.ReplaceConst(query, "Update", updatePart);
+                query = SqlQueriesFormater.ReplaceConst(query, "update", updatePart);
 
                 query = SqlQueriesFormater.RemoveAllNullSections(query, this);
 

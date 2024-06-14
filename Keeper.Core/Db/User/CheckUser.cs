@@ -33,12 +33,15 @@ namespace Keeper.Core
 
                 const string c_query = @"
 select
-	u.Id,
-	u.Login,
-	u.Phone,
-	u.PasswordHash,
-	u.UserType
+	 u.[Id]
+	,u.[BranchId]
+	,u.[Login]
+	,u.[Phone]
+	,u.[PasswordHash]
+	,u.[UserType]
+	,isnull(o.[Id], 0) as [OrganizationId]
 from [new-keeper].[Users] as u
+left join [new-keeper].[Organizations] as o on u.[Id] = o.[OwnerId]
 where
 
 --{login - start}
@@ -68,10 +71,7 @@ where
                     var query = c_query;
 
 
-                    if (UserId == null)
-                        query = SqlQueriesFormater.RemoveSubString(query, "UserId");
-                    else
-                        query = SqlQueriesFormater.RemoveSubString(query, "login");
+                    query = SqlQueriesFormater.RemoveSubString(query, UserId == null ? "UserId" : "login");
 
                     return query;
                 }
@@ -81,6 +81,9 @@ where
                 {
                     [Bind("Id")]
                     public int UserId { get; set; }
+                    
+                    [Bind("BranchId")]
+                    public int BranchId { get; set; }
                     
                     [Bind("UserType")]
                     public int UserType { get; set; }
@@ -93,6 +96,9 @@ where
 
                     [Bind("PasswordHash", Size = 64)] 
                     public byte[] PasswordHash { get; set; } = null!;
+                    
+                    [Bind("OrganizationId")] 
+                    public int OrganizationId { get; set; }
                 }
             }
         }

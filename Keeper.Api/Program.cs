@@ -40,6 +40,12 @@ builder.Services.AddSingleton<OrganizationEngine>();
 
 builder.Services.AddSingleton<OrganizationBranchEngine>();
 
+builder.Services.AddSingleton<CategoryEngine>();
+
+builder.Services.AddSingleton<ProductEngine>();
+
+builder.Services.AddSingleton<SupplierEngine>();
+
 builder.Services.AddSingleton<LanguageService>();
 
 var app = builder.Build();

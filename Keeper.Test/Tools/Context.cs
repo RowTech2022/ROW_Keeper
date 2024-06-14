@@ -34,5 +34,22 @@ namespace Keeper.Test
             return result;
 
         }
+
+        public static string GeneratePhone()
+        {
+            return "992" +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10);
+        }
     }
 }

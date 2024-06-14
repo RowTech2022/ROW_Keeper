@@ -7,22 +7,23 @@ namespace Keeper.Client
     {
         public partial class Search
         {
+            public int[]? Ids { get; set; }
             public Filter Filters { get; set; } = new Filter();
             public PageInfo PageInfo { get; set; } = new PageInfo();
-        }
+            
+            public Result Exec(KeeperApiClient client)
+            {
+                var request = client.PostRequest("api/supplier/search").Body(this);
 
-        public Supplier Exec(KeeperApiClient client)
-        {
-            var request = client.PostRequest("api/supplier/search").Body(this);
+                return client.ExecuteWithHttp<Result>(request);
+            }
 
-            return client.ExecuteWithHttp<Supplier>(request);
-        }
+            public Result ExecTest(KeeperApiClient client)
+            {
+                var request = client.PostRequest("api/supplier/search").Body(this);
 
-        public Supplier ExecTest(KeeperApiClient client)
-        {
-            var request = client.PostRequest("api/supplier/search").Body(this);
-
-            return client.ExecuteWithHttp<Supplier>(request);
+                return client.ExecuteWithHttp<Result>(request);
+            }
         }
     }
 }

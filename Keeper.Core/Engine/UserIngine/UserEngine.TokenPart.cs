@@ -53,16 +53,16 @@ namespace Keeper.Core
 			if ((!m_ignorePassword) && !HashHelper.EqualArrays(getDb.PasswordHash, hashtoCheck))
 				throw new InCorrectUserOrPasswordApiException(m_languageServices.GetKey("UserOrPasswordIncorrect"));
 
-			var db = GetDbUser(getDb.UserId);
-
 			var result = new UserInfoExtension
 			{
 				PasswordHash = getDb.PasswordHash,
-				UserId = db.Id,
+				UserId = getDb.UserId,
 				Expired = DateTime.Now.AddHours(1),
 				SessionId = Guid.NewGuid(),
 				Type = getDb.UserType,
-				Roles = GetUserRoles(db.Id).ToHashSet()
+				Roles = GetUserRoles(getDb.UserId).ToHashSet(),
+				OrganisationId = getDb.OrganizationId,
+				BranchId = getDb.BranchId
 			};
 
 			return result;

@@ -95,41 +95,44 @@ public static class ProductDto
 
     #region IDbFilter
 
-    static void Convert(IDbFilter dst, IFilter src, DtoComplex dto)
-    {
-        dst.CopyFrom(src.Filters, dto);
-    }
+    [DtoConvert]
+    static void Convert(IDbFilter dst, IFilter src, DtoComplex dto) => dst.CopyFrom(src.Filters, dto);
 
     #endregion
+    
+    public interface ICategroyIds
+    {
+        int[]? CategoryIds { get; set; }
+    }
 
     public class Client_Create : Product.Create, ISupplierId, ICategoryId, ITaxId, IUPC, IName,
         IAgeLimit, IQuantity, IBuyingPrice, IPrice, IDiscountPrice, ITotalPrice, IMargin, IHaveDiscount, IExpireDate;
 
     public class Db_Create : Db.Product.Create, MainDto.IBranchId, ISupplierId, ICategoryId, ITaxId, IUPC, IName,
-        IAgeLimit, IQuantity, IBuyingPrice, IPrice, IDiscountPrice, ITotalPrice, IMargin, IHaveDiscount, IExpireDate;
+        IAgeLimit, IQuantity, IBuyingPrice, IPrice, ITotalPrice, IMargin, IExpireDate;
 
     public class Client_Udpate : Product.Update, MainDto.IId, ICategoryId, ITaxId, IUPC, IName, IAgeLimit, IQuantity, IBuyingPrice,
         IPrice, IDiscountPrice, ITotalPrice, IMargin, IHaveDiscount, IExpireDate;
 
     public class Db_Udpate : Db.Product.Update, MainDto.IId, ICategoryId, ITaxId, IUPC, IName, IAgeLimit, IQuantity, IBuyingPrice,
-        IPrice, IDiscountPrice, ITotalPrice, IMargin, IHaveDiscount, IExpireDate;
+        IPrice, ITotalPrice, IMargin, IExpireDate;
 
     public class Client_Product : Product, MainDto.IId, MainDto.IBranchId, ISupplierId, ICategoryName, ITaxId, IUPC,
         IName, IAgeLimit, IQuantity, IBuyingPrice, IPrice, IDiscountPrice, ITotalPrice, IMargin, IHaveDiscount,
-        IExpireDate, MainDto.IActive, MainDto.ILife, MainDto.ITimestamp;
+        IExpireDate, MainDto.ILife, MainDto.ITimestamp;
 
     public class Db_List_Result : Db.Product.List.Result, MainDto.IId, MainDto.IBranchId, ISupplierId, ICategoryName,
         ITaxId, IUPC, IName, IAgeLimit, IQuantity, IBuyingPrice, IPrice, IDiscountPrice, ITotalPrice, IMargin, 
         IHaveDiscount, IExpireDate, MainDto.ILife, MainDto.ITimestamp;
 
-    public class Client_Search_Filter : Product.Search.Filter, INameOrUPC;
+    public class Client_Search_Filter : Product.Search.Filter, INameOrUPC, ICategroyIds;
 
-    public class Client_Search : Product.Search, IFilter, MainDto.IPageInfoSource;
+    public class Client_Search : Product.Search, IFilter, MainDto.IPageInfoSource, MainDto.IIds;
 
     public class Client_Search_Result_Item : Product.Search.Result.Item, MainDto.IId, ICategoryName, IUPC, IName,
         IAgeLimit, IQuantity, IPrice, IDiscountPrice, IHaveDiscount, IExpireDate;
 
-    public class Db_Search : Db.Product.Search, INameOrUPC, MainDto.IPageInfoDb;
+    public class Db_Search : Db.Product.Search, IDbFilter, MainDto.IPageInfoDb, MainDto.IIds, ICategroyIds;
     
     public class Db_Search_Result : Db.Product.Search.Result, MainDto.IId, ICategoryName, IUPC, IName,
         IAgeLimit, IQuantity, IPrice, IDiscountPrice, IHaveDiscount, IExpireDate;

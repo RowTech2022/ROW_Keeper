@@ -2,7 +2,7 @@ using System;
 
 namespace Keeper.Client.Product
 {
-    public partial class Product
+    public partial class Product : BaseDto
     {
         public int Id { get; set; }
         public int BranchId { get; set; }
@@ -20,10 +20,6 @@ namespace Keeper.Client.Product
         public int Margin { get; set; }
         public bool HaveDiscount { get; set; }
         public DateTimeOffset? ExpiredDate { get; set; }
-        public bool Active { get; set; }
-        public DateTimeOffset CreatedAt { get; set; }
-        public DateTimeOffset UpdatedAt { get; set; }
-        public byte[] Timestamp { get; set; } = null!;
 
         public static Product Exec(int id, KeeperApiClient client)
         {
