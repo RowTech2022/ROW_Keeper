@@ -5,13 +5,15 @@ namespace Keeper.Core.Context.Models;
 public class ProductDitscount : BaseProp
 {
     public int Id { get; set; }
+
+    public int ReqUserId { get; set; }
     
     public int ProductId { get; set; }
     
-    public decimal Percent { get; set; }
+    public double Percent { get; set; }
     
     [StringLength(5000)]
-    public string Comment { get; set; } = null!;
+    public string? Comment { get; set; }
     
     public DateTimeOffset FromDate { get; set; }
     
