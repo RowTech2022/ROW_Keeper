@@ -56,6 +56,7 @@ public static class ProductDiscountDto
 
     #region IDbFilter
 
+    [DtoConvert]
     static void Convert(IDbFilter dst, IFilter src, DtoComplex dto) => dst.CopyFrom(src.Filters, dto); 
 
     #endregion
@@ -74,7 +75,7 @@ public static class ProductDiscountDto
     public class Db_List : Db.ProductDiscount.List.Result, MainDto.IId, IProductName, IUPC, IPercent, IComment, ILife,
         ICategory, ISubCategory, MainDto.ILife, MainDto.ITimestamp;
 
-    public class Client_Search : ProductDiscount.Search, IFilter;
+    public class Client_Search : ProductDiscount.Search, IFilter, MainDto.IPageInfoSource, MainDto.IIds;
 
     public class Client_Search_Filter : ProductDiscount.Search.Filter, IUPC;
 

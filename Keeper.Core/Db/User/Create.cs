@@ -17,11 +17,8 @@ namespace Keeper.Core
 				[Bind("BranchId")]
 				public int BranchId  { get; set;}
 
-				[NVarChar("Name", 50)]
-				public string Name { get; set; } = null!;
-
-				[NVarChar("Surname", 50)]
-				public string Surname { get; set; } = null!;
+				[NVarChar("FullName", 100)]
+				public string FullName { get; set; } = null!;
 
 				[Bind("UserType")]
 				public UserType UserType { get; set;}
@@ -52,8 +49,7 @@ INSERT INTO [new-keeper].[Users]
         (
          [ReqUserId]
         ,[BranchId]
-        ,[Name]
-        ,[Surname]
+        ,[FullName]
         ,[Phone]
         ,[Email]
         ,[UserType]
@@ -65,8 +61,7 @@ INSERT INTO [new-keeper].[Users]
 select
         @ReqUserId,
         @BranchId,
-        @Name,
-        @Surname,
+        @FullName,
         @Phone,
         @Email,
         @UserType,

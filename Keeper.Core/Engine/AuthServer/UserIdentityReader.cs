@@ -44,7 +44,8 @@ namespace Keeper.Core
                 throw new UnauthorizedApiException($"Access denied.");
         }
 
-        public static UserIdentityReader FromRefreshToken(string data, IDataProtector protector, JsonSerializer serializer)
+        public static UserIdentityReader FromRefreshToken(string data, IDataProtector protector,
+            JsonSerializer serializer)
         {
             var protect = HttpServerUtility.UrlTokenDecode(data);
 
@@ -75,7 +76,7 @@ namespace Keeper.Core
         /// clientId value is required for the [AuthorizationCodeProvider_OnReceive method] only
         /// Without the value system will return very strange exception. Please pay attention on the comment.
         /// </summary>
-        public static AuthenticationTicket_Owin InitTicket(this AuthenticationTicket_Owin ticket, Guid sessionId, 
+        public static AuthenticationTicket_Owin InitTicket(this AuthenticationTicket_Owin ticket, Guid sessionId,
             DateTime expireTime, DateTime sessionExpireTime, UserInfo userInfo)
         {
             ticket.Properties.IsPersistent = false;
@@ -84,8 +85,10 @@ namespace Keeper.Core
 
             ticket.Identity.AddClaims(new List<Claim> { ApiTokenInfo.CreateSessionIdClaim(sessionId) });
             ticket.Identity.AddClaims(new List<Claim> { ApiTokenInfo.CreateExpiredClaim(sessionExpireTime) });
-            ticket.Identity.AddClaims([new Claim("OrganizationId", userInfo.OrganisationId.ToString())]);
-            ticket.Identity.AddClaims([new Claim("BranchId", userInfo.OrganisationId.ToString())]);
+            ticket.Identity.AddClaims([
+                new Claim("OrganizationId", userInfo.OrganisationId.ToString()),
+                new Claim("BranchId", userInfo.OrganisationId.ToString())
+            ]);
 
             return ticket;
         }

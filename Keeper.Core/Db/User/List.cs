@@ -25,11 +25,8 @@ namespace Keeper.Core
                     [Bind("Id")]
                     public int Id { get; set; }
 
-                    [NVarChar("Name", 50)] 
-                    public string Name { get; set; } = null!;
-
-                    [NVarChar("Surname", 50)] 
-                    public string Surname { get; set; } = null!;
+                    [NVarChar("FullName", 50)] 
+                    public string FullName { get; set; } = null!;
 
                     [Bind("UserType")]
                     public UserType UserType { get; set; }
@@ -65,8 +62,7 @@ namespace Keeper.Core
                 const string c_query = @"
 select
       u.[Id]
-     ,u.[Name]
-     ,u.[Surname]
+     ,u.[FullName]
      ,u.[UserType]
      ,u.[Phone]
      ,u.[Email]

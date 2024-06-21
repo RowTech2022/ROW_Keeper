@@ -10,7 +10,7 @@ namespace Keeper.Core;
 
 public partial class ProductEngine(ISqlFactory sql, DtoComplex dto)
 {
-    public Product Create(Product.Create create, UserInfo userInfo)
+    public Product Create(Product.Create create, UserInfoExtension userInfo)
     {
         var supplier = new Db.Supplier.List(create.SupplierId).Exec(sql).FirstOrDefault();
 
@@ -27,7 +27,7 @@ public partial class ProductEngine(ISqlFactory sql, DtoComplex dto)
         var resultId = new Db.Product.Create
         {
             ReqUserId = userInfo.UserId,
-            BranchId = userInfo.OrganisationId
+            BranchId = userInfo.BranchId
         }.CopyFrom(create, dto).Exec(sql);
 
         return Get(resultId);
@@ -52,9 +52,12 @@ public partial class ProductEngine(ISqlFactory sql, DtoComplex dto)
         return Get(update.Id);
     }
 
-    public Product.Search.Result Search(Product.Search filter)
+    public Product.Search.Result Search(Product.Search filter, UserInfoExtension userInfo)
     {
-        var products = new Db.Product.Search().CopyFrom(filter, dto).Exec(sql);
+        var products = new Db.Product.Search
+        {
+            BranchId = userInfo.BranchId
+        }.CopyFrom(filter, dto).Exec(sql);
 
         return new Product.Search.Result
         {

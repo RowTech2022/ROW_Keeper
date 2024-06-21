@@ -21,8 +21,6 @@ namespace Keeper.Client.Product
                     public int AgeLimit { get; set; }
                     public int Quantity { get; set; }
                     public decimal Price { get; set; }
-                    public decimal DiscountPrice { get; set; }
-                    public bool HaveDiscount { get; set; }
                     public DateTimeOffset? ExpiredDate { get; set; }
                 }
             }

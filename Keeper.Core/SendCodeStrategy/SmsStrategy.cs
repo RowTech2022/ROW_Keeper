@@ -1,4 +1,6 @@
-﻿using Keeper.Client;
+﻿using System.Text.RegularExpressions;
+using Common.Dto;
+using Keeper.Client;
 
 namespace Keeper.Core
 {
@@ -24,7 +26,12 @@ namespace Keeper.Core
 
 		public async void SendLoginAndPasswordToPhone(string phone, string login, string pass)
 		{
-			var i = m_messageText.IndexOf(")");
+			Regex regex = new Regex(@"(992([0-9]{9}))");
+			Match match = regex.Match(phone);
+			if (!match.Success)
+				throw new RecordNotFoundApiException("Не правильный формат телефона");
+			
+			var i = m_messageText.IndexOf(')');
 			var newText = m_messageText.Insert(i + 1, $" {login},\n");
 			var TextCode = $"{newText} \n{pass}";
 			using var httpClient = new HttpClient();

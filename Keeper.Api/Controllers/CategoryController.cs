@@ -14,8 +14,7 @@ public class CategoryController(CategoryEngine categoryEngine, RequestInfo reque
     [Authorize(Access.Admin)]
     public Category Create(Category.Create create)
     {
-        var userInfo = requestInfo.GetUserInfo(HttpContext);
-        userInfo.OrganisationId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "OrganizationId")?.Value);
+        var userInfo = requestInfo.GetUserInfoHelper(HttpContext);
         return categoryEngine.Create(create, userInfo);
     }
     
@@ -23,7 +22,6 @@ public class CategoryController(CategoryEngine categoryEngine, RequestInfo reque
     [Authorize(Access.Admin)]
     public Category Update(Category.Update update)
     {
-        var userInfo = requestInfo.GetUserInfo(HttpContext);
         return categoryEngine.Update(update);
     }
 

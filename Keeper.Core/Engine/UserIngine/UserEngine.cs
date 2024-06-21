@@ -14,25 +14,24 @@ namespace Keeper.Core
         readonly ISqlFactory m_sql;
         readonly DtoComplex m_dto;
         readonly HashCalculator m_hashCalculator = new HashCalculator("#####");
+        public ISendStrategy SendStrategy { get; set; }
         FileEngine m_fileEngine;
-
-        public AuthEngine AuthEngine { get; set; }
 
         readonly bool m_ignorePassword;
         public bool IgnoreCode { get; set; }
 
         LanguageService m_languageServices;
 
-        public UserEngine(ISqlFactory sql, DtoComplex dto, FileEngine fileApi, AuthEngine authEngine,
-            bool ignorePassword, bool ignoreCode)
+        public UserEngine(ISqlFactory sql, DtoComplex dto, FileEngine fileApi,
+            bool ignorePassword, bool ignoreCode, ISendStrategy sendStrategy)
         {
             m_sql = sql;
             m_dto = dto;
             m_fileEngine = fileApi;
-            AuthEngine = authEngine;
             m_ignorePassword = ignorePassword;
 
             IgnoreCode = ignoreCode;
+            SendStrategy = sendStrategy;
         }
 
         public UserEngine InitLanguageServise(LanguageService languageService)
@@ -45,13 +44,13 @@ namespace Keeper.Core
         {
             var db = new Db.User.Create
             {
-                ResultId = userInfo.UserId
+                ReqUserId = userInfo.UserId
             }.CopyFrom(request, m_dto);
             var userId = db.Exec(m_sql);
 
             var password = GeneratedPassword();
             UpdatePassword(userId, password);
-            AuthEngine.SendLoginAndPassToPhone(request.Phone, request.Login, password);
+            SendStrategy.SendLoginAndPasswordToPhone(request.Phone, request.Login, password);
 
             SetRole(new User.UserRoleAccess.Set(userId, UserRoles.ActivatedUser));
 
@@ -63,14 +62,6 @@ namespace Keeper.Core
             request = m_dto.FixValue(request, nameof(request), x => x.NotEmpty().ValidateDto());
 
             var db = new Db.User.Update().CopyFrom(request, m_dto);
-
-            // if (request.State == User.Status.Active)
-            // {
-            //     var pass = GeneratedPassword();
-            //     Task.Run(() => UpdatePasswordAndState(request.Id, pass)).Wait();
-            //     m_authEngine.SendLoginAndPassToPhone(request.PhoneChiefAccountant, request.Inn, pass);
-            // }
-
             db.SetDefaultUpdionlist();
             db.Exec(m_sql);
 
@@ -79,7 +70,7 @@ namespace Keeper.Core
 
         private static string GeneratedPassword()
         {
-            int length = 7;
+            const int length = 7;
             const string lower = "abcdefghijklmnopqrstuvwxyz";
             const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const string number = "1234567890";
@@ -98,16 +89,16 @@ namespace Keeper.Core
                 {
                     // In each case use mod to project byte b to the correct range
                     case 0:
-                        res.Append(lower[b % lower.Count()]);
+                        res.Append(lower[b % lower.Length]);
                         break;
                     case 1:
-                        res.Append(upper[b % upper.Count()]);
+                        res.Append(upper[b % upper.Length]);
                         break;
                     case 2:
-                        res.Append(number[b % number.Count()]);
+                        res.Append(number[b % number.Length]);
                         break;
                     case 3:
-                        res.Append(special[b % special.Count()]);
+                        res.Append(special[b % special.Length]);
                         break;
                 }
             }

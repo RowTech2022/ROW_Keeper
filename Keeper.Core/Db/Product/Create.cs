@@ -73,7 +73,6 @@ insert into [new-keeper].[Products] (
     ,[Quantity]
     ,[BuyingPrice]
     ,[Price]
-    ,[DiscountPrice]
     ,[TotalPrice]
     ,[Margin]
     ,[ExpiredDate]
@@ -91,7 +90,6 @@ select
     @Quantity,
     @BuyingPrice,
     @Price,
-    @DiscountPrice,
     @TotalPrice,
     @Margin,
     @ExpiredDate,

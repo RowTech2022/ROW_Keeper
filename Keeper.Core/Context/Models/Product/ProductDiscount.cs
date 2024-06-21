@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Keeper.Core.Context.Models;
 
-public class ProductDitscount : BaseProp
+public class ProductDiscount : BaseModel
 {
     public int Id { get; set; }
 

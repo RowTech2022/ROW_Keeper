@@ -4,6 +4,7 @@ using Keeper.Core.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Keeper.Core.Migrations
 {
     [DbContext(typeof(ContextKeeper))]
-    partial class ContextKeeperModelSnapshot : ModelSnapshot
+    [Migration("20240620051335_RenameProductDitscounts")]
+    partial class RenameProductDitscounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,10 +90,6 @@ namespace Keeper.Core.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("OrgDescription")
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("OrgEmail")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -160,9 +159,6 @@ namespace Keeper.Core.Migrations
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("OrganizationId")
-                        .HasColumnType("int");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
@@ -271,9 +267,6 @@ namespace Keeper.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Comment")
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
@@ -294,9 +287,8 @@ namespace Keeper.Core.Migrations
                         .HasColumnType("int");
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("datetimeoffset");
@@ -385,12 +377,12 @@ namespace Keeper.Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -409,6 +401,11 @@ namespace Keeper.Core.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -421,16 +418,6 @@ namespace Keeper.Core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
-                    b.HasIndex("Login")
-                        .IsUnique();
-
-                    b.HasIndex("Phone")
-                        .IsUnique();
 
                     b.ToTable("Users", "new-keeper");
                 });

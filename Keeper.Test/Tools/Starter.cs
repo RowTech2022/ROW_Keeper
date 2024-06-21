@@ -79,7 +79,7 @@ namespace Keeper.Test
 				if (userEnginePrev != null)
 				{
 					var engine = (UserEngine)userEnginePrev.ImplementationInstance!;
-					engine.AuthEngine.SetSmsStrategy(Settings.SendSmsMock);
+					engine.SendStrategy = Settings.SendSmsMock;
 				}
 			});
 			base.ConfigureWebHost(builder);

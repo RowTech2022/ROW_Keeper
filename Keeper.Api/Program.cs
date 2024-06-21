@@ -20,20 +20,19 @@ builder.Services.AddSingleton(fileEngine);
 
 var dtoComplex = settings.Common.Injections.Dto;
 if (dtoComplex == null)
-	throw new Exception("Dto complex cannot be null.");
+    throw new Exception("Dto complex cannot be null.");
 
 var userEngine2 = new UserEngine2(settings.Sql, dtoComplex, fileEngine, settings.IgnorePassword, settings.IgnoreCode);
 builder.Services.AddSingleton(userEngine2);
 
-var authEngine2 = new AuthEngine(settings.SMSSend);
-
-var userEngine = new UserEngine(settings.Sql, dtoComplex, fileEngine, authEngine2, settings.IgnorePassword, settings.IgnoreCode);
+var userEngine = new UserEngine(settings.Sql, dtoComplex, fileEngine, settings.IgnorePassword, settings.IgnoreCode,
+    settings.SMSSend);
 builder.Services.AddSingleton(userEngine);
 
 settings.AuthServerSettings.TokenProtector = settings.Common.Injections.DataProtector;
 settings.AuthServerSettings.AuthProtector = settings.Common.AuthDataProtector;
 
-authEngine2 = new AuthEngine(userEngine, settings.AuthServerSettings, settings.Sql, settings.SMSSend);
+var authEngine2 = new AuthEngine(userEngine, settings.AuthServerSettings, settings.Sql, settings.SMSSend);
 builder.Services.AddSingleton(authEngine2);
 
 builder.Services.AddSingleton<OrganizationEngine>();
@@ -44,6 +43,8 @@ builder.Services.AddSingleton<CategoryEngine>();
 
 builder.Services.AddSingleton<ProductEngine>();
 
+builder.Services.AddSingleton<ProductDiscountEngine>();
+
 builder.Services.AddSingleton<SupplierEngine>();
 
 builder.Services.AddSingleton<LanguageService>();
@@ -53,14 +54,14 @@ var app = builder.Build();
 app.InitBaseStartup(settings.Common);
 
 if (!Directory.Exists(settings.FileStoragePath))
-	Directory.CreateDirectory(settings.FileStoragePath);
+    Directory.CreateDirectory(settings.FileStoragePath);
 
 StaticMiddleware.AddFiles(settings.FileStoragePath);
 
 app.UseStaticFiles(new StaticFileOptions
 {
-	FileProvider = new PhysicalFileProvider(settings.FileStoragePath),
-	RequestPath = Helper.FilePublicPath
+    FileProvider = new PhysicalFileProvider(settings.FileStoragePath),
+    RequestPath = Helper.FilePublicPath
 });
 
 app.Run();

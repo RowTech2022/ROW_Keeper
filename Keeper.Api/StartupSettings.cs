@@ -68,16 +68,16 @@ namespace Keeper.Api
 
 			var messUrl = allValues.FirstOrDefault(x => x.Key == "MessUrl")?.Value;
 			if (String.IsNullOrWhiteSpace(messUrl))
-				throw new ValidationApiException("Смс адресс не можеть пустым.");
+				throw new ValidationApiException("Смс адресс не можеть быт пустым.");
 
 			SMSSend = new SmsStrategy(messUrl, authMessText);
 
 			TryParse(allValues
-				.FirstOrDefault(config => config.Key == "IgnorePassword")?.Value, out var ignorePassword);
+				.FirstOrDefault(config => config.Key == "IgnorePassword")?.Value, out bool ignorePassword);
 			IgnorePassword = ignorePassword;
 
 			TryParse(allValues
-				.FirstOrDefault(config => config.Key == "IgnoreCode")?.Value, out var ignoreCode);
+				.FirstOrDefault(config => config.Key == "IgnoreCode")?.Value, out bool ignoreCode);
 			IgnoreCode = ignoreCode;
 
 			AuthServerSettings.IgnorePassword = IgnorePassword;

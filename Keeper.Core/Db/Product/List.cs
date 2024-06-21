@@ -47,17 +47,11 @@ public partial class Db
                 [Bind("Price")]
                 public decimal Price { get; set; }
 
-                [Bind("DiscountPrice")]
-                public decimal DiscountPrice { get; set; }
-
                 [Bind("TotalPrice")]
                 public decimal TotalPrice { get; set; }
     
                 [Bind("Margin")]
                 public int Margin { get; set; }
-
-                [Bind("HaveDiscount")]
-                public bool HaveDiscount { get; set; }
 
                 [Bind("ExpiredDate")] 
                 public DateTimeOffset? ExpiredDate { get; set; }
@@ -78,10 +72,8 @@ select
     ,p.[Quantity]
     ,p.[BuyingPrice]
     ,p.[Price]
-    ,p.[DiscountPrice]
     ,p.[TotalPrice]
     ,p.[Margin]
-    ,p.[HaveDiscount]
     ,p.[ExpiredDate]
     ,p.[CreatedAt]
     ,p.[UpdatedAt]

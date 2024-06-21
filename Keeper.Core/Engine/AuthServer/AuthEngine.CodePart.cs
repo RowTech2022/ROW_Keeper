@@ -8,7 +8,7 @@ namespace Keeper.Core
 	{
 		public void SendCode(User.UserCode request)
 		{
-			// var db = m_userEngine.SendCodeCheckUser(request.Login, "request");
+			var db = m_userEngine.SendCodeCheckUser(request.Login, request.Login);
 			var phone = "992123456789";
             Regex regex = new Regex(@"(992([0-9]{9}))");
             Match match = regex.Match(phone);
@@ -20,16 +20,6 @@ namespace Keeper.Core
                 throw new RecordNotFoundApiException("Код должен быть меньше нуля");
 
             m_smsStrategy.SendCodeToPhone(request, phone, code.ToString(), request.Login);
-        }
-
-        public void SendLoginAndPassToPhone(string phone,string login, string pass)
-        {
-            Regex regex = new Regex(@"(992([0-9]{9}))");
-            Match match = regex.Match(phone);
-            if (!match.Success)
-                throw new RecordNotFoundApiException("Не правильный формат телефона");
-
-            m_smsStrategy.SendLoginAndPasswordToPhone(phone, login, pass);
         }
 
         public int SaveCode(string login)

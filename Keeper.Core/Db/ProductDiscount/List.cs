@@ -49,21 +49,21 @@ public partial class Db
             private const string c_query = @"
 select
      p.[Id]
-    ,x.[ProductName]
+    ,x.[Name] as [ProductName]
     ,x.[UPC]
     ,p.[Percent]
     ,p.[Comment]
     ,p.[FromDate]
     ,p.[ToDate]
-    ,c.[Name] as [Category]
     ,s.[Name] as [SubCategory]
+    ,coalesce(c.[Name], s.[Name]) as [Category]
     ,p.[CreatedAt]
     ,p.[UpdatedAt]
     ,p.[Timestamp]
 from [new-keeper].[ProductDiscounts] as p
-join [new-keeper].[Product] as x on p.[ProductId] = x.[Id]
-join [new-keeper].[Categories] as c on x.[CategoryId] = c.[Id]
-join [new-keeper].[Categories] as s on x.[CategoryId] = s.[ParentId]
+join [new-keeper].[Products] as x on p.[ProductId] = x.[Id]
+left join [new-keeper].[Categories] as s on x.[CategoryId] = s.[Id]
+left join [new-keeper].[Categories] as c on s.[ParentId] = c.[Id] or x.[CategoryId] = c.[Id]
 where
     
     --{Ids - start}

@@ -7,7 +7,7 @@ using Row.Common1.Client1;
 
 namespace Keeper.Core;
 
-public class ProductDiscountEngine(ISqlExecutor sql, DtoComplex dto)
+public class ProductDiscountEngine(ISqlFactory sql, DtoComplex dto)
 {
     public ProductDiscount Create(ProductDiscount.Create create, UserInfo userInfo)
     {
@@ -40,7 +40,8 @@ public class ProductDiscountEngine(ISqlExecutor sql, DtoComplex dto)
 
         return new ProductDiscount.Search.Result
         {
-            Items = request.Select(x => new ProductDiscount.Search.Result.Item().CopyFrom(x, dto)).ToList()
+            Items = request.Select(x => new ProductDiscount.Search.Result.Item().CopyFrom(x, dto)).ToList(),
+            Total = request.Select(x => x.Total).FirstOrDefault()
         };
     }
 

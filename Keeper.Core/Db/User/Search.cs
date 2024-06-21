@@ -12,12 +12,9 @@ namespace Keeper.Core
             [BindStruct]
             public class Search
             {
-                public int[] Ids { get; set; }
+                public int[]? Ids { get; set; }
                 public int? Start { get; set; }
                 public int? Count { get; set; }
-
-                [NVarChar("Inn", 20)]
-                public string? Inn { get; set; }
                 
                 [NVarChar("Email", 20)]
                 public string? Email { get; set; }
@@ -38,21 +35,15 @@ namespace Keeper.Core
                 {
                     [Bind("Id")]
                     public int Id { get; set; }
-                    
-                    [Bind("ReqUserId")] 
-                    public int ReqUserId { get; set; }
 
-                    [NVarChar("Name", 50)] 
-                    public string Name { get; set; } = null!;
-
-                    [NVarChar("Surname", 50)] 
-                    public string Surname { get; set; } = null!;
+                    [NVarChar("FullName", 50)] 
+                    public string FullName { get; set; } = null!;
 
                     [Bind("UserType")]
                     public UserType UserType { get; set; }
 
                     [NVarChar("Email", 500)]
-                    public string Email { get; set; } = null!;
+                    public string? Email { get; set; } = null!;
 
                     [NVarChar("Phone", 20)]
                     public string Phone { get; set; } = null!;

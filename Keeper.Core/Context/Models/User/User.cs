@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Keeper.Client;
+using Microsoft.EntityFrameworkCore;
 
 namespace Keeper.Core.Context.Models;
 
+[Index(nameof(Login), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
+[Index(nameof(Phone), IsUnique = true)]
 public class User : BaseModel
 {
     public int Id { get; set; }
@@ -11,11 +15,8 @@ public class User : BaseModel
 
     public int BranchId { get; set; }
 
-    [StringLength(50)]
-    public string Name { get; set; } = null!;
-
-    [StringLength(50)]
-    public string Surname { get; set; } = null!;
+    [StringLength(100)]
+    public string FullName { get; set; } = null!;
 
     public UserType Usertype { get; set; }
 

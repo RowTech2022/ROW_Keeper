@@ -13,8 +13,7 @@ public class ProductController(ProductEngine productEngine, RequestInfo requestI
     [HttpPost("create")]
     public Product Create(Product.Create create)
     {
-        var userInfo = requestInfo.GetUserInfo(HttpContext);
-        userInfo.OrganisationId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "OrganizatoinId")?.Value);
+        var userInfo = requestInfo.GetUserInfoHelper(HttpContext);
         
         return productEngine.Create(create, userInfo);
     }
@@ -37,7 +36,9 @@ public class ProductController(ProductEngine productEngine, RequestInfo requestI
     [HttpPost("search")]
     public Product.Search.Result Search(Product.Search filter)
     {
-        return productEngine.Search(filter);
+        var userInfo = requestInfo.GetUserInfoHelper(HttpContext);
+        
+        return productEngine.Search(filter, userInfo);
     }
 
     [HttpGet("get/{id}")]

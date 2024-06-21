@@ -15,6 +15,9 @@ public class Organization : BaseModel
     [StringLength(500)]
     public string OrgName { get; set; } = null!;
 
+    [StringLength(5000)] 
+    public string? OrgDescription { get; set; }
+
     [StringLength(20)]
     public string OrgPhone { get; set; } = null!;
 

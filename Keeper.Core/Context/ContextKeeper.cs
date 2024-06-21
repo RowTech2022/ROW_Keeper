@@ -19,7 +19,7 @@ namespace Keeper.Core.Context
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductDitscount> ProductDitscounts { get; set; }
+        public DbSet<ProductDiscount> ProductDiscounts { get; set; }
 
         public DbSet<Supplier> Suppliers { get; set; }
 

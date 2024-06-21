@@ -15,6 +15,8 @@ public partial class Db
             [NVarChar("NameOrUPC", 500)]
             public string? NameOrUPC { get; set; }
             public int[]? CategoryIds { get; set; }
+
+            public int BranchId { get; set; }
             
             public int? Start { get; set; }
             public int? Count { get; set; }
@@ -43,12 +45,6 @@ public partial class Db
                 [Bind("Price")]
                 public decimal Price { get; set; }
 
-                [Bind("DiscountPrice")]
-                public decimal DiscountPrice { get; set; }
-
-                [Bind("HaveDiscount")]
-                public bool HaveDiscount { get; set; }
-
                 [Bind("ExpiredDate")] 
                 public DateTimeOffset? ExpiredDate { get; set; }
 
@@ -62,19 +58,20 @@ public partial class Db
 select
 {topPaging}
      p.[Id]
+    ,p.[BranchId]
     ,c.[Name] as [CategoryName]
     ,p.[UPC]
     ,p.[Name]
     ,p.[AgeLimit]
     ,p.[Quantity]
     ,p.[Price]
-    ,p.[DiscountPrice]
-    ,p.[HaveDiscount]
     ,p.[ExpiredDate]
     ,count(*) over() as [Total]
 from [new-keeper].[Products] as p
 join [new-keeper].[Categories] as c on p.[CategoryId] = c.[Id]
 where
+
+    p.[BranchId] = @BranchId and
     
     --{Ids - start}
     p.[Id] in ({Ids}) and

@@ -13,5 +13,19 @@ namespace Keeper.Client.ProductDiscount
         public DateTimeOffset ToDate { get; set; }
         public string Category { get; set; } = null!;
         public string SubCategory { get; set; } = null!;
+
+        public static ProductDiscount Exec(int id, KeeperApiClient client)
+        {
+            var request = client.GetRequest($"api/productDiscount/get/{id}");
+
+            return client.ExecuteWithHttp<ProductDiscount>(request);
+        }
+
+        public static ProductDiscount ExecTest(int id, KeeperApiClient client)
+        {
+            var request = client.GetRequest($"api/productDiscount/get/{id}");
+
+            return client.ExecuteWithHttp<ProductDiscount>(request);
+        }
     }
 }

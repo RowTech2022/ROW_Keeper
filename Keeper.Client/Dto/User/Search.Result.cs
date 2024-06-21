@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Row.Common.Dto1;
 
 
 namespace Keeper.Client
@@ -17,11 +15,11 @@ namespace Keeper.Client
                  public class Item
                  {
 					public int Id { get; set;} 
-					public string Name  { get; set;} = null!; 
-					public string Surname  { get; set;} = null!; 
-					public string Phone  { get; set;} = null!; 
+					public string FullName  { get; set;} = null!; 
+					public string Phone  { get; set;} = null!;
+                    public string? Email { get; set; }
 					public string Login  { get; set;} = null!;
-                    public Status State { get; set; }
+                    public Status Status { get; set; }
                     public UserType UserType { get; set; }
                 }
             }

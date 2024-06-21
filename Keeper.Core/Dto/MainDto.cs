@@ -32,9 +32,9 @@ namespace Keeper.Core
             UserType UserType { get; set; }
         }
 
-        public interface IState
+        public interface IStatus
         {
-            User.Status State { get; set; }
+            User.Status Status { get; set; }
         }
 
         public interface ICategoryDbNull

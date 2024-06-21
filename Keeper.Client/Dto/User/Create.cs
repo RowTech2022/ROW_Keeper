@@ -11,11 +11,7 @@ namespace Keeper.Client
         {
             [Required]
             [TrimWhitespace]
-            public string Name { get; set; } = null!;
-
-            [Required]
-            [TrimWhitespace]
-            public string Surname { get; set; } = null!;
+            public string FullName { get; set; } = null!;
 
             [Required]
             [TrimWhitespace]
@@ -28,6 +24,8 @@ namespace Keeper.Client
             public UserType UserType { get; set; }
 
             public int BranchId { get; set; }
+
+            public Status Status { get; set; }
 
             public User Exec(KeeperApiClient client)
             {

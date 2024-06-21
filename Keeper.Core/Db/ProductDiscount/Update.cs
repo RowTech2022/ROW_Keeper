@@ -29,7 +29,7 @@ public partial class Db
             [Bind("Acitve")]
             public bool Active { get; set; }
 
-            [Bind("ResulCount", Direction = ParameterDirection.Output)]
+            [Bind("ResultCount", Direction = ParameterDirection.Output)]
             public int ResultCount { get; set; }
 
             public string[]? UpdateList { get; set; }

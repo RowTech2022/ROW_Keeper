@@ -31,13 +31,9 @@ namespace Keeper.Client.Product
 
             public decimal Price { get; set; }
 
-            public decimal DiscountPrice { get; set; }
-
             public decimal TotalPrice { get; set; }
 
             public int Margin { get; set; }
-
-            public bool HaveDiscount { get; set; }
 
             public DateTimeOffset? ExpiredDate { get; set; }
 

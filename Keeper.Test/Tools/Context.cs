@@ -11,8 +11,7 @@ namespace Keeper.Test
         {
             var result = new User.Create
             {
-                Name = "Tommy - test",
-                Surname = "Shelby - test",
+                FullName = "Tommy Shelby - test",
                 Email = "Email - TEST",
                 Phone = "992" +
                         new Random().Next(0, 9) +
@@ -48,6 +47,35 @@ namespace Keeper.Test
                    new Random().Next(0, 10) +
                    new Random().Next(0, 10) +
 
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10);
+        }
+
+        public static string GenerateEmail()
+        {
+            return "test" +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   "@mail.com";
+        }
+        
+        public static string GenerateUPC()
+        {
+            return "" +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
+                   new Random().Next(0, 10) +
                    new Random().Next(0, 10) +
                    new Random().Next(0, 10);
         }

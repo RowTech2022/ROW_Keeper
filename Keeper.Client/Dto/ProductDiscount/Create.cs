@@ -1,4 +1,5 @@
 using System;
+using Row.Common1.Client1;
 
 namespace Keeper.Client.ProductDiscount
 {
@@ -11,6 +12,20 @@ namespace Keeper.Client.ProductDiscount
             public string? Comment { get; set; }
             public DateTimeOffset FromDate { get; set; }
             public DateTimeOffset ToDate { get; set; }
+
+            public ProductDiscount Exec(KeeperApiClient client)
+            {
+                var request = client.PostRequest("api/productDiscount/create").Body(this);
+
+                return client.ExecuteWithHttp<ProductDiscount>(request);
+            }
+
+            public ProductDiscount ExecTest(KeeperApiClient client)
+            {
+                var request = client.PostRequest("api/productDiscount/create").Body(this);
+
+                return client.ExecuteWithHttp<ProductDiscount>(request);
+            }
         }
     }
 }

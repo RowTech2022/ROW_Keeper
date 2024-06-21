@@ -9,7 +9,7 @@ namespace Keeper.Core;
 
 public class CategoryEngine(ISqlFactory sql, DtoComplex dto)
 {
-    public Category Create(Category.Create create, UserInfo userInfo)
+    public Category Create(Category.Create create, UserInfoExtension userInfo)
     {
         var org = new Db.Organization.List(userInfo.OrganisationId).Exec(sql).FirstOrDefault();
         if (org == null)

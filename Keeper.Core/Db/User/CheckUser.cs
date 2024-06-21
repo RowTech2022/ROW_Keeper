@@ -41,12 +41,13 @@ select
 	,u.[UserType]
 	,isnull(o.[Id], 0) as [OrganizationId]
 from [new-keeper].[Users] as u
-left join [new-keeper].[Organizations] as o on u.[Id] = o.[OwnerId]
+left join [new-keeper].[OrganizationBranches] as b on u.[BranchId] = b.[Id]
+left join [new-keeper].[Organizations] as o on b.[OrganizationId] = o.[Id]
 where
 
---{login - start}
-	u.Login = @login and
---{login - end}
+--{Login - start}
+	u.Login = @Login and
+--{Login - end}
 
 --{UserId - start}
     u.[Id] = @UserId and
@@ -54,7 +55,7 @@ where
 
     u.[Active] = 1 and
 
-    1=1
+    1 = 1
 ";
 
                 #endregion c_query
@@ -71,7 +72,7 @@ where
                     var query = c_query;
 
 
-                    query = SqlQueriesFormater.RemoveSubString(query, UserId == null ? "UserId" : "login");
+                    query = SqlQueriesFormater.RemoveSubString(query, UserId == null ? "UserId" : "Login");
 
                     return query;
                 }

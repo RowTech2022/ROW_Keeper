@@ -8,14 +8,13 @@ namespace Keeper.Client
     {
         public class Update
         {
-			public int Id  { get; set;} 
-			public string Name  { get; set;} = null!; 
-			public string Surname  { get; set;} = null!;
-            public string Phone  { get; set;} = null!;
-            public string? Email  { get; set;}
-            public string Login  { get; set;} = null!;
-			public UserType UserType { get; set;}
-			public byte[]? Timestamp  { get; set;} 
+			public int Id { get; set; }
+            public int BranchId { get; set; }
+            public string FullName { get; set; } = null!;
+            public string Phone { get; set; } = null!;
+            public string? Email { get; set; }
+            public string Login { get; set; } = null!;
+            public UserType UserType { get; set; }
 
             public User Exec(KeeperApiClient client)
             {

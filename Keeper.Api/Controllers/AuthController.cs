@@ -10,13 +10,13 @@ namespace Keeper.Api.Controllers
 	[Route("[controller]")]
 	public class AuthController : ControllerBase
 	{
-		AuthEngine _mAuthEngine;
+		AuthEngine m_authEngine;
 		RequestInfo m_requestInfo;
 		private LanguageService m_languageService;
 
 		public AuthController(AuthEngine authEngine, IDataProtectionProvider protectedProvider, RequestInfo requestInfo, LanguageService languageService)
 		{
-			_mAuthEngine = authEngine.InitLanguageServise(languageService);
+			m_authEngine = authEngine.InitLanguageServise(languageService);
 			m_requestInfo = requestInfo;
 			m_languageService = languageService;
 		}
@@ -33,7 +33,7 @@ namespace Keeper.Api.Controllers
 		[HttpPost]
 		public TokenInfo Login(Login request)
 		{
-			var result = _mAuthEngine.Login(request);
+			var result = m_authEngine.Login(request);
 			return result;
 		}
 
@@ -57,7 +57,7 @@ namespace Keeper.Api.Controllers
 
 			//m_restoreEngine.CheckUserSertGetCode(userTokenImfo, request);
 
-			_mAuthEngine.SendCode(request);
+			m_authEngine.SendCode(request);
 		}
 
         //[Route("checkCode")]

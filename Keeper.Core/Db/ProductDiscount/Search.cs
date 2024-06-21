@@ -1,4 +1,3 @@
-using System.Data;
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
 
@@ -56,25 +55,30 @@ public partial class Db
 
                 [NVarChar("SubCategory",300)]
                 public string SubCategory { get; set; } = null!;
+
+                [Bind("Total")]
+                public int Total { get; set; }
             }
 
             #region c_query
 
             private const string c_query = @"
 select
+{topPaging}
      p.[Id]
-    ,x.[ProductName]
+    ,x.[Name] as [ProductName]
     ,x.[UPC]
     ,p.[Percent]
     ,p.[Comment]
     ,p.[FromDate]
     ,p.[ToDate]
-    ,c.[Name] as [Category]
     ,s.[Name] as [SubCategory]
+    ,coalesce(c.[Name], s.[Name]) as [Category]
+    ,count(*) over() as [Total]
 from [new-keeper].[ProductDiscounts] as p
-join [new-keeper].[Product] as x on p.[ProductId] = x.[Id]
-join [new-keeper].[Categories] as c on x.[CategoryId] = c.[Id]
-join [new-keeper].[Categories] as s on x.[CategoryId] = s.[ParentId]
+join [new-keeper].[Products] as x on p.[ProductId] = x.[Id]
+left join [new-keeper].[Categories] as s on x.[CategoryId] = s.[Id]
+left join [new-keeper].[Categories] as c on s.[ParentId] = c.[Id]
 where
     
     --{Ids - start}
@@ -86,6 +90,8 @@ where
     --{UPC - end}
     
     1 = 1
+order by p.[Id] desc
+{offsetPaging}
 ";
 
             #endregion
@@ -101,10 +107,14 @@ where
             {
                 var query = c_query;
 
+                query = SqlQueriesFormater.Page("topPaging", "offsetPaging")
+                    .Top(Count).Offset(Start)
+                    .Format(query);
+
                 query = SqlQueriesFormater.RemoveOrReplace("Ids", Ids, x => string.Join(", ", x)).Format(query);
 
                 if (string.IsNullOrWhiteSpace(UPC))
-                    query = SqlQueriesFormater.RemoveSubString("UPC", query);
+                    query = SqlQueriesFormater.RemoveSubString(query, "UPC");
 
                 return SqlQueriesFormater.RemoveLabels(query);
             }

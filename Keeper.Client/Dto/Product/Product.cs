@@ -15,10 +15,8 @@ namespace Keeper.Client.Product
         public int Quantity { get; set; }
         public decimal BuyingPrice { get; set; }
         public decimal Price { get; set; }
-        public decimal DiscountPrice { get; set; }
         public decimal TotalPrice { get; set; }
         public int Margin { get; set; }
-        public bool HaveDiscount { get; set; }
         public DateTimeOffset? ExpiredDate { get; set; }
 
         public static Product Exec(int id, KeeperApiClient client)

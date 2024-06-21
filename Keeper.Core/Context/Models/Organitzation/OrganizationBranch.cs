@@ -8,6 +8,8 @@ public class OrganizationBranch : BaseModel
 
     public int ReqUserId { get; set; }
 
+    public int OrganizationId { get; set; }
+
     public int OwnerId { get; set; }
     
     [StringLength(500)]

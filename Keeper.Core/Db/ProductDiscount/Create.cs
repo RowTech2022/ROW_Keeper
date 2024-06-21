@@ -47,6 +47,7 @@ insert into [new-keeper].[ProductDiscounts] (
     ,[CreatedAt]
     ,[UpdatedAt] )
 select
+    @ReqUserId,
     @ProductId,
     @Percent,
     @Comment,

@@ -1,17 +1,20 @@
+using Bibliotekaen.Monads;
 using Bibliotekaen.Sql;
 using FluentAssertions;
 using Keeper.Client;
 using Keeper.Client.Product;
+using Keeper.Client.ProductDiscount;
 using Row.Common.Dto1;
 
 namespace Keeper.Test;
 
 [TestClass]
-public class ProductTest
+public class ProductDiscountTest
 {
     private readonly List<int> m_productIds = [];
     private readonly List<int> m_categoryIds = [];
     private readonly List<int> m_supplierIds = [];
+    private readonly List<int> m_productDiscountIds = [];
     private ISqlFactory? m_sql;
 
     [TestInitialize]
@@ -41,6 +44,12 @@ public class ProductTest
                 var query = $"delete from [new-keeper].[Suppliers] where [Id] in ({string.Join(", ", m_supplierIds)})";
                 m_sql.Query(query);
             }
+            
+            if (m_productDiscountIds.Any())
+            {
+                var query = $"delete from [new-keeper].[ProductDiscounts] where [Id] in ({string.Join(", ", m_productDiscountIds)})";
+                m_sql.Query(query);
+            }
         }
     }
 
@@ -68,6 +77,17 @@ public class ProductTest
         category.Id.Should().BeGreaterThan(0);
         m_categoryIds.Add(category.Id);
 
+        var subCategoryRequest = new Category.Create
+        {
+            Name = "Test sub category product",
+            ParentId = category.Id
+        };
+
+        var subCategory = subCategoryRequest.ExecTest(server.Client);
+
+        subCategory.Id.Should().BeGreaterThan(0);
+        m_categoryIds.Add(subCategory.Id);
+
         var supplierRequest = new Supplier.Create
         {
             CompanyName = "Test company",
@@ -81,10 +101,10 @@ public class ProductTest
         supplier.Id.Should().BeGreaterThan(0);
         m_supplierIds.Add(supplier.Id);
 
-        var request = new Product.Create
+        var product = new Product.Create
         {
             SupplierId = supplier.Id,
-            CategoryId = category.Id,
+            CategoryId = subCategory.Id,
             TaxId = 6,
             UPC = Context.GenerateUPC(),
             Name = "Test product",
@@ -97,23 +117,34 @@ public class ProductTest
             ExpiredDate = DateTime.Now.Date.AddDays(50)
         };
 
+        var productResult = product.ExecTest(server.Client);
+
+        productResult.Id.Should().BeGreaterThan(0);
+        m_productIds.Add(productResult.Id);
+
+        var request = new ProductDiscount.Create
+        {
+            ProductId = productResult.Id,
+            Percent = 10,
+            Comment = "This test for discount product.",
+            FromDate = DateTimeOffset.Now.AddDays(-5),
+            ToDate = DateTimeOffset.Now.AddDays(5)
+        };
+
         var result = request.ExecTest(server.Client);
 
         result.Id.Should().BeGreaterThan(0);
-        m_productIds.Add(result.Id);
+        m_productDiscountIds.Add(result.Id);
 
-        result.SupplierId.Should().Be(request.SupplierId);
-        result.CategoryName.Should().Be(category.Name);
-        result.TaxId.Should().Be(request.TaxId);
-        result.UPC.Should().Be(request.UPC);
-        result.Name.Should().Be(request.Name);
-        result.AgeLimit.Should().Be(request.AgeLimit);
-        result.Quantity.Should().Be(request.Quantity);
-        result.BuyingPrice.Should().Be(request.BuyingPrice);
-        result.Price.Should().Be(request.Price);
-        result.TotalPrice.Should().Be(request.TotalPrice);
-        result.Margin.Should().Be(request.Margin);
-        result.ExpiredDate.Should().Be(request.ExpiredDate);
+        result.UPC.Should().Be(productResult.UPC);
+        result.ProductName.Should().Be(productResult.Name);
+        result.Category.Should().Be(category.Name);
+        result.SubCategory.Should().Be(subCategory.Name);
+        result.Comment.Should().Be(request.Comment);
+        result.Percent.Should().Be(request.Percent);
+        result.SubCategory.Should().NotBeNullOrWhiteSpace();
+        result.FromDate.Should().Be(request.FromDate);
+        result.ToDate.Should().Be(request.ToDate);
         result.CreatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
         result.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
         result.Timestamp.Should().NotBeNullOrEmpty();
@@ -138,6 +169,17 @@ public class ProductTest
         category.Id.Should().BeGreaterThan(0);
         m_categoryIds.Add(category.Id);
 
+        var subCategoryRequest = new Category.Create
+        {
+            Name = "Test sub category product",
+            ParentId = category.Id
+        };
+
+        var subCategory = subCategoryRequest.ExecTest(server.Client);
+
+        subCategory.Id.Should().BeGreaterThan(0);
+        m_categoryIds.Add(subCategory.Id);
+
         var supplierRequest = new Supplier.Create
         {
             CompanyName = "Test company",
@@ -151,10 +193,10 @@ public class ProductTest
         supplier.Id.Should().BeGreaterThan(0);
         m_supplierIds.Add(supplier.Id);
 
-        var request = new Product.Create
+        var product = new Product.Create
         {
             SupplierId = supplier.Id,
-            CategoryId = category.Id,
+            CategoryId = subCategory.Id,
             TaxId = 6,
             UPC = Context.GenerateUPC(),
             Name = "Test product",
@@ -167,59 +209,46 @@ public class ProductTest
             ExpiredDate = DateTime.Now.Date.AddDays(50)
         };
 
+        var productResult = product.ExecTest(server.Client);
+
+        productResult.Id.Should().BeGreaterThan(0);
+        m_productIds.Add(productResult.Id);
+
+        var request = new ProductDiscount.Create
+        {
+            ProductId = productResult.Id,
+            Percent = 10,
+            Comment = "This test for discount product.",
+            FromDate = DateTimeOffset.Now.AddDays(-5),
+            ToDate = DateTimeOffset.Now.AddDays(5)
+        };
+
         var result = request.ExecTest(server.Client);
 
         result.Id.Should().BeGreaterThan(0);
-        m_productIds.Add(result.Id);
+        m_productDiscountIds.Add(result.Id);
 
-        result.SupplierId.Should().Be(request.SupplierId);
-        result.CategoryName.Should().Be(category.Name);
-        result.TaxId.Should().Be(request.TaxId);
-        result.UPC.Should().Be(request.UPC);
-        result.Name.Should().Be(request.Name);
-        result.AgeLimit.Should().Be(request.AgeLimit);
-        result.Quantity.Should().Be(request.Quantity);
-        result.BuyingPrice.Should().Be(request.BuyingPrice);
-        result.Price.Should().Be(request.Price);
-        result.TotalPrice.Should().Be(request.TotalPrice);
-        result.Margin.Should().Be(request.Margin);
-        result.ExpiredDate.Should().Be(request.ExpiredDate);
-        result.CreatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
-        result.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
-        result.Timestamp.Should().NotBeNullOrEmpty();
-
-        var updateRequest = new Product.Update
+        var updateRequest = new ProductDiscount.Update
         {
             Id = result.Id,
-            CategoryId = category.Id,
-            TaxId = 10,
-            UPC = Context.GenerateUPC(),
-            Name = "Update " + result.Name,
-            AgeLimit = 18,
-            Quantity = new Random().Next(20, 200),
-            BuyingPrice = 200,
-            Price = 220,
-            TotalPrice = 220,
-            Margin = 200,
-            ExpiredDate = DateTime.Now.Date.AddDays(30)
+            Percent = 12,
+            Comment = "Update " + request.Comment,
+            FromDate = result.FromDate.AddDays(2),
+            ToDate = request.ToDate.AddDays(2)
         };
 
         var updateResult = updateRequest.ExecTest(server.Client);
-        
-        updateResult.Id.Should().Be(updateRequest.Id);
-        updateResult.SupplierId.Should().Be(request.SupplierId);
-        updateResult.CategoryName.Should().Be(category.Name);
-        updateResult.TaxId.Should().Be(updateRequest.TaxId);
-        updateResult.UPC.Should().Be(updateRequest.UPC);
-        updateResult.Name.Should().Be(updateRequest.Name);
-        updateResult.AgeLimit.Should().Be(updateRequest.AgeLimit);
-        updateResult.Quantity.Should().Be(updateRequest.Quantity);
-        updateResult.BuyingPrice.Should().Be(updateRequest.BuyingPrice);
-        updateResult.Price.Should().Be(updateRequest.Price);
-        updateResult.TotalPrice.Should().Be(updateRequest.TotalPrice);
-        updateResult.Margin.Should().Be(updateRequest.Margin);
-        updateResult.ExpiredDate.Should().Be(updateRequest.ExpiredDate);
-        updateResult.CreatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
+
+        updateResult.Id.Should().Be(result.Id);
+        updateResult.Percent.Should().Be(updateRequest.Percent);
+        updateResult.Comment.Should().Be(updateRequest.Comment);
+        updateResult.FromDate.Should().Be(updateRequest.FromDate);
+        updateResult.ToDate.Should().Be(updateRequest.ToDate);
+        updateResult.Category.Should().Be(category.Name);
+        updateResult.SubCategory.Should().Be(subCategory.Name);
+        updateResult.ProductName.Should().Be(product.Name);
+        updateResult.UPC.Should().Be(product.UPC);
+        updateResult.CreatedAt.Should().Be(result.CreatedAt);
         updateResult.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
         updateResult.Timestamp.Should().NotBeNullOrEmpty();
     }
@@ -230,7 +259,7 @@ public class ProductTest
         using var server = new Starter().TestLogin();
 
         InitCleaner(server.Sql);
-        
+
         var categoryRequest = new Category.Create
         {
             Name = "Test category product"
@@ -240,6 +269,17 @@ public class ProductTest
 
         category.Id.Should().BeGreaterThan(0);
         m_categoryIds.Add(category.Id);
+
+        var subCategoryRequest = new Category.Create
+        {
+            Name = "Test sub category product",
+            ParentId = category.Id
+        };
+
+        var subCategory = subCategoryRequest.ExecTest(server.Client);
+
+        subCategory.Id.Should().BeGreaterThan(0);
+        m_categoryIds.Add(subCategory.Id);
 
         var supplierRequest = new Supplier.Create
         {
@@ -254,78 +294,83 @@ public class ProductTest
         supplier.Id.Should().BeGreaterThan(0);
         m_supplierIds.Add(supplier.Id);
 
-        var createList = new List<Product.Create>();
+        var product = new Product.Create
+        {
+            SupplierId = supplier.Id,
+            CategoryId = subCategory.Id,
+            TaxId = 6,
+            UPC = Context.GenerateUPC(),
+            Name = "Test product",
+            AgeLimit = 18,
+            Quantity = new Random().Next(20, 200),
+            BuyingPrice = 100,
+            Price = 110,
+            TotalPrice = 110,
+            Margin = 1000,
+            ExpiredDate = DateTime.Now.Date.AddDays(50)
+        };
+
+        var productResult = product.ExecTest(server.Client);
+
+        productResult.Id.Should().BeGreaterThan(0);
+        m_productIds.Add(productResult.Id);
 
         for (int i = 0; i < 5; i++)
         {
-            var request = new Product.Create
+            var request = new ProductDiscount.Create
             {
-                SupplierId = supplier.Id,
-                CategoryId = category.Id,
-                TaxId = 6,
-                UPC = Context.GenerateUPC(),
-                Name = $"Test product_{i}",
-                AgeLimit = 18,
-                Quantity = new Random().Next(20, 200),
-                BuyingPrice = 100,
-                Price = 110,
-                TotalPrice = 110,
-                Margin = 1000,
-                ExpiredDate = DateTime.Now.Date.AddDays(50)
+                ProductId = productResult.Id,
+                Percent = 10,
+                Comment = "This test for discount product.",
+                FromDate = DateTimeOffset.Now.AddDays(-5),
+                ToDate = DateTimeOffset.Now.AddDays(5)
             };
-
-            createList.Add(request);
 
             var result = request.ExecTest(server.Client);
 
             result.Id.Should().BeGreaterThan(0);
-            m_productIds.Add(result.Id);
+            m_productDiscountIds.Add(result.Id);
         }
 
-        var searchRequest = new Product.Search
+        var searchRequest = new ProductDiscount.Search
         {
-            Ids = m_productIds.ToArray()
+            Ids = m_productDiscountIds.ToArray()
         };
 
         var searchResult = searchRequest.ExecTest(server.Client);
 
         searchResult.Total.Should().Be(5);
+        searchResult.Items.Count.Should().Be(5);
         foreach (var item in searchResult.Items)
         {
-            m_productIds.Should().Contain(item.Id);
-            item.CategoryName.Should().Be(category.Name);
-            createList.Select(x => x.UPC).Should().Contain(item.UPC);
-            createList.Select(x => x.Name).Should().Contain(item.Name);
-            createList.Select(x => x.AgeLimit).Should().Contain(item.AgeLimit);
-            createList.Select(x => x.Quantity).Should().Contain(item.Quantity);
-            createList.Select(x => x.Price).Should().Contain(item.Price);
-            createList.Select(x => x.ExpiredDate).Should().Contain(item.ExpiredDate);
+            m_productDiscountIds.Should().Contain(item.Id);
         }
 
-        searchRequest = new Product.Search
+        searchRequest = new ProductDiscount.Search
+        {
+            Filters = new ProductDiscount.Search.Filter
+            {
+                UPC = "1234567890"
+            }
+        };
+
+        searchResult = searchRequest.ExecTest(server.Client);
+
+        searchResult.Total.Should().Be(0);
+        searchResult.Items.Count.Should().Be(0);
+
+        searchRequest = new ProductDiscount.Search
         {
             PageInfo = new PageInfo
             {
-                PageNumber = 1000
+                PageNumber = 100000,
+                PageSize = 10
             }
         };
 
         searchResult = searchRequest.ExecTest(server.Client);
 
         searchResult.Total.Should().Be(0);
-        searchResult.Items.Should().BeEmpty();
-
-        searchRequest = new Product.Search
-        {
-            Filters = new Product.Search.Filter
-            {
-                NameOrUPC = "test_12345"
-            }
-        };
-
-        searchResult = searchRequest.ExecTest(server.Client);
-
-        searchResult.Total.Should().Be(0);
-        searchResult.Items.Should().BeEmpty();
+        searchResult.Items.Count.Should().Be(0);
     }
 }
