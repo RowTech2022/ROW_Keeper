@@ -14,10 +14,12 @@ namespace Keeper.Client
                 public class Item
                 {
                     public int Id { get; set; }
+                    public Information? Plan { get; set; }
                     public string OrgName  { get; set;} = null!;
                     public string OrgPhone { get; set;} = null!;
                     public string? OrgEmail { get; set;} = null!;
                     public string OrgAddress { get; set; } = null!;
+                    public OrgStatus Status { get; set; }
                 }
             }
         }

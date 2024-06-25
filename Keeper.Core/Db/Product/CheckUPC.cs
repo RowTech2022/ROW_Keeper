@@ -13,8 +13,8 @@ public partial class Db
             [NVarChar("UPC", 100)]
             public string UPC { get; set; } = null!;
 
-            [Bind("BranchId")]
-            public int BranchId { get; set; }
+            [Bind("OrgId")]
+            public int OrgId { get; set; }
             
             [BindStruct]
             public class Result
@@ -42,7 +42,7 @@ where
     
     p.[UPC] = @UPC and
     
-    p.[BranchId] = @BranchId and
+    p.[OrgId] = @OrgId and
     
     1 = 1
 ";

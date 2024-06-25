@@ -34,15 +34,12 @@ namespace Keeper.Core
                 const string c_query = @"
 select
 	 u.[Id]
-	,u.[BranchId]
+	,u.[OrgId] as [OrganizationId]
 	,u.[Login]
 	,u.[Phone]
 	,u.[PasswordHash]
 	,u.[UserType]
-	,isnull(o.[Id], 0) as [OrganizationId]
 from [new-keeper].[Users] as u
-left join [new-keeper].[OrganizationBranches] as b on u.[BranchId] = b.[Id]
-left join [new-keeper].[Organizations] as o on b.[OrganizationId] = o.[Id]
 where
 
 --{Login - start}
@@ -82,9 +79,6 @@ where
                 {
                     [Bind("Id")]
                     public int UserId { get; set; }
-                    
-                    [Bind("BranchId")]
-                    public int BranchId { get; set; }
                     
                     [Bind("UserType")]
                     public int UserType { get; set; }

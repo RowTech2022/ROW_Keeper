@@ -17,8 +17,8 @@ public partial class Db
                 [Bind("Id")]
                 public int Id { get; set; }
 
-                [Bind("BranchId")]
-                public int BranchId { get; set; }
+                [Bind("OrgId")]
+                public int OrgId { get; set; }
 
                 [Bind("SupplierId")]
                 public int SupplierId { get; set; }
@@ -62,7 +62,7 @@ public partial class Db
             private const string c_query = @"
 select
      p.[Id]
-    ,p.[BranchId]
+    ,p.[OrgId]
     ,p.[SupplierId]
     ,c.[Name] as [CategoryName]
     ,p.[TaxId]

@@ -37,8 +37,6 @@ builder.Services.AddSingleton(authEngine2);
 
 builder.Services.AddSingleton<OrganizationEngine>();
 
-builder.Services.AddSingleton<OrganizationBranchEngine>();
-
 builder.Services.AddSingleton<CategoryEngine>();
 
 builder.Services.AddSingleton<ProductEngine>();
@@ -48,6 +46,8 @@ builder.Services.AddSingleton<ProductDiscountEngine>();
 builder.Services.AddSingleton<SupplierEngine>();
 
 builder.Services.AddSingleton<LanguageService>();
+
+builder.Services.AddSingleton<PlanEngine>();
 
 var app = builder.Build();
 

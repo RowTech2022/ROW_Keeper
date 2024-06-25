@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Keeper.Core.Context.Models;
 
-[Index(nameof(BranchId))]
-[Index(nameof(UPC), nameof(BranchId), IsUnique = true)]
+[Index(nameof(OrgId))]
+[Index(nameof(UPC), nameof(OrgId), IsUnique = true)]
 public class Product : BaseModel
 {
     public int Id { get; set; }
 
     public int ReqUserId { get; set; }
 
-    public int BranchId { get; set; }
+    public int OrgId { get; set; }
 
     public int SupplierId { get; set; }
 

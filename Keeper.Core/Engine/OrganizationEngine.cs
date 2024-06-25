@@ -6,18 +6,44 @@ using Row.Common1.Client1;
 
 namespace Keeper.Core;
 
-public class OrganizationEngine(ISqlFactory sql, DtoComplex dto)
+public class OrganizationEngine(PlanEngine planEngine, ISqlFactory sql, DtoComplex dto)
 {
     public Organization Create(Organization.Create create, UserInfo userInfo)
     {
-        var user = new Db.User.CheckUser(create.OwnerId).Exec(sql);
-        if (user == null)
-            throw new RecordNotFoundApiException($"User with id {create.OwnerId} not found.");
+        if (create.OwnerId != 0)
+        {
+            var user = new Db.User.CheckUser(create.OwnerId).Exec(sql);
+            if (user == null)
+                throw new RecordNotFoundApiException($"User with id {create.OwnerId} not found.");
+        }
+
+        var plan = create.PlanId != 0
+            ? planEngine.Check(create.PlanId)
+            : null;
 
         var resultId = new Db.Organization.Create
         {
             ReqUserId = userInfo.UserId
         }.CopyFrom(create, dto).Exec(sql);
+
+        if (plan != null)
+        {
+            new Db.Subscription.Create
+            {
+                ReqUserId = userInfo.UserId,
+                OrgId = resultId,
+                PlanId = plan.Id,
+                StartDate = DateTimeOffset.Now,
+                EndDate = plan.Type switch
+                {
+                    Plan.PlanType.Monthly => DateTimeOffset.Now.AddDays(plan.Duration),
+                    Plan.PlanType.Annual => DateTimeOffset.Now.AddYears(plan.Duration),
+                    Plan.PlanType.Trial => DateTimeOffset.Now.AddDays(plan.Duration),
+                    Plan.PlanType.Free => DateTimeOffset.Now.AddYears(999),
+                    _ => DateTimeOffset.Now
+                }
+            }.Exec(sql);
+        }
 
         return Get(resultId);
     }

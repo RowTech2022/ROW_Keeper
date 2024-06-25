@@ -16,7 +16,8 @@ public partial class Db
             public string? NameOrUPC { get; set; }
             public int[]? CategoryIds { get; set; }
 
-            public int BranchId { get; set; }
+            [Bind("OrgId")]
+            public int OrgId { get; set; }
             
             public int? Start { get; set; }
             public int? Count { get; set; }
@@ -58,7 +59,6 @@ public partial class Db
 select
 {topPaging}
      p.[Id]
-    ,p.[BranchId]
     ,c.[Name] as [CategoryName]
     ,p.[UPC]
     ,p.[Name]
@@ -71,7 +71,7 @@ from [new-keeper].[Products] as p
 join [new-keeper].[Categories] as c on p.[CategoryId] = c.[Id]
 where
 
-    p.[BranchId] = @BranchId and
+    p.[OrgId] = @OrgId and
     
     --{Ids - start}
     p.[Id] in ({Ids}) and

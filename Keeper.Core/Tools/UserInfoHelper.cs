@@ -13,7 +13,6 @@ public static class UserInfoHelper
         {
             UserId = userInfo.UserId,
             OrganisationId = Convert.ToInt32(httpContext.User.Claims.FirstOrDefault(x => x.Type == "OrganizationId")?.Value),
-            BranchId = Convert.ToInt32(httpContext.User.Claims.FirstOrDefault(x => x.Type == "BranchId")?.Value),
             SessionId = userInfo.SessionId,
             Expired = userInfo.Expired,
             Roles = userInfo.Roles,

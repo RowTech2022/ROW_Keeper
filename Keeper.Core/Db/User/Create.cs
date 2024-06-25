@@ -14,8 +14,8 @@ namespace Keeper.Core
 				[Bind("ReqUserId")]
 				public int ReqUserId  { get; set;}
 
-				[Bind("BranchId")]
-				public int BranchId  { get; set;}
+				[Bind("OrgId")]
+				public int OrgId  { get; set;}
 
 				[NVarChar("FullName", 100)]
 				public string FullName { get; set; } = null!;
@@ -48,7 +48,7 @@ declare @now datetimeoffset(7) = getutcdate()
 INSERT INTO [new-keeper].[Users]
         (
          [ReqUserId]
-        ,[BranchId]
+        ,[OrgId]
         ,[FullName]
         ,[Phone]
         ,[Email]
@@ -60,7 +60,7 @@ INSERT INTO [new-keeper].[Users]
         )
 select
         @ReqUserId,
-        @BranchId,
+        @OrgId,
         @FullName,
         @Phone,
         @Email,

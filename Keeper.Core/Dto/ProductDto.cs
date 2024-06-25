@@ -98,7 +98,7 @@ public static class ProductDto
     public class Client_Create : Product.Create, ISupplierId, ICategoryId, ITaxId, IUPC, IName,
         IAgeLimit, IQuantity, IBuyingPrice, IPrice, ITotalPrice, IMargin, IExpireDate;
 
-    public class Db_Create : Db.Product.Create, MainDto.IBranchId, ISupplierId, ICategoryId, ITaxId, IUPC, IName,
+    public class Db_Create : Db.Product.Create, MainDto.IOrgId, ISupplierId, ICategoryId, ITaxId, IUPC, IName,
         IAgeLimit, IQuantity, IBuyingPrice, IPrice, ITotalPrice, IMargin, IExpireDate;
 
     public class Client_Udpate : Product.Update, MainDto.IId, ICategoryId, ITaxId, IUPC, IName, IAgeLimit, IQuantity,
@@ -109,11 +109,11 @@ public static class ProductDto
         IBuyingPrice,
         IPrice, ITotalPrice, IMargin, IExpireDate;
 
-    public class Client_Product : Product, MainDto.IId, MainDto.IBranchId, ISupplierId, ICategoryName, ITaxId, IUPC,
+    public class Client_Product : Product, MainDto.IId, MainDto.IOrgId, ISupplierId, ICategoryName, ITaxId, IUPC,
         IName, IAgeLimit, IQuantity, IBuyingPrice, IPrice, ITotalPrice, IMargin,
         IExpireDate, MainDto.ILife, MainDto.ITimestamp;
 
-    public class Db_List_Result : Db.Product.List.Result, MainDto.IId, MainDto.IBranchId, ISupplierId, ICategoryName,
+    public class Db_List_Result : Db.Product.List.Result, MainDto.IId, MainDto.IOrgId, ISupplierId, ICategoryName,
         ITaxId, IUPC, IName, IAgeLimit, IQuantity, IBuyingPrice, IPrice, ITotalPrice, IMargin, IExpireDate,
         MainDto.ILife, MainDto.ITimestamp;
 

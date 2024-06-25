@@ -11,6 +11,11 @@ public static class OrganizationDto
         string OrgName { get; set; }
     }
     
+    public interface IOrgDescription
+    {
+        string? OrgDescription { get; set; }
+    }
+    
     public interface IOrgPhone
     {
         string OrgPhone { get; set; }
@@ -40,25 +45,76 @@ public static class OrganizationDto
 
     #endregion
     
-    public class Client_Create : Organization.Create, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
+    public interface IOwnerFullName
+    {
+        string OwnerFullName { get; set; }
+    }
     
-    public class Db_Create : Db.Organization.Create, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
+    public interface IOwnerEmail
+    {
+        string? OwnerEmail { get; set; }
+    }
     
-    public class Client_Update : Organization.Update, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ITimestamp;
+    public interface IOwnerPhone
+    {
+        string OwnerPhone { get; set; }
+    }
     
-    public class Db_Update : Db.Organization.Update, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
+    public interface IPlanId
+    {
+        int? PlanId { get; set; }
+    }
+
+    public interface IPlaneName
+    {
+        string? PlanName { get; set; }
+    }
     
-    public class Client_Get : Organization, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ILife, MainDto.ITimestamp;
+    public interface IInformation
+    {
+        Information? Plan { get; set; }
+    }
+
+    public interface IDbInformation : IPlanId, IPlaneName;
+
+    #region IDbInformation
+
+    [DtoConvert]
+    static void Convert(IInformation dst, IDbInformation src)
+    {
+        dst.Plan = new Information
+        {
+            Id = src.PlanId,
+            Value = src.PlanName
+        };
+    }
+
+    #endregion
     
-    public class Db_List_Result : Db.Organization.List.Result, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ILife, MainDto.ITimestamp;
+    public interface IStatus
+    {
+        Organization.OrgStatus Status { get; set; }
+    }
+    
+    public class Client_Create : Organization.Create, MainDto.IOwnerId, IOrgName, IOrgDescription, IOrgPhone, IOrgEmail, IOrgAddress, IOwnerFullName, IOwnerEmail, IOwnerPhone, IStatus;
+    
+    public class Db_Create : Db.Organization.Create, MainDto.IOwnerId, IOrgName, IOrgDescription, IOrgPhone, IOrgEmail, IOrgAddress, IOwnerFullName, IOwnerEmail, IOwnerPhone, IStatus;
+    
+    public class Client_Update : Organization.Update, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgDescription, IOrgPhone, IOrgEmail, IOrgAddress, MainDto.ITimestamp, IOwnerFullName, IOwnerEmail, IOwnerPhone, IStatus;
+    
+    public class Db_Update : Db.Organization.Update, MainDto.IId, MainDto.IOwnerId, IOrgName, IOrgDescription, IOrgPhone, IOrgEmail, IOrgAddress, IOwnerFullName, IOwnerEmail, IOwnerPhone, IStatus;
+    
+    public class Client_Get : Organization, MainDto.IId, IInformation, MainDto.IOwnerId, IOrgName, IOrgDescription, IOrgPhone, IOrgEmail, IOrgAddress, IOwnerFullName, IOwnerEmail, IOwnerPhone, IStatus, MainDto.ILife, MainDto.ITimestamp;
+    
+    public class Db_List_Result : Db.Organization.List.Result, MainDto.IId, IDbInformation, MainDto.IOwnerId, IOrgName, IOrgDescription, IOrgPhone, IOrgEmail, IOrgAddress, IOwnerFullName, IOwnerEmail, IOwnerPhone, IStatus, MainDto.ILife, MainDto.ITimestamp;
 
     public class Client_Search : Organization.Search, IFilter, MainDto.IPageInfoSource, MainDto.IIds;
     
     public class Client_Search_Filter : Organization.Search.Filter, IOrgName;
 
-    public class Client_Search_Result : Organization.Search.Result.Item, MainDto.IId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
+    public class Client_Search_Result : Organization.Search.Result.Item, MainDto.IId, IInformation, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, IStatus;
 
     public class Db_Search : Db.Organization.Search, IDbFilter, MainDto.IPageInfoDb, MainDto.IIds;
     
-    public class Db_Search_Result : Db.Organization.Search.Result, MainDto.IId, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress;
+    public class Db_Search_Result : Db.Organization.Search.Result, MainDto.IId, IDbInformation, IOrgName, IOrgPhone, IOrgEmail, IOrgAddress, IStatus;
 }

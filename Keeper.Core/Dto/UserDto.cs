@@ -32,16 +32,16 @@ public static class UserDto
     #endregion
 
     public class Client_Create : User.Create, IFullName, IEmail, MainDto.IUserType, MainDto.IPhone, MainDto.ILogin,
-        MainDto.IStatus, MainDto.IBranchId;
+        MainDto.IStatus, MainDto.IOrgId;
 
     public class Db_Create : Db.User.Create, IFullName, IEmail, MainDto.IUserType, MainDto.IPhone, MainDto.ILogin,
-        MainDto.IStatus, MainDto.IBranchId;
+        MainDto.IStatus;
 
     public class Client_Update : User.Update, MainDto.IId, IFullName, IEmail, MainDto.IUserType, MainDto.IPhone,
-        MainDto.ILogin, MainDto.IBranchId;
+        MainDto.ILogin, MainDto.IOrgId;
 
     public class Db_Update : Db.User.Update, MainDto.IId, IFullName, IEmail, MainDto.IUserType, MainDto.IPhone,
-        MainDto.ILogin, MainDto.IBranchId;
+        MainDto.ILogin, MainDto.IOrgId;
 
     public class Client_Search : User.Search, MainDto.IPageInfoSource, IFilter, MainDto.IIds;
 
@@ -60,4 +60,7 @@ public static class UserDto
 
     public class Db_User_List : Db.User.List.Result, MainDto.IId, IFullName, IEmail, MainDto.IUserType, MainDto.IPhone,
         MainDto.ILogin, MainDto.ILife, MainDto.ITimestamp;
+
+    public class Client_Details : User.UserDetails, MainDto.IId, IFullName, MainDto.IPhone, IEmail, MainDto.ILogin,
+        MainDto.IUserType;
 }

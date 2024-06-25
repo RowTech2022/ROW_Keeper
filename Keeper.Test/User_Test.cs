@@ -7,7 +7,8 @@ namespace Keeper.Test
     [TestClass]
     public class User_Test
     {
-        List<int> createdUsers = [];
+        private readonly List<int> createdUsers = [];
+        private readonly List<int> orgIds = [];
         ISqlFactory? m_sql;
 
         [TestInitialize]
@@ -20,9 +21,15 @@ namespace Keeper.Test
         {
             if (m_sql == null) return;
             
-            if (createdUsers.Any())
+            if (createdUsers.Count != 0)
             {
                 var query = $"delete from [new-keeper].[Users] where [Id] in ({string.Join(", ", createdUsers)})";
+                m_sql.Query(query);
+            }
+            
+            if (orgIds.Count != 0)
+            {
+                var query = $"delete from [new-keeper].[Organizations] where [Id] in ({string.Join(", ", orgIds)})";
                 m_sql.Query(query);
             }
         }
@@ -38,14 +45,22 @@ namespace Keeper.Test
             using var server = new Starter().TestLogin();
             
             InitCleaner(server.Sql);
+
+            var orgRequest = Context.DefaultOrganization();
+            var org = orgRequest.ExecTest(server.Client);
+
+            org.Id.Should().BeGreaterThan(0);
+            orgIds.Add(org.Id);
             
             var create = new User.Create
             {
+                OrgId = org.Id,
                 FullName = "Name Surname - Admin",
                 Phone = Context.GeneratePhone(),
                 Email = Context.GenerateEmail(),
                 UserType = UserType.Admin,
-                Login = "userName" + new Random().Next(1, 999999) 
+                Login = "userName" + new Random().Next(1, 999999),
+                Status = User.Status.Active,
             };
 
             var now = DateTime.Now;
@@ -84,14 +99,22 @@ namespace Keeper.Test
             using var server = new Starter().TestLogin();
             
             InitCleaner(server.Sql);
+
+            var orgRequest = Context.DefaultOrganization();
+            var org = orgRequest.ExecTest(server.Client);
+
+            org.Id.Should().BeGreaterThan(0);
+            orgIds.Add(org.Id);
             
             var userRequest = new User.Create
             {
+                OrgId = org.Id,
                 FullName = "Name Surname - Admin",
                 Phone = Context.GeneratePhone(),
                 Email = Context.GenerateEmail(),
                 UserType = UserType.Admin,
-                Login = "userName" + new Random().Next(1, 999999) 
+                Login = "userName" + new Random().Next(1, 999999),
+                Status = User.Status.Active
             };
 
             var now = DateTime.Now;
@@ -108,7 +131,7 @@ namespace Keeper.Test
                 Email = userResult.Email + 2,
                 Login = userResult.Login + 2,
                 Phone = userResult.Phone,
-                BranchId = userRequest.BranchId,
+                OrgId = userRequest.OrgId,
                 UserType = UserType.Cashier
             };
 
@@ -120,6 +143,9 @@ namespace Keeper.Test
             result.Login.Should().Be(request.Login);
             result.Phone.Should().Be(request.Phone);
             result.UserType.Should().Be(request.UserType);
+            result.CreatedAt.Should().Be(userResult.CreatedAt);
+            result.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
+            result.Timestamp.Should().NotBeNullOrEmpty();
         }
     }
 }

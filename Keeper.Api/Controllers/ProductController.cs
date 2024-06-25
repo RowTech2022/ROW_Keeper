@@ -1,6 +1,7 @@
 using Keeper.Client;
 using Keeper.Client.Product;
 using Keeper.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Row.Common1;
 
@@ -11,6 +12,7 @@ namespace Keeper.Api.Controllers;
 public class ProductController(ProductEngine productEngine, RequestInfo requestInfo) : ControllerBase
 {
     [HttpPost("create")]
+    [Authorize(Access.User)]
     public Product Create(Product.Create create)
     {
         var userInfo = requestInfo.GetUserInfoHelper(HttpContext);
@@ -19,15 +21,16 @@ public class ProductController(ProductEngine productEngine, RequestInfo requestI
     }
 
     [HttpPost("update")]
+    [Authorize(Access.User)]
     public Product Update(Product.Update update)
     {
-        var userInfo = requestInfo.GetUserInfo(HttpContext);
-        userInfo.OrganisationId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "OrganizatoinId")?.Value);
+        var userInfo = requestInfo.GetUserInfoHelper(HttpContext);
         
         return productEngine.Update(update, userInfo);
     }
 
     [HttpPost("import")]
+    [Authorize(Access.User)]
     public async Task<List<Product.Update>> Import(IFormFile file)
     {
         return await productEngine.ImportProduct(file);
@@ -46,6 +49,25 @@ public class ProductController(ProductEngine productEngine, RequestInfo requestI
     {
         return productEngine.Get(id);
     }
+
+    [HttpPost("checkUPC")]
+    [Authorize(Access.User)]
+    public bool CheckUPC(Product.CheckUPC upc)
+    {
+        var userInfo = requestInfo.GetUserInfoHelper(HttpContext);
+
+        return productEngine.CheckUPC(upc.UPC, userInfo);
+    }
+
+    [HttpGet("generateUPC")]
+    [Authorize(Access.User)]
+    public Product.CheckUPC GenerateUPC()
+    {
+        var userInfo = requestInfo.GetUserInfoHelper(HttpContext);
+        
+        return productEngine.GetnerateUPC(userInfo);
+    }
+    
 
     [HttpPost("delete")]
     public void Delete(Delete delete)

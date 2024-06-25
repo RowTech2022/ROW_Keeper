@@ -19,13 +19,12 @@ public class SupplierTest
     [TestCleanup]
     public void Cleanup()
     {
-        if (m_sql != null)
+        if (m_sql == null) return;
+        
+        if (m_supplierIds.Count != 0)
         {
-            if (m_supplierIds.Any())
-            {
-                var query = $"delete from [new-keeper].[Suppliers] where [Id] in ({string.Join(", ", m_supplierIds)})";
-                m_sql.Query(query);
-            }
+            var query = $"delete from [new-keeper].[Suppliers] where [Id] in ({string.Join(", ", m_supplierIds)})";
+            m_sql.Query(query);
         }
     }
 

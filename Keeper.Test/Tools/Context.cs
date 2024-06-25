@@ -12,7 +12,7 @@ namespace Keeper.Test
             var result = new User.Create
             {
                 FullName = "Tommy Shelby - test",
-                Email = "Email - TEST",
+                Email = GenerateEmail(),
                 Phone = "992" +
                         new Random().Next(0, 9) +
                         new Random().Next(0, 9) +
@@ -32,6 +32,23 @@ namespace Keeper.Test
 
             return result;
 
+        }
+
+        public static Organization.Create DefaultOrganization()
+        {
+            return new Organization.Create
+            {
+                PlanId = 0,
+                OwnerId = 0,
+                OrgName = "Test organization",
+                OrgPhone = "992123456789",
+                OrgAddress = "Dushanbe, Rudaky 17",
+                OrgEmail = "test@mail.com",
+                OwnerFullName = "Test Testov",
+                OwnerEmail = "test@mail.com",
+                OwnerPhone = "992123456789",
+                Status = Organization.OrgStatus.Acitve
+            };
         }
 
         public static string GeneratePhone()

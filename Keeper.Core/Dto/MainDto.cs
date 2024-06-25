@@ -51,40 +51,6 @@ namespace Keeper.Core
 			string CategoryName { get; set; }
 		}
 
-		public interface ICategoryApi
-		{
-			Information Category { get; set; }
-		}
-
-		#region ICategoryId
-		[DtoConvert]
-		static void Convert(ICategoryApi dst, ICategoryDbWithName src)
-		{
-			dst.Category = new Information(src.CategoryId, src.CategoryName);
-		}
-		[DtoConvert]
-		static void Convert(ICategoryApi dst, ICategoryDbNullWithName src)
-		{
-			if (src.CategoryId != null)
-				dst.Category = new Information(src.CategoryId.Value, src.CategoryName);
-		}
-
-		[DtoConvert]
-		static void Convert(ICategoryDb dst, ICategoryApi src)
-		{
-			if (src?.Category?.Id != null)
-				dst.CategoryId = src.Category?.Id ?? 0;
-		}
-
-		[DtoConvert]
-		static void Convert(ICategoryDbNull dst, ICategoryApi src)
-		{
-			dst.CategoryId = src?.Category?.Id;
-		}
-
-
-		#endregion
-
 		public interface IId
 		{
 			int Id { get; set; }
@@ -108,11 +74,6 @@ namespace Keeper.Core
 		public interface IOrgId
 		{
 			int OrgId { get; set; }
-		}
-		
-		public interface IBranchId
-		{
-			int BranchId { get; set; }
 		}
 		
 		public interface IActive
@@ -250,6 +211,6 @@ namespace Keeper.Core
 
 		#endregion
 
-		public class Client_IPageInfo : PageInfo, IPageInfo { }
+		public class Client_IPageInfo : PageInfo, IPageInfo;
 	}
 }

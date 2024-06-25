@@ -20,6 +20,9 @@ public partial class Db
             [NVarChar("OrgName", 500)]
             public string OrgName  { get; set;} = null!;
 
+            [NVarChar("OrgDescription", 5000)]
+            public string? OrgDescription  { get; set;} = null!;
+
             [NVarChar("OrgPhone", 20)]
             public string OrgPhone { get; set;} = null!;
 
@@ -28,6 +31,18 @@ public partial class Db
 
             [NVarChar("OrgAddress", 500)] 
             public string OrgAddress { get; set; } = null!;
+
+            [NVarChar("OwnerFullName", 100)]
+            public string OwnerFullName { get; set; } = null!;
+
+            [NVarChar("OwnerEmail", 100)]
+            public string? OwnerEmail { get; set; } = null!;
+
+            [NVarChar("OwnerPhone", 20)]
+            public string OwnerPhone { get; set; } = null!;
+
+            [Bind("Status")]
+            public Client.Organization.OrgStatus Status { get; set; }
 
             [Bind("Active")]
             public bool Active { get; set; }
@@ -56,9 +71,14 @@ set @ResultCount = @@rowcount
                 [
                     nameof(OwnerId),
                     nameof(OrgName),
+                    nameof(OrgDescription),
                     nameof(OrgPhone),
                     nameof(OrgEmail),
                     nameof(OrgAddress),
+                    nameof(OwnerFullName),
+                    nameof(OwnerEmail),
+                    nameof(OwnerPhone),
+                    nameof(Status),
                     nameof(Active),
                 ];
 
@@ -68,9 +88,14 @@ set @ResultCount = @@rowcount
             {
                 yield return nameof(OwnerId);
                 yield return nameof(OrgName);
+                yield return nameof(OrgDescription);
                 yield return nameof(OrgPhone);
                 yield return nameof(OrgEmail);
                 yield return nameof(OrgAddress);
+                yield return nameof(OwnerFullName);
+                yield return nameof(OwnerPhone);
+                yield return nameof(OwnerEmail);
+                yield return nameof(Status);
             }
 
             public void SetDefaultUpdationList()
@@ -85,7 +110,7 @@ set @ResultCount = @@rowcount
                 sql.Query(query, this);
 
                 if (ResultCount == 0)
-                    throw new Exception("The Contract cannot be wrote because it changed.");
+                    throw new Exception("The organization cannot be wrote because it changed.");
             }
 
             private string GetQuery()

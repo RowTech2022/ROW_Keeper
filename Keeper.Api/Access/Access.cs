@@ -13,7 +13,7 @@ namespace Keeper.Api
         public Access()
         {
             Items.Add(new UserAccess(Admin, UserRoles.Admin));
-            Items.Add(new UserAccess(SystemAdmin, UserRoles.SystemAdmin));
+            Items.Add(new UserAccess(SystemAdmin, UserRoles.SystemAdmin, UserRoles.Admin, UserRoles.ActivatedUser));
             Items.Add(new UserAccess(SystemAdminOrAdmin, UserRoles.SystemAdmin, UserRoles.Admin));
             Items.Add(new UserAccess(User, UserRoles.ActivatedUser));
         }

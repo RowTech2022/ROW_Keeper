@@ -26,7 +26,7 @@ namespace Keeper.Api.Controllers
         [Authorize(Access.Admin)]
         public User Create(User.Create request)
         {
-            var userInfo = m_requestInfo.GetUserInfo(HttpContext);
+            var userInfo = m_requestInfo.GetUserInfoHelper(HttpContext);
             return m_engine.Create(request, userInfo);
         }
 

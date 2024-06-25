@@ -23,7 +23,7 @@ namespace Keeper.Client
 
             public UserType UserType { get; set; }
 
-            public int BranchId { get; set; }
+            public int OrgId { get; set; }
 
             public Status Status { get; set; }
 

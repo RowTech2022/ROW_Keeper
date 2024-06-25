@@ -62,7 +62,6 @@ namespace Keeper.Core
 				Type = getDb.UserType,
 				Roles = GetUserRoles(getDb.UserId).ToHashSet(),
 				OrganisationId = getDb.OrganizationId,
-				BranchId = getDb.BranchId
 			};
 
 			return result;

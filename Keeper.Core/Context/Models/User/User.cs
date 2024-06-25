@@ -13,7 +13,7 @@ public class User : BaseModel
 
     public int ReqUserId { get; set; }
 
-    public int BranchId { get; set; }
+    public int OrgId { get; set; }
 
     [StringLength(100)]
     public string FullName { get; set; } = null!;

@@ -14,14 +14,18 @@ namespace Keeper.Core.Context
         public DbSet<UserRoleAccess> UserRoleAccess { get; set; }
 
         public DbSet<Organization> Organizations { get; set; }
-        public DbSet<OrganizationBranch> OrganizationBranches { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductDiscount> ProductDiscounts { get; set; }
+        public DbSet<ProductPurchase> ProductPurchases { get; set; }
+        public DbSet<ProductPurchaseDetail> ProductPurchaseDetails { get; set; }
 
         public DbSet<Supplier> Suppliers { get; set; }
+
+        public DbSet<Plan> Plans { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,16 +40,28 @@ namespace Keeper.Core.Context
             modelBuilder.Entity<Organization>()
                 .Property(x => x.Active).HasDefaultValue(true);
             
-            modelBuilder.Entity<OrganizationBranch>()
-                .Property(x => x.Active).HasDefaultValue(true);
-            
             modelBuilder.Entity<Category>()
                 .Property(x => x.Active).HasDefaultValue(true);
             
             modelBuilder.Entity<Product>()
                 .Property(x => x.Active).HasDefaultValue(true);
             
+            modelBuilder.Entity<ProductDiscount>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
+            modelBuilder.Entity<ProductPurchase>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
+            modelBuilder.Entity<ProductPurchaseDetail>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
             modelBuilder.Entity<Supplier>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
+            modelBuilder.Entity<Plan>()
+                .Property(x => x.Active).HasDefaultValue(true);
+            
+            modelBuilder.Entity<Subscription>()
                 .Property(x => x.Active).HasDefaultValue(true);
             
             base.OnModelCreating(modelBuilder);

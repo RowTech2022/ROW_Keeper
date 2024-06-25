@@ -26,4 +26,15 @@ public class Organization : BaseModel
 
     [StringLength(500)]
     public string OrgAddress { get; set; } = null!;
+
+    [StringLength(100)]
+    public string OwnerFullName { get; set; } = null!;
+
+    [StringLength(100)]
+    public string? OwnerEmail { get; set; } = null!;
+
+    [StringLength(20)] 
+    public string OwnerPhone { get; set; } = null!;
+
+    public Client.Organization.OrgStatus Status { get; set; }
 }

@@ -14,8 +14,8 @@ namespace Keeper.Core
 				[Bind("Id")]
 				public int Id  { get; set;}
 
-				[Bind("BranchId")]
-				public int BranchId { get; set; }
+				[Bind("OrgId")]
+				public int OrgId { get; set; }
 
 				[NVarChar("FullName", 50)] 
 				public string FullName { get; set; } = null!;
@@ -70,7 +70,7 @@ where
 				static HashSet<string> s_updationList = new HashSet<string>(
 					new[]
 					{
-						nameof(BranchId),
+						nameof(OrgId),
 						nameof(FullName),
 						nameof(UserType),
 						nameof(Phone),
@@ -86,7 +86,7 @@ where
 
 				private static IEnumerable<string> GetDefaultUpdionlist()
 				{
-				    yield return nameof(BranchId);
+				    yield return nameof(OrgId);
 				    yield return nameof(FullName);
 				    yield return nameof(UserType);
 				    yield return nameof(Phone);

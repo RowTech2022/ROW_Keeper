@@ -40,11 +40,20 @@ namespace Keeper.Core
             return this;
         }
 
-        public User Create(User.Create request, UserInfo userInfo)
+        public User Create(User.Create request, UserInfoExtension userInfo)
         {
+            if (request.OrgId != 0)
+            {
+                var org = new Db.Organization.List(request.OrgId).Exec(m_sql).FirstOrDefault();
+
+                if (org == null)
+                    throw new RecordNotFoundApiException("Organization not found");
+            }
+            
             var db = new Db.User.Create
             {
-                ReqUserId = userInfo.UserId
+                ReqUserId = userInfo.UserId,
+                OrgId = request.OrgId == 0 ? userInfo.OrganisationId : request.OrgId
             }.CopyFrom(request, m_dto);
             var userId = db.Exec(m_sql);
 

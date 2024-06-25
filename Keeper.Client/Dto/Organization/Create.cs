@@ -10,9 +10,14 @@ namespace Keeper.Client
         {
             public int OwnerId { get; set; }
 
+            public int PlanId { get; set; }
+
             [Required]
             [TrimWhitespace(500)]
             public string OrgName { get; set; } = null!;
+
+            [TrimWhitespace(500)]
+            public string? OrgDescription { get; set; } = null!;
 
             [Required]
             [TrimWhitespace(20)]
@@ -24,6 +29,19 @@ namespace Keeper.Client
             [Required]
             [TrimWhitespace(500)]
             public string OrgAddress { get; set; } = null!;
+
+            [Required]
+            [TrimWhitespace(100)]
+            public string OwnerFullName { get; set; } = null!;
+
+            [TrimWhitespace(100)]
+            public string? OwnerEmail { get; set; } = null!;
+
+            [Required]
+            [TrimWhitespace(20)]
+            public string OwnerPhone { get; set; } = null!;
+
+            public OrgStatus Status { get; set; }
 
             public Organization Exec(KeeperApiClient client)
             {

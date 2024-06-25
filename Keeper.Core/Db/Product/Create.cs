@@ -14,8 +14,8 @@ public partial class Db
             [Bind("ReqUserId")]
             public int ReqUserId { get; set; }
             
-            [Bind("BranchId")]
-            public int BranchId { get; set; }
+            [Bind("OrgId")]
+            public int OrgId { get; set; }
 
             [Bind("SupplierId")]
             public int SupplierId { get; set; }
@@ -63,7 +63,7 @@ declare @now datetimeoffset(7) = getutcdate()
 
 insert into [new-keeper].[Products] (
      [ReqUserId]
-    ,[BranchId]
+    ,[OrgId]
     ,[SupplierId]
     ,[CategoryId]
     ,[TaxId]
@@ -80,7 +80,7 @@ insert into [new-keeper].[Products] (
     ,[UpdatedAt] )
 select
     @ReqUserId,
-    @BranchId,
+    @OrgId,
     @SupplierId,
     @CategoryId,
     @TaxId,

@@ -5,7 +5,7 @@ namespace Keeper.Client.Product
     public partial class Product : BaseDto
     {
         public int Id { get; set; }
-        public int BranchId { get; set; }
+        public int OrgId { get; set; }
         public int SupplierId { get; set; }
         public string CategoryName { get; set; } = null!;
         public int TaxId { get; set; }

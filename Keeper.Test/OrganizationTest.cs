@@ -10,6 +10,7 @@ namespace Keeper.Test;
 public class OrganizationTest
 {
     private readonly List<int> m_organizationIds = [];
+    private readonly List<int> m_planIds = [];
     private ISqlFactory? m_sql;
 
     [TestInitialize]
@@ -27,10 +28,15 @@ public class OrganizationTest
                 var query = $"delete from [new-keeper].[Organizations] where [Id] in ({string.Join(", ", m_organizationIds)})";
                 m_sql.Query(query);
             }
+            if (m_planIds.Any())
+            {
+                var query = $"delete from [new-keeper].[Plans] where [Id] in ({string.Join(", ", m_planIds)})";
+                m_sql.Query(query);
+            }
         }
     }
 
-    public void InitCleaner(ISqlFactory sql)
+    private void InitCleaner(ISqlFactory sql)
     {
         m_sql = sql;
     }
@@ -43,7 +49,7 @@ public class OrganizationTest
     [TestMethod]
     public void Create()
     {
-        using var server = new Starter();
+        using var server = new Starter().TestLogin();
 
         InitCleaner(server.Sql);
 
@@ -63,22 +69,48 @@ public class OrganizationTest
         
         server.Login(user.Login, password);
 
+        var planRequest = new Plan.Create
+        {
+            Name = "Test plan",
+            Price = 125.50m,
+            Duration = 20,
+            Type = Plan.PlanType.Monthly
+        };
+
+        var plan = planRequest.ExecTest(server.Client);
+
+        plan.Id.Should().BeGreaterThan(0);
+        m_planIds.Add(plan.Id);
+
         var request = new Organization.Create
         {
+            PlanId = plan.Id,
             OwnerId = user.Id,
             OrgName = "Test organization",
+            OrgDescription = "Test description",
             OrgPhone = "992123456789",
-            OrgAddress = "Dushanbe, Rudaky 17"
+            OrgAddress = "Dushanbe, Rudaky 17",
+            OrgEmail = "test@mail.com",
+            OwnerFullName = "Test Testov",
+            OwnerEmail = "test@mail.com",
+            OwnerPhone = "992123456789",
+            Status = Organization.OrgStatus.Acitve
         };
 
         var result = request.ExecTest(server.Client);
 
         result.Id.Should().BeGreaterThan(0);
         m_organizationIds.Add(result.Id);
-        
+
+        result.Plan?.Id.Should().Be(plan.Id);
+        result.Plan?.Value.Should().Be(plan.Name);
         result.OwnerId.Should().BeGreaterThan(0);
         result.OrgName.Should().Be(request.OrgName);
+        result.OrgDescription.Should().Be(request.OrgDescription);
         result.OrgPhone.Should().Be(request.OrgPhone);
+        result.OwnerFullName.Should().Be(request.OwnerFullName);
+        result.OwnerEmail.Should().Be(request.OwnerEmail);
+        result.OwnerPhone.Should().Be(request.OwnerPhone);
         result.OrgAddress.Should().Be(request.OrgAddress);
         result.CreatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
         result.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
@@ -88,7 +120,7 @@ public class OrganizationTest
     [TestMethod]
     public void Update()
     {
-        using var server = new Starter();
+        using var server = new Starter().TestLogin();
 
         InitCleaner(server.Sql);
 
@@ -108,36 +140,53 @@ public class OrganizationTest
         
         server.Login(user.Login, password);
 
+        var planRequest = new Plan.Create
+        {
+            Name = "Test plan",
+            Price = 125.50m,
+            Duration = 20,
+            Type = Plan.PlanType.Monthly
+        };
+
+        var plan = planRequest.ExecTest(server.Client);
+
+        plan.Id.Should().BeGreaterThan(0);
+        m_planIds.Add(plan.Id);
+
         var request = new Organization.Create
         {
+            PlanId = plan.Id,
             OwnerId = user.Id,
             OrgName = "Test organization",
+            OrgDescription = "Test description",
             OrgPhone = "992123456789",
-            OrgAddress = "Dushanbe, Rudaky 17"
+            OrgAddress = "Dushanbe, Rudaky 17",
+            OrgEmail = "test@mail.com",
+            OwnerFullName = "Test Testov",
+            OwnerEmail = "test@mail.com",
+            OwnerPhone = "992123456789",
+            Status = Organization.OrgStatus.Acitve
         };
 
         var result = request.ExecTest(server.Client);
 
         result.Id.Should().BeGreaterThan(0);
         m_organizationIds.Add(result.Id);
-        
-        result.OwnerId.Should().BeGreaterThan(0);
-        result.OrgName.Should().Be(request.OrgName);
-        result.OrgPhone.Should().Be(request.OrgPhone);
-        result.OrgAddress.Should().Be(request.OrgAddress);
-        result.CreatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
-        result.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
-        result.Timestamp.Should().NotBeNullOrEmpty();
 
         var updateRequest = new Organization.Update
         {
             Id = result.Id,
             OwnerId = result.OwnerId,
             OrgName = "Update " + result.OrgName,
+            OrgDescription = "Update " + result.OrgDescription,
             OrgPhone = result.OrgPhone,
             OrgEmail = "up_" + result.OrgEmail,
             OrgAddress = "Update " + result.OrgAddress,
-            Timestamp = result.Timestamp
+            Timestamp = result.Timestamp,
+            OwnerFullName = "Udpate " + result.OwnerFullName,
+            OwnerEmail = "update" + result.OwnerEmail,
+            OwnerPhone = result.OwnerPhone,
+            Status = Organization.OrgStatus.InActive
         };
 
         var updateResult = updateRequest.ExecTest(server.Client);
@@ -146,6 +195,9 @@ public class OrganizationTest
         updateResult.OrgName.Should().Be(updateRequest.OrgName);
         updateResult.OrgPhone.Should().Be(updateRequest.OrgPhone);
         updateResult.OrgEmail.Should().Be(updateRequest.OrgEmail);
+        updateResult.OwnerFullName.Should().Be(updateRequest.OwnerFullName);
+        updateResult.OwnerPhone.Should().Be(updateRequest.OwnerPhone);
+        updateResult.OwnerEmail.Should().Be(updateRequest.OwnerEmail);
         updateResult.OrgAddress.Should().Be(updateRequest.OrgAddress);
         updateResult.CreatedAt.Should().Be(result.CreatedAt);
         updateResult.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
@@ -161,18 +213,37 @@ public class OrganizationTest
 
         var createList = new List<Organization.Create>();
 
+        var planRequest = new Plan.Create
+        {
+            Name = "Test plan",
+            Price = 125.50m,
+            Duration = 20,
+            Type = Plan.PlanType.Monthly
+        };
+
+        var plan = planRequest.ExecTest(server.Client);
+
+        plan.Id.Should().BeGreaterThan(0);
+        m_planIds.Add(plan.Id);
+        
+        var userRequest = Context.DefaultUser();
+        var user = userRequest.ExecTest(server.Client);
+
         for (int i = 0; i < 5; i++)
         {
-            var userRequest = Context.DefaultUser();
-            var user = userRequest.ExecTest(server.Client);
-
             var request = new Organization.Create
             {
+                PlanId = plan.Id,
                 OwnerId = user.Id,
                 OrgName = "Test organization",
+                OrgDescription = "Test description",
                 OrgPhone = "992123456789",
+                OrgAddress = "Dushanbe, Rudaky 17",
                 OrgEmail = "test@mail.com",
-                OrgAddress = "Dushanbe, Rudaky 17"
+                OwnerFullName = "Test Testov",
+                OwnerEmail = "test@mail.com",
+                OwnerPhone = "992123456789",
+                Status = Organization.OrgStatus.Acitve
             };
 
             createList.Add(request);

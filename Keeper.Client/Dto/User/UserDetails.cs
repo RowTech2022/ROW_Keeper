@@ -10,10 +10,9 @@ namespace Keeper.Client
         public class UserDetails
         {
             public int Id { get; set; }
-            public string Name { get; set; } = null!;
-            public string SurName { get; set; } = null!;
+            public string FullName { get; set; } = null!;
             public string Phone { get; set; } = null!;
-            public string Email { get; set; } = null!;
+            public string? Email { get; set; } = null!;
             public string Login { get; set; } = null!;
             public UserType UserType { get; set; }
             public List<UserRoles> Roles { get; set; } = null!;
