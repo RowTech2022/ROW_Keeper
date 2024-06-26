@@ -3,6 +3,7 @@ using Keeper.Client.Product;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Row.Common1.Client1;
+using File = System.IO.File;
 
 namespace Keeper.Core;
 
@@ -14,14 +15,27 @@ public partial class ProductEngine
 
         await file.CopyToAsync(stream);
 
-        var fileInfo = new FileInfo(@"C:\Users\Shodmon\OneDrive\Документы\Книга2.xlsx");
+        const string url = @"D:\Книга2.xlsx";
+
+        var fileInfo = new FileInfo(url);
 
         using var package = new ExcelPackage(fileInfo);
+
+        await using var usageExcel = File.Open(url, FileMode.Open);
 
         var workSheet = package.Workbook.Worksheets.FirstOrDefault();
 
         if (workSheet == null)
             throw new ApiException("Empty file", HttpStatusCode.BadRequest);
+
+        workSheet.Cells[1, 1].Value = "Ina nav dobavit kardem";
+        
+        // await package.LoadAsync(usageExcel);
+
+        // var file2 = new FileInfo(@"D:\Книга2.xlsx");
+        // await package.SaveAsAsync(file2);
+        
+        await package.SaveAsync();
 
         int row = 3;
         int col = 2;

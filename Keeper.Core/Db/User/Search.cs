@@ -65,8 +65,7 @@ namespace Keeper.Core
 select
      {topPaging}
       u.[Id]
-     ,u.[Name]
-     ,u.[Surname]
+     ,u.[FullName]
      ,u.[UserType]
      ,u.[Phone]
      ,u.[Email]

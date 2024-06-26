@@ -153,4 +153,7 @@
   <data name="UserWithEmptyRols" xml:space="preserve">
     <value>Точики</value>
   </data>
+  <data name="CodeIsIncorrect" xml:space="preserve">
+    <value>Рамзи нодуруст.</value>
+  </data>
 </root>

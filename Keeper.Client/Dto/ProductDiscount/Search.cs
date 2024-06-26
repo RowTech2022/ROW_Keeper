@@ -3,7 +3,7 @@ using Row.Common1.Client1;
 
 namespace Keeper.Client.ProductDiscount
 {
-    public partial class ProductDiscount
+    public partial class Discount
     {
         public partial class Search
         {

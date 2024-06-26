@@ -2,7 +2,7 @@ using System;
 
 namespace Keeper.Client.ProductDiscount
 {
-    public partial class ProductDiscount : BaseDto
+    public partial class Discount : BaseDto
     {
         public int Id { get; set; }
         public string ProductName { get; set; } = null!;
@@ -14,18 +14,18 @@ namespace Keeper.Client.ProductDiscount
         public string Category { get; set; } = null!;
         public string SubCategory { get; set; } = null!;
 
-        public static ProductDiscount Exec(int id, KeeperApiClient client)
+        public static Discount Exec(int id, KeeperApiClient client)
         {
             var request = client.GetRequest($"api/productDiscount/get/{id}");
 
-            return client.ExecuteWithHttp<ProductDiscount>(request);
+            return client.ExecuteWithHttp<Discount>(request);
         }
 
-        public static ProductDiscount ExecTest(int id, KeeperApiClient client)
+        public static Discount ExecTest(int id, KeeperApiClient client)
         {
             var request = client.GetRequest($"api/productDiscount/get/{id}");
 
-            return client.ExecuteWithHttp<ProductDiscount>(request);
+            return client.ExecuteWithHttp<Discount>(request);
         }
     }
 }

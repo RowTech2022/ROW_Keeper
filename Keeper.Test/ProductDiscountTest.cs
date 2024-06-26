@@ -9,7 +9,7 @@ using Row.Common.Dto1;
 namespace Keeper.Test;
 
 [TestClass]
-public class ProductDiscountTest
+public class DiscountTest
 {
     private readonly List<int> m_productIds = [];
     private readonly List<int> m_categoryIds = [];
@@ -122,7 +122,7 @@ public class ProductDiscountTest
         productResult.Id.Should().BeGreaterThan(0);
         m_productIds.Add(productResult.Id);
 
-        var request = new ProductDiscount.Create
+        var request = new Discount.Create
         {
             ProductId = productResult.Id,
             Percent = 10,
@@ -214,7 +214,7 @@ public class ProductDiscountTest
         productResult.Id.Should().BeGreaterThan(0);
         m_productIds.Add(productResult.Id);
 
-        var request = new ProductDiscount.Create
+        var request = new Discount.Create
         {
             ProductId = productResult.Id,
             Percent = 10,
@@ -228,7 +228,7 @@ public class ProductDiscountTest
         result.Id.Should().BeGreaterThan(0);
         m_productDiscountIds.Add(result.Id);
 
-        var updateRequest = new ProductDiscount.Update
+        var updateRequest = new Discount.Update
         {
             Id = result.Id,
             Percent = 12,
@@ -317,7 +317,7 @@ public class ProductDiscountTest
 
         for (int i = 0; i < 5; i++)
         {
-            var request = new ProductDiscount.Create
+            var request = new Discount.Create
             {
                 ProductId = productResult.Id,
                 Percent = 10,
@@ -332,7 +332,7 @@ public class ProductDiscountTest
             m_productDiscountIds.Add(result.Id);
         }
 
-        var searchRequest = new ProductDiscount.Search
+        var searchRequest = new Discount.Search
         {
             Ids = m_productDiscountIds.ToArray()
         };
@@ -346,9 +346,9 @@ public class ProductDiscountTest
             m_productDiscountIds.Should().Contain(item.Id);
         }
 
-        searchRequest = new ProductDiscount.Search
+        searchRequest = new Discount.Search
         {
-            Filters = new ProductDiscount.Search.Filter
+            Filters = new Discount.Search.Filter
             {
                 UPC = "1234567890"
             }
@@ -359,7 +359,7 @@ public class ProductDiscountTest
         searchResult.Total.Should().Be(0);
         searchResult.Items.Count.Should().Be(0);
 
-        searchRequest = new ProductDiscount.Search
+        searchRequest = new Discount.Search
         {
             PageInfo = new PageInfo
             {

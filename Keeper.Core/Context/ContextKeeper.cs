@@ -18,7 +18,7 @@ namespace Keeper.Core.Context
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductDiscount> ProductDiscounts { get; set; }
+        public DbSet<Discount> ProductDiscounts { get; set; }
         public DbSet<ProductPurchase> ProductPurchases { get; set; }
         public DbSet<ProductPurchaseDetail> ProductPurchaseDetails { get; set; }
 
@@ -46,7 +46,7 @@ namespace Keeper.Core.Context
             modelBuilder.Entity<Product>()
                 .Property(x => x.Active).HasDefaultValue(true);
             
-            modelBuilder.Entity<ProductDiscount>()
+            modelBuilder.Entity<Discount>()
                 .Property(x => x.Active).HasDefaultValue(true);
             
             modelBuilder.Entity<ProductPurchase>()

@@ -3,7 +3,7 @@ using Row.Common1.Client1;
 
 namespace Keeper.Client.ProductDiscount
 {
-    public partial class ProductDiscount
+    public partial class Discount
     {
         public class Update
         {
@@ -13,18 +13,18 @@ namespace Keeper.Client.ProductDiscount
             public DateTimeOffset FromDate { get; set; }
             public DateTimeOffset ToDate { get; set; }
 
-            public ProductDiscount Exec(KeeperApiClient client)
+            public Discount Exec(KeeperApiClient client)
             {
                 var request = client.PostRequest("api/productDiscount/update").Body(this);
 
-                return client.ExecuteWithHttp<ProductDiscount>(request);
+                return client.ExecuteWithHttp<Discount>(request);
             }
 
-            public ProductDiscount ExecTest(KeeperApiClient client)
+            public Discount ExecTest(KeeperApiClient client)
             {
                 var request = client.PostRequest("api/productDiscount/update").Body(this);
 
-                return client.ExecuteWithHttp<ProductDiscount>(request);
+                return client.ExecuteWithHttp<Discount>(request);
             }
         }
     }

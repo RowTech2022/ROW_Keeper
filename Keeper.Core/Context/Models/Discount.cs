@@ -2,15 +2,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Keeper.Core.Context.Models;
 
-public class ProductDiscount : BaseModel
+public class Discount : BaseModel
 {
     public int Id { get; set; }
 
     public int ReqUserId { get; set; }
     
-    public int ProductId { get; set; }
+    public int? ProductId { get; set; }
 
-    public int CategoryId { get; set; }
+    public int? CategoryId { get; set; }
     
     public double Percent { get; set; }
     

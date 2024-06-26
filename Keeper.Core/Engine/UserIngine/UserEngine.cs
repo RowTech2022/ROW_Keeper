@@ -15,22 +15,18 @@ namespace Keeper.Core
         readonly DtoComplex m_dto;
         readonly HashCalculator m_hashCalculator = new HashCalculator("#####");
         public ISendStrategy SendStrategy { get; set; }
-        FileEngine m_fileEngine;
 
         readonly bool m_ignorePassword;
-        public bool IgnoreCode { get; set; }
 
         LanguageService m_languageServices;
 
-        public UserEngine(ISqlFactory sql, DtoComplex dto, FileEngine fileApi,
-            bool ignorePassword, bool ignoreCode, ISendStrategy sendStrategy)
+        public UserEngine(ISqlFactory sql, DtoComplex dto,
+            bool ignorePassword, ISendStrategy sendStrategy)
         {
             m_sql = sql;
             m_dto = dto;
-            m_fileEngine = fileApi;
             m_ignorePassword = ignorePassword;
 
-            IgnoreCode = ignoreCode;
             SendStrategy = sendStrategy;
         }
 
@@ -208,7 +204,7 @@ namespace Keeper.Core
             update.Exec(m_sql);
         }
 
-        [Obsolete("Udalim esli budet ne nujen")]
+        [Obsolete("Udalim esli budet ne nujen", true)]
         public void UpdatePasswordAndState(int userId, string password)
         {
             var update = new Db.User.Update()

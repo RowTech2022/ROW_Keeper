@@ -9,54 +9,54 @@ namespace Keeper.Core;
 
 public class ProductDiscountEngine(ISqlFactory sql, DtoComplex dto)
 {
-    public ProductDiscount Create(ProductDiscount.Create create, UserInfo userInfo)
+    public Discount Create(Discount.Create create, UserInfo userInfo)
     {
-        var product = new Db.Product.List(create.ProductId).Exec(sql).FirstOrDefault();
+        var product = new Db.Product.List(create.ProductId ?? 0).Exec(sql).FirstOrDefault();
 
         if (product == null)
         {
             throw new RecordNotFoundApiException($"Product with id {create.ProductId} not found");
         }
         
-        var resultId = new Db.ProductDiscount.Create { ReqUserId = userInfo.UserId }.CopyFrom(create, dto).Ecec(sql);
+        var resultId = new Db.Discount.Create { ReqUserId = userInfo.UserId }.CopyFrom(create, dto).Ecec(sql);
 
         return Get(resultId);
     }
 
-    public ProductDiscount Update(ProductDiscount.Update update)
+    public Discount Update(Discount.Update update)
     {
         Check(update.Id);
 
-        var request = new Db.ProductDiscount.Update().CopyFrom(update, dto);
+        var request = new Db.Discount.Update().CopyFrom(update, dto);
         request.SetDefaultUpdateList();
         request.Exec(sql);
 
         return Get(update.Id);
     }
 
-    public ProductDiscount.Search.Result Search(ProductDiscount.Search filter)
+    public Discount.Search.Result Search(Discount.Search filter)
     {
-        var request = new Db.ProductDiscount.Search().CopyFrom(filter, dto).Exec(sql);
+        var request = new Db.Discount.Search().CopyFrom(filter, dto).Exec(sql);
 
-        return new ProductDiscount.Search.Result
+        return new Discount.Search.Result
         {
-            Items = request.Select(x => new ProductDiscount.Search.Result.Item().CopyFrom(x, dto)).ToList(),
+            Items = request.Select(x => new Discount.Search.Result.Item().CopyFrom(x, dto)).ToList(),
             Total = request.Select(x => x.Total).FirstOrDefault()
         };
     }
 
-    public ProductDiscount Get(int id)
+    public Discount Get(int id)
     {
         var request = Check(id);
 
-        return new ProductDiscount().CopyFrom(request, dto);
+        return new Discount().CopyFrom(request, dto);
     }
 
     public void Delete(Delete delete)
     {
         Check(delete.Id);
 
-        var request = new Db.ProductDiscount.Update
+        var request = new Db.Discount.Update
         {
             Id = delete.Id,
             Active = false
@@ -65,9 +65,9 @@ public class ProductDiscountEngine(ISqlFactory sql, DtoComplex dto)
         request.Exec(sql);
     }
 
-    public Db.ProductDiscount.List.Result Check(int id)
+    public Db.Discount.List.Result Check(int id)
     {
-        var request = new Db.ProductDiscount.List(id).Ecec(sql).FirstOrDefault();
+        var request = new Db.Discount.List(id).Ecec(sql).FirstOrDefault();
 
         if (request == null)
             throw new RecordNotFoundApiException($"Product discount with id {id} not found.");

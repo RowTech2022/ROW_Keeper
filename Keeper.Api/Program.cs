@@ -25,7 +25,7 @@ if (dtoComplex == null)
 var userEngine2 = new UserEngine2(settings.Sql, dtoComplex, fileEngine, settings.IgnorePassword, settings.IgnoreCode);
 builder.Services.AddSingleton(userEngine2);
 
-var userEngine = new UserEngine(settings.Sql, dtoComplex, fileEngine, settings.IgnorePassword, settings.IgnoreCode,
+var userEngine = new UserEngine(settings.Sql, dtoComplex, settings.IgnorePassword,
     settings.SMSSend);
 builder.Services.AddSingleton(userEngine);
 

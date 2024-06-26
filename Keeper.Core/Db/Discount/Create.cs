@@ -6,7 +6,7 @@ namespace Keeper.Core;
 
 public partial class Db
 {
-    public partial class ProductDiscount
+    public partial class Discount
     {
         [BindStruct]
         public class Create
@@ -15,7 +15,16 @@ public partial class Db
             public int ReqUserId { get; set; }
             
             [Bind("ProductId")]
-            public int ProductId { get; set; }
+            public int? ProductId { get; set; }
+
+            [NVarChar("ProductName", 500)]
+            public string? ProductName { get; set; }
+            
+            [Bind("CategoryId")]
+            public int? CategoryId { get; set; }
+
+            [NVarChar("CategoryName", 500)]
+            public string? CategoryName { get; set; }
             
             [Bind("Percent")]
             public double Percent { get; set; }
@@ -40,6 +49,7 @@ declare @now datetimeoffset(7) = getutcdate()
 insert into [new-keeper].[ProductDiscounts] (
      [ReqUserId]
     ,[ProductId]
+    ,[CategoryId]
     ,[Percent]
     ,[Comment]
     ,[FromDate]
@@ -49,6 +59,7 @@ insert into [new-keeper].[ProductDiscounts] (
 select
     @ReqUserId,
     @ProductId,
+    @CategoryId,
     @Percent,
     @Comment,
     @FromDate,

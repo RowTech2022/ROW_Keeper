@@ -9,16 +9,10 @@ namespace Keeper.Core
         public partial class User
         {
             [BindStruct]
-            public class List
+            public class List(params int[] ids)
             {
-                public int[] Ids { get; set; }
+                public int[] Ids { get; set; } = ids;
 
-                public List() { }
-                public List(params int[] ids)
-                {
-                    Ids = ids;
-                }
-                
                 [BindStruct]
                 public class Result
                 {

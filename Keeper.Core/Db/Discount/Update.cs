@@ -6,7 +6,7 @@ namespace Keeper.Core;
 
 public partial class Db
 {
-    public partial class ProductDiscount
+    public partial class Discount
     {
         [BindStruct]
         public class Update
