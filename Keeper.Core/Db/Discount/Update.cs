@@ -1,6 +1,7 @@
 using System.Data;
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
+using Keeper.Client;
 
 namespace Keeper.Core;
 
@@ -14,6 +15,12 @@ public partial class Db
             [Bind("Id")]
             public int Id { get; set; }
             
+            [Bind("ProductId")] 
+            public int ProductId { get; set; }
+            
+            [Bind("CategoryId")] 
+            public int CategoryId { get; set; }
+            
             [Bind("Percent")]
             public double Percent { get; set; }
             
@@ -25,6 +32,9 @@ public partial class Db
             
             [Bind("ToDate")]
             public DateTimeOffset ToDate { get; set; }
+            
+            [Bind("Type")] 
+            public DiscountType Type { get; set; }
 
             [Bind("Acitve")]
             public bool Active { get; set; }
@@ -49,10 +59,13 @@ set @ResultCount = @@rowcount
 
             private static HashSet<string> c_updateList =
             [
+                nameof(ProductId),
+                nameof(CategoryId),
                 nameof(Percent),
                 nameof(Comment),
                 nameof(FromDate),
                 nameof(ToDate),
+                nameof(Type),
                 nameof(Active)
             ];
 
@@ -60,10 +73,13 @@ set @ResultCount = @@rowcount
 
             private IEnumerable<string> GetDefaultUpdateList()
             {
+                yield return nameof(ProductId);
+                yield return nameof(CategoryId);
                 yield return nameof(Percent);
                 yield return nameof(Comment);
                 yield return nameof(FromDate);
                 yield return nameof(ToDate);
+                yield return nameof(Type);
             }
 
             public void SetDefaultUpdateList()

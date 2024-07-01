@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Keeper.Client;
 
 namespace Keeper.Core.Context.Models;
 
@@ -20,4 +21,6 @@ public class Discount : BaseModel
     public DateTimeOffset FromDate { get; set; }
     
     public DateTimeOffset ToDate { get; set; }
+
+    public DiscountType Type { get; set; }
 }

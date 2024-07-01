@@ -55,6 +55,8 @@ where
     lower(s.[Name]) like lower(N'%' + @Name + '%') and
     --{Name - end}
     
+    s.[Active] = 1 and
+    
     1 = 1
     order by c.[Id] desc
 {offsetPaging}

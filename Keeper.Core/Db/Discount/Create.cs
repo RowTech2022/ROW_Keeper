@@ -1,6 +1,7 @@
 using System.Data;
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
+using Keeper.Client;
 
 namespace Keeper.Core;
 
@@ -16,15 +17,9 @@ public partial class Db
             
             [Bind("ProductId")]
             public int? ProductId { get; set; }
-
-            [NVarChar("ProductName", 500)]
-            public string? ProductName { get; set; }
             
             [Bind("CategoryId")]
             public int? CategoryId { get; set; }
-
-            [NVarChar("CategoryName", 500)]
-            public string? CategoryName { get; set; }
             
             [Bind("Percent")]
             public double Percent { get; set; }
@@ -37,6 +32,9 @@ public partial class Db
             
             [Bind("ToDate")]
             public DateTimeOffset ToDate { get; set; }
+            
+            [Bind("Type")] 
+            public DiscountType Type { get; set; }
 
             [Bind("ResultId", Direction = ParameterDirection.Output)]
             public int ResultId { get; set; }
@@ -54,6 +52,7 @@ insert into [new-keeper].[ProductDiscounts] (
     ,[Comment]
     ,[FromDate]
     ,[ToDate]
+    ,[Type]
     ,[CreatedAt]
     ,[UpdatedAt] )
 select
@@ -64,6 +63,7 @@ select
     @Comment,
     @FromDate,
     @ToDate,
+    @Type,
     @now,
     @now
 

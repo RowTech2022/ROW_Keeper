@@ -21,8 +21,7 @@ namespace Keeper.Client.ProductDiscount
                     public string? Comment { get; set; }
                     public DateTimeOffset FromDate { get; set; }
                     public DateTimeOffset ToDate { get; set; }
-                    public string Category { get; set; } = null!;
-                    public string SubCategory { get; set; } = null!;
+                    public DiscountType Type { get; set; }
                 }
             }
         }

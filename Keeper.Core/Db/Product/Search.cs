@@ -85,6 +85,8 @@ where
     p.[CategoryId] in ({CategoryIds}) and
     --{CategoryIds - end}
     
+    p.[Active] = 1 and
+    
     1 = 1
 order by p.[Id] desc
 {offsetPaging}

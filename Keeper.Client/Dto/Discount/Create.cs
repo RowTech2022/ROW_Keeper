@@ -8,10 +8,12 @@ namespace Keeper.Client.ProductDiscount
         public class Create
         {
             public int? ProductId { get; set; }
+            public int? CategoryId { get; set; }
             public double Percent { get; set; }
             public string? Comment { get; set; }
             public DateTimeOffset FromDate { get; set; }
             public DateTimeOffset ToDate { get; set; }
+            public DiscountType Type { get; set; }
 
             public Discount Exec(KeeperApiClient client)
             {

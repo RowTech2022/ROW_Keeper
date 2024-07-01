@@ -1,6 +1,6 @@
-using System.Data;
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
+using Keeper.Client;
 
 namespace Keeper.Core;
 
@@ -42,6 +42,9 @@ public partial class Db
 
                 [Bind("ToDate")] 
                 public DateTimeOffset ToDate { get; set; }
+                
+                [Bind("Type")] 
+                public DiscountType Type { get; set; }
             }
 
             #region c_query
@@ -57,6 +60,7 @@ select
     ,d.[Comment]
     ,d.[FromDate]
     ,d.[ToDate]
+    ,d.[Type]
     ,d.[CreatedAt]
     ,d.[UpdatedAt]
     ,d.[Timestamp]
@@ -68,6 +72,8 @@ where
     --{Ids - start}
     p.Id in ({Ids}) and
     --{Ids - end}
+    
+    p.[Active] = 1 and
     
     1 = 1
 ";

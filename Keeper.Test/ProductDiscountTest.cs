@@ -137,12 +137,9 @@ public class DiscountTest
         m_productDiscountIds.Add(result.Id);
 
         result.UPC.Should().Be(productResult.UPC);
-        result.ProductName.Should().Be(productResult.Name);
-        result.Category.Should().Be(category.Name);
-        result.SubCategory.Should().Be(subCategory.Name);
+        result.Name.Should().Be(productResult.Name);
         result.Comment.Should().Be(request.Comment);
         result.Percent.Should().Be(request.Percent);
-        result.SubCategory.Should().NotBeNullOrWhiteSpace();
         result.FromDate.Should().Be(request.FromDate);
         result.ToDate.Should().Be(request.ToDate);
         result.CreatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));
@@ -244,9 +241,7 @@ public class DiscountTest
         updateResult.Comment.Should().Be(updateRequest.Comment);
         updateResult.FromDate.Should().Be(updateRequest.FromDate);
         updateResult.ToDate.Should().Be(updateRequest.ToDate);
-        updateResult.Category.Should().Be(category.Name);
-        updateResult.SubCategory.Should().Be(subCategory.Name);
-        updateResult.ProductName.Should().Be(product.Name);
+        updateResult.Name.Should().Be(product.Name);
         updateResult.UPC.Should().Be(product.UPC);
         updateResult.CreatedAt.Should().Be(result.CreatedAt);
         updateResult.UpdatedAt.Should().BeCloseTo(now, TimeSpan.FromMinutes(1));

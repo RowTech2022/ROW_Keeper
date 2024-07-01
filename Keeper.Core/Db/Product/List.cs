@@ -86,6 +86,8 @@ where
     p.[Id] in ({Ids}) and
     --{Ids - end}
     
+    p.[Active] = 1 and
+    
     1 = 1
 ";
 

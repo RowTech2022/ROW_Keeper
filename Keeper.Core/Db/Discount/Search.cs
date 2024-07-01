@@ -1,5 +1,6 @@
 using Bibliotekaen.Sql;
 using Bibliotekaen.Sql.Data;
+using Keeper.Client;
 
 namespace Keeper.Core;
 
@@ -27,15 +28,9 @@ public partial class Db
             {
                 [Bind("Id")]
                 public int Id { get; set; }
-            
-                [Bind("ProductId")]
-                public int? ProductId { get; set; }
 
                 [NVarChar("ProductName", 500)]
                 public string? ProductName { get; set; }
-            
-                [Bind("CategoryId")]
-                public int? CategoryId { get; set; }
 
                 [NVarChar("CategoryName", 500)]
                 public string? CategoryName { get; set; }
@@ -51,6 +46,9 @@ public partial class Db
 
                 [Bind("ToDate")] 
                 public DateTimeOffset ToDate { get; set; }
+                
+                [Bind("Type")] 
+                public DiscountType Type { get; set; }
 
                 [Bind("Total")]
                 public int Total { get; set; }
@@ -62,14 +60,13 @@ public partial class Db
 select
 {topPaging}
      d.[Id]
-    ,d.[ProductId]
     ,p.[Name] as [ProductName]
-    ,d.[CategoryId]
     ,c.[Name] as [CategorName]
     ,d.[Percent]
     ,d.[Comment]
     ,d.[FromDate]
     ,d.[ToDate]
+    ,d.[Type]
     ,count(*) over() as [Total]
 from [new-keeper].[ProductDiscounts] as d
 left join [new-keeper].[Products] as p on d.[ProductId] = p.[Id]
@@ -81,11 +78,13 @@ where
     --{Ids - end}
     
     --{UPC - start}
-    x.[UPC] like '%' + @UPC + '%' and
+    p.[UPC] like '%' + @UPC + '%' and
     --{UPC - end}
-    
+
+    d.[Active] = 1 and
+
     1 = 1
-order by p.[Id] desc
+order by d.[Id] desc
 {offsetPaging}
 ";
 
