@@ -3,7 +3,7 @@ using Keeper.Core;
 using Microsoft.Extensions.FileProviders;
 using Row.Common1;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args); 
 
 builder.Services.AddSignalR();
 
