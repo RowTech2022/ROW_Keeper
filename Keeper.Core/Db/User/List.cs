@@ -51,7 +51,7 @@ namespace Keeper.Core
 
                 }
 
-                #region c_query
+                #region c_query 
 
                 const string c_query = @"
 select
