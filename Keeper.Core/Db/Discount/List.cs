@@ -49,7 +49,7 @@ public partial class Db
 
             #region c_query
 
-            private const string c_query = @"
+            private const string c_query = @" 
 select
      d.[Id]
     ,d.[ProductId]
