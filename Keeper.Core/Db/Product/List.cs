@@ -23,8 +23,17 @@ public partial class Db
                 [Bind("SupplierId")]
                 public int SupplierId { get; set; }
 
+                [Bind("CategoryId")]
+                public int CategoryId { get; set; }
+
                 [NVarChar("CategoryName", 300)] 
                 public string CategoryName { get; set; } = null!;
+
+                [Bind("SubCategoryId")]
+                public int SubCategoryId { get; set; }
+
+                [NVarChar("SubCategoryName", 300)] 
+                public string SubCategoryName { get; set; } = null!;
 
                 [Bind("TaxId")]
                 public int TaxId { get; set; }
@@ -64,6 +73,9 @@ select
      p.[Id]
     ,p.[OrgId]
     ,p.[SupplierId]
+    ,p.[CategoryId] as [SubCategoryId]
+    ,s.[Name] as [SubCategoryName]
+    ,c.[Id] as [CategoryId] 
     ,c.[Name] as [CategoryName]
     ,p.[TaxId]
     ,p.[UPC]
@@ -79,7 +91,8 @@ select
     ,p.[UpdatedAt]
     ,p.[Timestamp]
 from [new-keeper].[Products] as p
-join [new-keeper].[Categories] as c on p.[CategoryId] = c.[Id]
+join [new-keeper].[Categories] as s on p.[CategoryId] = c.[Id]
+left join [new-keeper].[Categories] as c on c.[Id] = s.[ParentId] 
 where
     
     --{Ids - start}

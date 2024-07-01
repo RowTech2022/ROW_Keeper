@@ -34,8 +34,8 @@ namespace Keeper.Core
                     [NVarChar("Login", 50)]
                     public string Login { get; set; } = null!;
 
-                    [Bind("Status")]
-                    public Client.User.Status Status { get; set; }
+                    [Bind("State")]
+                    public Client.User.Status State { get; set; }
 
                     [Bind("PasswordHash")]
                     public byte[]? PasswordHash { get; set; }
@@ -61,7 +61,7 @@ select
      ,u.[Phone]
      ,u.[Email]
      ,u.[Login]
-     ,u.[Status]
+     ,u.[State]
      ,u.[PasswordHash]
      ,u.[CreatedAt]
      ,u.[UpdatedAt]
@@ -74,7 +74,7 @@ WHERE
     
     u.[Active] = 1 and
 
-    1=1 
+    1 = 1 
 
 ";
 

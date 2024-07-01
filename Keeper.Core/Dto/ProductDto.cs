@@ -1,4 +1,5 @@
 using Bibliotekaen.Dto;
+using Keeper.Client;
 using Keeper.Client.Product;
 
 namespace Keeper.Core;
@@ -25,6 +26,61 @@ public static class ProductDto
     {
         string CategoryName { get; set; }
     }
+
+    public interface ISubCategoryId
+    {
+        int SubCategoryId { get; set; }
+    }
+
+    public interface ISubCategoryName
+    {
+        string SubCategoryName { get; set; }
+    }
+
+    public interface ICategory
+    {
+        Information Category { get; set; }
+    }
+
+    public interface IDbCategory : ICategoryId, ICategoryName;
+
+    #region IDbCategory
+
+    static void Convert(ICategory dstCat, IDbCategory srcCat, ISubCategory? dstSub, IDbSubCategory srcSub )
+    {
+        if (srcCat.CategoryId == 0)
+        {
+            dstCat.Category = new Information
+            {
+                Id = srcSub.SubCategoryId,
+                Value = srcSub.SubCategoryName
+            };
+            dstSub = null;
+        }
+        else
+        {
+            dstCat.Category = new Information
+            {
+                Id = srcCat.CategoryId,
+                Value = srcCat.CategoryName
+            };
+            
+            dstSub.SubCategory = new Information
+            {
+                Id = srcSub.SubCategoryId,
+                Value = srcSub.SubCategoryName
+            };
+        }
+    }
+
+    #endregion
+
+    public interface ISubCategory
+    {
+        Information? SubCategory { get; set; }
+    }
+
+    public interface IDbSubCategory : ISubCategoryId, ISubCategoryName;
 
     public interface ITaxId
     {

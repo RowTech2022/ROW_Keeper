@@ -60,7 +60,7 @@ namespace Keeper.Test
                 Email = Context.GenerateEmail(),
                 UserType = UserType.Admin,
                 Login = "userName" + new Random().Next(1, 999999),
-                Status = User.Status.Active,
+                State = User.Status.Active,
             };
 
             var now = DateTime.Now;
@@ -114,7 +114,7 @@ namespace Keeper.Test
                 Email = Context.GenerateEmail(),
                 UserType = UserType.Admin,
                 Login = "userName" + new Random().Next(1, 999999),
-                Status = User.Status.Active
+                State = User.Status.Active
             };
 
             var now = DateTime.Now;

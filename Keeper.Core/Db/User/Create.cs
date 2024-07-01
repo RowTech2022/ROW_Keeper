@@ -32,8 +32,8 @@ namespace Keeper.Core
 				[NVarChar("Login", 50)] 
 				public string Login { get; set; } = null!;
 				
-				[Bind("Status")]
-				public Client.User.Status Status { get; set; }
+				[Bind("State")]
+				public Client.User.Status State { get; set; }
 
 				[Bind("ResultId", Direction = System.Data.ParameterDirection.Output)]
 				public int ResultId { get; set; } 
@@ -54,7 +54,7 @@ INSERT INTO [new-keeper].[Users]
         ,[Email]
         ,[UserType]
         ,[Login]
-        ,[Status]
+        ,[State]
         ,[CreatedAt]
         ,[UpdatedAt]
         )
@@ -66,7 +66,7 @@ select
         @Email,
         @UserType,
         @Login,
-        @Status,
+        @State,
         @now,
         @now        
 

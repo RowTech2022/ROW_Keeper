@@ -25,7 +25,7 @@ namespace Keeper.Client
 
             public int OrgId { get; set; }
 
-            public Status Status { get; set; }
+            public Status State { get; set; }
 
             public User Exec(KeeperApiClient client)
             {
