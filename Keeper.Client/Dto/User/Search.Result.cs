@@ -9,7 +9,7 @@ namespace Keeper.Client
         {
              public class Result
              {
-                 public List<Item> Items { get; set; } = new List<Item>();
+                 public List<Item> Items { get; set; } = [];
                  public long Total { get; set; }
 
                  public class Item
@@ -17,11 +17,12 @@ namespace Keeper.Client
 					public int Id { get; set;} 
 					public string FullName  { get; set;} = null!; 
 					public string Phone  { get; set;} = null!;
-                    public string? Email { get; set; }
+                    public string OrgName { get; set; } = null!;
 					public string Login  { get; set;} = null!;
-                    public Status Status { get; set; }
+                    public Status State { get; set; }
                     public UserType UserType { get; set; }
-                }
+                    public string RoleName { get; set; } = null!;
+                 }
             }
         }
     }

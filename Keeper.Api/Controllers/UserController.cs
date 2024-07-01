@@ -88,5 +88,12 @@ namespace Keeper.Api.Controllers
 
             m_engine.UpdatePassword(update, userInfo);
         }
+
+        [HttpGet("roles")]
+        [Authorize(Access.User)]
+        public User.Role.List Roles()
+        {
+            return m_engine.Roles();
+        }
     }
 }

@@ -8,6 +8,8 @@ namespace Keeper.Client.Product
         public int OrgId { get; set; }
         public int SupplierId { get; set; }
         public string CategoryName { get; set; } = null!;
+        public Information Category { get; set; } = null!;
+        public Information? SybCategory { get; set; }
         public int TaxId { get; set; }
         public string UPC { get; set; } = null!;
         public string Name { get; set; } = null!;

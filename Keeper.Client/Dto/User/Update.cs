@@ -15,6 +15,7 @@ namespace Keeper.Client
             public string? Email { get; set; }
             public string Login { get; set; } = null!;
             public UserType UserType { get; set; }
+            public Status State { get; set; }
 
             public User Exec(KeeperApiClient client)
             {

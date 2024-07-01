@@ -29,7 +29,7 @@ public class User : BaseModel
     [StringLength(50)] 
     public string Login { get; set; } = null!;
 
-    public Client.User.Status Status { get; set; }
+    public Client.User.Status State { get; set; }
         
     public byte[]? PasswordHash { get; set; }
 }

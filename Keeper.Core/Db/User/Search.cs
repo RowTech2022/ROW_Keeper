@@ -42,8 +42,8 @@ namespace Keeper.Core
                     [Bind("UserType")]
                     public UserType UserType { get; set; }
 
-                    [NVarChar("Email", 500)]
-                    public string? Email { get; set; } = null!;
+                    [NVarChar("OrgName", 500)]
+                    public string OrgName { get; set; } = null!;
 
                     [NVarChar("Phone", 20)]
                     public string Phone { get; set; } = null!;
@@ -51,8 +51,11 @@ namespace Keeper.Core
                     [NVarChar("Login", 50)] 
                     public string Login { get; set; } = null!;
 
-                    [Bind("Status")]
-                    public Client.User.Status Status { get; set; }
+                    [Bind("State")]
+                    public Client.User.Status State { get; set; }
+
+                    [Bind("RoleName")] 
+                    public string RoleName { get; set; } = null!;
 
                     [Bind("Total")]
                     public int Total { get; set; }
@@ -68,11 +71,15 @@ select
      ,u.[FullName]
      ,u.[UserType]
      ,u.[Phone]
-     ,u.[Email]
+     ,o.[OrgName]
      ,u.[Login]
-     ,u.[Status]
+     ,u.[State]
+     ,r.[RoleName]
      ,COUNT(*) OVER() as Total
 FROM [new-keeper].[Users] as u
+join [new-keeper].[Organizations] as o on u.[OrgId] = o.[Id]
+join [new-keeper].[UserRoleAccess] as a on u.[Id] = a.[UserId]
+join [new-keeper].[UserRole] as r on a.[RoleId] = r.[RoleId]
 WHERE
     --{Ids - start}
     u.Id in ({Ids}) and
